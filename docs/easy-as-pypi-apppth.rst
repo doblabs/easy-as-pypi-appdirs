@@ -1,13 +1,13 @@
 ####################
-easy_as_pypi package
+easy_as_pypi_apppth package
 ####################
 
 Module Contents
 ---------------
 
-.. (lb): This is *not* a generated file like easy_as_pypi.rst (or modules.rst, etc.).
+.. (lb): This is *not* a generated file like easy_as_pypi_apppth.rst (or modules.rst, etc.).
 ..
-..       Rather, this file was copyied from a generated docs/easy_as_pypi.rst
+..       Rather, this file was copyied from a generated docs/easy_as_pypi_apppth.rst
 ..       and altered with additional options.
 ..
 ..       - Note that the Sphinx and autodoc extension docs suggest these options
@@ -16,7 +16,7 @@ Module Contents
 ..       - See comment in Makefile docs-html re: controlling which auto-generated
 ..         files are created.
 
-.. automodule:: easy_as_pypi
+.. automodule:: easy_as_pypi_apppth
     :members:
     :special-members: __new__
     :undoc-members:

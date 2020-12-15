@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-# This file exists within 'easy-as-pypi':
+# This file exists within 'easy-as-pypi-apppth':
 #
-#   https://github.com/landonb/easy-as-pypi#🥧
+#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
 
 # Boilerplate documentation build configuration file,
 # (Originally) created by sphinx-quickstart on Tue Jul 9 22:26:36 2013
@@ -44,13 +44,13 @@ sys.path.insert(0, project_root)
 # ┃                                                                     ┃
 # ┃ YOU/DEV: Customize this import and these strings for your project.  ┃
 
-project_dist = 'easy-as-pypi'
-package_name = 'easy_as_pypi'
-project_ghuser = 'landonb'
+project_dist = 'easy-as-pypi-apppth'
+package_name = 'easy_as_pypi_apppth'
+project_ghuser = 'tallybark'
 project_ghrepo = project_dist
 project_texinfo = 'One line description of project.'
 project_docinfo = '{} Documentation'.format(project_dist)
-project_htmlhelp_basename = 'EasyAsPypidoc'
+project_htmlhelp_basename = 'EasyAsPypiApppthdoc'
 project_copy = 'Landon Bouma.'
 project_auth = 'Landon Bouma'
 project_orgn = 'Tally Bark LLC'
@@ -224,7 +224,7 @@ html_context = {
 
 # File-wide metadata.
 # (lb): I found this documented somewhere but it did not fix "Edit on GitHub" broken link.
-#   github_url = 'https://github.com/landonb/easy-as-pypi'
+#   github_url = 'https://github.com/tallybark/easy-as-pypi-apppth'
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -252,7 +252,7 @@ html_context = {
 # 16x16 or 32x32 pixels large.
 #html_favicon = None
 # (lb): Set your project logo thusly:
-#  html_favicon = 'assets/easy-as-pypi_logo.png'
+#  html_favicon = 'assets/easy-as-pypi-apppth_logo.png'
 
 # Add any paths that contain custom static files (such as style sheets)
 # here, relative to this directory. They are copied after the builtin
