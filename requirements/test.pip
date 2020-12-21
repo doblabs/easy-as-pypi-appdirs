@@ -57,5 +57,5 @@ codecov >= 2.0.15
 
 # - "Generates random data for your tests"
 #   https://github.com/omaciel/fauxfactory
-#fauxfactory >= 3.0.6
+fauxfactory >= 3.0.6
 

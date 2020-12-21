@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-config':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/tallybark/easy-as-pypi-config#🍐
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -22,17 +22,40 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-"""Top-level package for this CLI-based application."""
-
-# Convenience import(s).
-
-import appdirs  # noqa: F401
-
-from .app_dirs import register_application  # noqa: F401
-from .app_dirs_with_mkdir import AppDirsWithMkdir as AppDirs  # noqa: F401
-from .exists_or_mkdirs import (  # noqa: F401
-    must_ensure_directory_exists,
-    must_ensure_file_path_dirred
+__all__ = (
+    'Singleton',
 )
-from .expand_and_mkdirs import must_ensure_appdirs_path  # noqa: F401
+
+
+class Singleton(type):
+    """A Singleton metaclass.
+
+    For a healthy discussion on ways to implement Singleton in Python,
+    and whether or not they're a good tool to use, read the long-standing
+    and still-rolling *Creating a singleton in Python* article:
+
+        https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
+    """
+
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        fresh_cls = cls not in cls._instances
+        if fresh_cls or args or kwargs:
+            new_instance = super(Singleton, cls).__call__(*args, **kwargs)
+
+        if fresh_cls:
+            cls_instance = new_instance
+            cls._instances[cls] = cls_instance
+        else:
+            cls_instance = cls._instances[cls]
+
+        if (args or kwargs) and (new_instance != cls_instance):
+            raise Exception('DEV: Singleton initialized again but differently')
+
+        return cls_instance
+
+    @classmethod
+    def _reset_instances(cls):
+        cls._instances = {}
 

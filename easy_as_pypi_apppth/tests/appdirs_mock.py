@@ -22,17 +22,37 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-"""Test fixtures for the ``easy-as-pypi-apppth`` package tests."""
+"""Public fixtures."""
+
+import os
 
 import pytest
+from unittest import mock
 
-pytest_plugins = (
-    # Import tmp_appdirs fixture.
-    'easy_as_pypi_apppth.tests.appdirs_mock',
-)
+from easy_as_pypi_apppth.app_dirs_with_mkdir import AppDirsWithMkdir
+from easy_as_pypi_apppth.expand_and_mkdirs import must_ensure_directory_exists
+
+
+def mocker_patch_app_dirs(mocker, tmpdir, which):
+    prop_name = '{}_dir'.format(which)
+    tmp_appdir = os.path.join(tmpdir.mkdir(which).strpath, 'easy-as-pypi-apppth')
+    # Because mocking property, which is wrapped by @mkdir_side_effect, do same,
+    # albeit preemptively. (lb): Seriously, such a smelly side effect.
+    must_ensure_directory_exists(tmp_appdir)
+    pkg_path = 'easy_as_pypi_apppth.app_dirs_with_mkdir.AppDirsWithMkdir'
+    target = '{}.{}'.format(pkg_path, prop_name)
+    mocker.patch(target, new_callable=mock.PropertyMock(return_value=tmp_appdir))
 
 
 @pytest.fixture
-def app_name():
-    return 'easy-as-pypi-apppth-tests'
+def tmp_appdirs(mocker, tmpdir):
+    """Provide mocked version specific user dirs using a tmpdir."""
+    mocker_patch_app_dirs(mocker, tmpdir, 'user_data')
+    mocker_patch_app_dirs(mocker, tmpdir, 'site_data')
+    mocker_patch_app_dirs(mocker, tmpdir, 'user_config')
+    mocker_patch_app_dirs(mocker, tmpdir, 'site_config')
+    mocker_patch_app_dirs(mocker, tmpdir, 'user_cache')
+    mocker_patch_app_dirs(mocker, tmpdir, 'user_state')
+    mocker_patch_app_dirs(mocker, tmpdir, 'user_log')
+    return AppDirsWithMkdir()
 

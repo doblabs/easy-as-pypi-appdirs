@@ -19,7 +19,11 @@ from setuptools import find_packages, setup
 # *** Package requirements.
 
 requirements = [
-    # YOU: Add your project-specific requirements here.
+    # Platform-specific directory magic.
+    #  https://github.com/ActiveState/appdirs
+    # Ref:
+    #  https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+    'appdirs >= 1.4.3, < 2',
 ]
 
 # *** Minimal setup() function -- Prefer using config where possible.

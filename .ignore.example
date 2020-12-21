@@ -24,7 +24,7 @@ htmlcov/
 coverage.xml
 
 # Sphinx Docs — `make docs`.
-docs/_build
+docs/_build/
 docs/_themes/sphinx_rtd_theme/
 
 # Test output for Vim quickfix — `make test-local`.

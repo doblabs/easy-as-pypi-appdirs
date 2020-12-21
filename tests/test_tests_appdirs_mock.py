@@ -22,17 +22,26 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-"""Top-level package for this CLI-based application."""
+"""Tests the tests subpackage appdirs_mock module."""
 
-# Convenience import(s).
+import os
 
-import appdirs  # noqa: F401
+import pytest
 
-from .app_dirs import register_application  # noqa: F401
-from .app_dirs_with_mkdir import AppDirsWithMkdir as AppDirs  # noqa: F401
-from .exists_or_mkdirs import (  # noqa: F401
-    must_ensure_directory_exists,
-    must_ensure_file_path_dirred
-)
-from .expand_and_mkdirs import must_ensure_appdirs_path  # noqa: F401
+from easy_as_pypi_apppth import register_application
+
+
+class TestTestsAppdirsMock():
+
+    @pytest.fixture(autouse=True)
+    def register_application(self, app_name):
+        register_application(app_name)
+
+    def test_tests_appdirs_mock_side_effect(self, tmp_appdirs):
+        adir_path = tmp_appdirs.user_cache_dir
+        assert os.path.exists(adir_path)
+
+    def test_tests_appdirs_mock_safe_effect(self, tmp_appdirs):
+        adir_path = tmp_appdirs.safe.user_cache_dir
+        assert not os.path.exists(adir_path)
 

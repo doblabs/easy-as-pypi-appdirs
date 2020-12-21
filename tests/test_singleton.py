@@ -22,17 +22,28 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-"""Top-level package for this CLI-based application."""
+"""Tests the singleton.py module."""
 
-# Convenience import(s).
+from easy_as_pypi_apppth.singleton import Singleton
 
-import appdirs  # noqa: F401
 
-from .app_dirs import register_application  # noqa: F401
-from .app_dirs_with_mkdir import AppDirsWithMkdir as AppDirs  # noqa: F401
-from .exists_or_mkdirs import (  # noqa: F401
-    must_ensure_directory_exists,
-    must_ensure_file_path_dirred
-)
-from .expand_and_mkdirs import must_ensure_appdirs_path  # noqa: F401
+class FooSingleton(object, metaclass=Singleton):
+    pass
+
+
+class BarSingleton(object, metaclass=Singleton):
+    pass
+
+
+class TestSingleton():
+
+    def test_singleton_returns_same_object_same_classes(self):
+        foo1 = FooSingleton()
+        foo2 = FooSingleton()
+        assert foo1 is foo2
+
+    def test_singleton_returns_different_object_different_classes(self):
+        foo = FooSingleton()
+        bar = BarSingleton()
+        assert foo is not bar
 

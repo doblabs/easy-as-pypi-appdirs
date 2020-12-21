@@ -1,11 +1,11 @@
-####################
+###########################
 easy_as_pypi_apppth package
-####################
+###########################
 
 Module Contents
 ---------------
 
-.. (lb): This is *not* a generated file like easy_as_pypi_apppth.rst (or modules.rst, etc.).
+.. (lb): This file is *not* generated like easy_as_pypi_apppth.rst, modules.rst, etc.
 ..
 ..       Rather, this file was copyied from a generated docs/easy_as_pypi_apppth.rst
 ..       and altered with additional options.

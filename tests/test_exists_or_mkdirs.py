@@ -22,17 +22,33 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-"""Top-level package for this CLI-based application."""
+"""Tests the exists_or_mkdirs.py module."""
 
-# Convenience import(s).
+import os
 
-import appdirs  # noqa: F401
-
-from .app_dirs import register_application  # noqa: F401
-from .app_dirs_with_mkdir import AppDirsWithMkdir as AppDirs  # noqa: F401
-from .exists_or_mkdirs import (  # noqa: F401
+from easy_as_pypi_apppth import (
     must_ensure_directory_exists,
     must_ensure_file_path_dirred
 )
-from .expand_and_mkdirs import must_ensure_appdirs_path  # noqa: F401
+
+
+class TestMustEnsureDirectoryExists(object):
+    """must_ensure_directory_exists test(s)."""
+
+    def test_must_ensure_directory_exists(self, tmpdir):
+        ensure_this_path = os.path.join(tmpdir, 'foo')
+        assert not os.path.exists(ensure_this_path)
+        must_ensure_directory_exists(ensure_this_path)
+        assert os.path.exists(ensure_this_path)
+
+
+class TestMustEnsureFilePathDirred(object):
+    """must_ensure_file_path_dirred test(s)."""
+
+    def test_must_ensure_file_path_dirred(self, tmpdir):
+        ensure_this_path = os.path.join(tmpdir, 'foo')
+        ensure_this_file = os.path.join(ensure_this_path, 'bar.bat')
+        assert not os.path.exists(ensure_this_path)
+        must_ensure_file_path_dirred(ensure_this_file)
+        assert os.path.exists(ensure_this_path)
 
