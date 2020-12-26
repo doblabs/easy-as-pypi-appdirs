@@ -37,11 +37,19 @@ class TestTestsAppdirsMock():
     def register_application(self, app_name):
         register_application(app_name)
 
-    def test_tests_appdirs_mock_side_effect(self, tmp_appdirs):
+    def test_tests_tmp_appdirs_mock_side_effect(self, tmp_appdirs):
         adir_path = tmp_appdirs.user_cache_dir
         assert os.path.exists(adir_path)
 
-    def test_tests_appdirs_mock_safe_effect(self, tmp_appdirs):
+    def test_tests_tmp_appdirs_mock_safe_effect(self, tmp_appdirs):
         adir_path = tmp_appdirs.safe.user_cache_dir
+        assert not os.path.exists(adir_path)
+
+    def test_tests_xdg_appdirs_mock_side_effect(self, xdg_appdirs):
+        adir_path = xdg_appdirs.user_cache_dir
+        assert os.path.exists(adir_path)
+
+    def test_tests_xdg_appdirs_mock_safe_effect(self, xdg_appdirs):
+        adir_path = xdg_appdirs.safe.user_cache_dir
         assert not os.path.exists(adir_path)
 
