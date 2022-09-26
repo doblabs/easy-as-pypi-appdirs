@@ -2,16 +2,16 @@
 easy-as-pypi-apppth
 @@@@@@@@@@@@@@@@@@@
 
-.. .. image:: https://travis-ci.com/landonb/easy-as-pypi.svg?branch=develop
-..   :target: https://travis-ci.com/landonb/easy-as-pypi
-..   :alt: Build Status
-..
-.. .. image:: https://codecov.io/gh/landonb/easy-as-pypi/branch/develop/graph/badge.svg
-..   :target: https://codecov.io/gh/landonb/easy-as-pypi
-..   :alt: Coverage Status
-..
-.. .. image:: https://readthedocs.org/projects/easy-as-pypi/badge/?version=latest
-..   :target: https://easy-as-pypi.readthedocs.io/en/latest/
+.. image:: https://github.com/doblabs/easy-as-pypi-appdirs/actions/workflows/run-checks.yaml/badge.svg?branch=develop
+  :target: https://github.com/doblabs/easy-as-pypi-appdirs/actions?workflow=run-checks
+  :alt: Build Status
+
+.. image:: https://codecov.io/gh/doblabs/easy-as-pypi-appdirs/branch/develop/graph/badge.svg
+  :target: https://codecov.io/gh/doblabs/easy-as-pypi-appdirs
+  :alt: Coverage Status
+
+.. .. image:: https://readthedocs.org/projects/easy-as-pypi-appdirs/badge/?version=latest
+..   :target: https://easy-as-pypi-appdirs.readthedocs.io/en/latest/
 ..   :alt: Documentation Status
 ..
 .. .. image:: https://img.shields.io/github/release/landonb/easy-as-pypi.svg?style=flat
