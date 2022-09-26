@@ -51,6 +51,8 @@ codecov >= 2.0.15
 #   https://github.com/joke2k/faker
 Faker >= 4.0.0
 #
+# FIXME/2022-09-26 17:42: I can remove this, it's part of Faker now.
+# - FIXME: Remove from all test.pip files.
 # - "Faker integration with the pytest framework."
 #   https://github.com/pytest-dev/pytest-faker
 #pytest-faker >= 2.0.0
