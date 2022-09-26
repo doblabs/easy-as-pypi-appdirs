@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 
 """
 Packaging instruction for setup tools.
@@ -39,9 +39,9 @@ setup(
 
     # Specify which package(s) to install.
     # - Without any rules, find_packages returns, e.g.,
-    #     ['easy_as_pypi_apppth', 'tests', 'tests.easy_as_pypi_apppth']
+    #     ['easy_as_pypi_appdirs', 'tests', 'tests.easy_as_pypi_appdirs']
     # - With the 'exclude*' rule, this call is essentially:
-    #     packages=['easy_as_pypi_apppth']
+    #     packages=['easy_as_pypi_appdirs']
     # MEH/2020-01-24: (lb): I saw 'docs' included in another projects'
     # find_packages -- but I'd guess we don't need. (It also had no
     # glob*.) E.g.,

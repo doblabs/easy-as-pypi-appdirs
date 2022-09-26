@@ -3,12 +3,12 @@ LICENSE
 #######
 
 This software —
-``easy-as-pypi-apppth`` —
-is Copyright © 2020 Landon Bouma.
+``easy-as-pypi-appdirs`` —
+is Copyright © 2020-2022 Landon Bouma.
 All rights reserved.
 
 This software —
-``easy-as-pypi-apppth`` —
+``easy-as-pypi-appdirs`` —
 is licensed under the MIT License.
 
 .. literalinclude:: ../LICENSE

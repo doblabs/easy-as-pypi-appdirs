@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -26,7 +26,7 @@
 
 import os
 
-from easy_as_pypi_apppth import (
+from easy_as_pypi_appdirs import (
     must_ensure_directory_exists,
     must_ensure_file_path_dirred
 )

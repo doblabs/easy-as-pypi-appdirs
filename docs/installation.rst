@@ -10,29 +10,29 @@ Installation
 
 To install system-wide, run as superuser::
 
-    $ pip3 install easy-as-pypi-apppth
+    $ pip3 install easy-as-pypi-appdirs
 
 To install user-local, simply run::
 
-    $ pip3 install -U easy-as-pypi-apppth
+    $ pip3 install -U easy-as-pypi-appdirs
 
 To install within a |virtualenv|_, try::
 
-    $ mkvirtualenv easy-as-pypi-apppth
-    (easy-as-pypi-apppth) $ pip install release-ghub-pypi
+    $ mkvirtualenv easy-as-pypi-appdirs
+    (easy-as-pypi-appdirs) $ pip install release-ghub-pypi
 
 To develop on the project, link to the source files instead::
 
-    (easy-as-pypi-apppth) $ deactivate
-    $ rmvirtualenv easy-as-pypi-apppth
-    $ git clone git@github.com:tallybark/easy-as-pypi-apppth.git
-    $ cd easy-as-pypi-apppth
-    $ mkvirtualenv -a $(pwd) --python=/usr/bin/python3.8 easy-as-pypi-apppth
-    (easy-as-pypi-apppth) $ make develop
+    (easy-as-pypi-appdirs) $ deactivate
+    $ rmvirtualenv easy-as-pypi-appdirs
+    $ git clone git@github.com:doblabs/easy-as-pypi-appdirs.git
+    $ cd easy-as-pypi-appdirs
+    $ mkvirtualenv -a $(pwd) --python=/usr/bin/python3.8 easy-as-pypi-appdirs
+    (easy-as-pypi-appdirs) $ make develop
 
 After creating the virtual environment,
 to start developing from a fresh terminal, run |workon|_::
 
-    $ workon easy-as-pypi-apppth
-    (easy-as-pypi-apppth) $ ...
+    $ workon easy-as-pypi-appdirs
+    (easy-as-pypi-appdirs) $ ...
 

@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -24,7 +24,7 @@
 
 """Tests the singleton.py module."""
 
-from easy_as_pypi_apppth.singleton import Singleton
+from easy_as_pypi_appdirs.singleton import Singleton
 
 
 class FooSingleton(object, metaclass=Singleton):

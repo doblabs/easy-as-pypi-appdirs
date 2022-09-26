@@ -1,11 +1,11 @@
-.. ##########################
-.. easy-as-pypi-apppth Documentation
-.. ##########################
+.. ##################################
+.. easy-as-pypi-appdirs Documentation
+.. ##################################
 
-.. .. |easy-as-pypi-apppth| replace:: ``easy-as-pypi-apppth``
-.. .. _easy-as-pypi-apppth: https://github.com/tallybark/easy-as-pypi-apppth
+.. .. |easy-as-pypi-appdirs| replace:: ``easy-as-pypi-appdirs``
+.. .. _easy-as-pypi-appdirs: https://github.com/doblabs/easy-as-pypi-appdirs
 
-.. Documentation for |easy-as-pypi-apppth|_.
+.. Documentation for |easy-as-pypi-appdirs|_.
 
 .. .. toctree::
 ..    :maxdepth: 4

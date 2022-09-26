@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -22,17 +22,17 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-"""Test fixtures for the ``easy-as-pypi-apppth`` package tests."""
+"""Test fixtures for the ``easy-as-pypi-appdirs`` package tests."""
 
 import pytest
 
 pytest_plugins = (
     # Import tmp_appdirs fixture.
-    'easy_as_pypi_apppth.tests.appdirs_mock',
+    'easy_as_pypi_appdirs.tests.appdirs_mock',
 )
 
 
 @pytest.fixture
 def app_name():
-    return 'easy-as-pypi-apppth-tests'
+    return 'easy-as-pypi-appdirs-tests'
 

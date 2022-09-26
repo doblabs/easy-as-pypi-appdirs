@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -22,18 +22,17 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
-from .app_dirs_with_mkdir import AppDirsWithMkdir
+"""Top-level package for this CLI-based application."""
 
-__all__ = (
-    'register_application',
+# Convenience import(s).
+
+import appdirs  # noqa: F401
+
+from .app_dirs import register_application  # noqa: F401
+from .app_dirs_with_mkdir import AppDirsWithMkdir as AppDirs  # noqa: F401
+from .exists_or_mkdirs import (  # noqa: F401
+    must_ensure_directory_exists,
+    must_ensure_file_path_dirred
 )
-
-
-def register_application(package_name):
-    """Registers appname for future uses of AppDirsWithMkdir."""
-    # This should be the first time this class is instantiated,
-    # because it's a singleton. Otherwise, the constructor will
-    # raise on it having already been called.
-    new_singleton = AppDirsWithMkdir(appname=package_name)
-    return new_singleton
+from .expand_and_mkdirs import must_ensure_appdirs_path  # noqa: F401
 

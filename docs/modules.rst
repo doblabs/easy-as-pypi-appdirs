@@ -1,7 +1,7 @@
-easy_as_pypi_apppth
-===================
+easy_as_pypi_appdirs
+====================
 
 .. toctree::
    :maxdepth: 4
 
-   easy_as_pypi_apppth
+   easy_as_pypi_appdirs

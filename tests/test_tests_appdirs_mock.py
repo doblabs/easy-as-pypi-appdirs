@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -28,7 +28,7 @@ import os
 
 import pytest
 
-from easy_as_pypi_apppth import register_application
+from easy_as_pypi_appdirs import register_application
 
 
 class TestTestsAppdirsMock():

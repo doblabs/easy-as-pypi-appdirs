@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -29,7 +29,7 @@ import os
 import pytest
 from unittest import mock
 
-from easy_as_pypi_apppth import app_dirs
+from easy_as_pypi_appdirs import app_dirs
 
 
 class TestAppDirsWithMkdir(object):
@@ -75,7 +75,7 @@ class TestAppDirsWithMkdir(object):
             #   (pdb) show_actual
             #   '/tmp/pytest-of-user/pytest-1142/test_user_data_dir_creates_fil0/relationship/'
             #   (pdb) appdir.user_data_dir
-            #   '/home/user/.local/share/easy-as-pypi-apppth-tests'
+            #   '/home/user/.local/share/easy-as-pypi-appdirs-tests'
             assert os.path.exists(getattr(appdir, app_dirname)) is create
             kwargs['version'] = None
             mock_app_dir.assert_called_once_with(self.app_name, None, **kwargs)

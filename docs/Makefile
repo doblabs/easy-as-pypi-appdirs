@@ -1,10 +1,10 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 
 # Makefile for Sphinx documentation
 
-PROJNAME = easy-as-pypi-apppth
+PROJNAME = easy-as-pypi-appdirs
 
 # You can set these variables from the command line.
 SPHINXOPTS    =

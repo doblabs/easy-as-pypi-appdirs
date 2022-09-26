@@ -1,10 +1,10 @@
 @ECHO OFF
 
-REM This file exists within 'easy-as-pypi-apppth':
+REM This file exists within 'easy-as-pypi-appdirs':
 REM
-REM   https://github.com/tallybark/easy-as-pypi-apppth
+REM   https://github.com/doblabs/easy-as-pypi-appdirs
 
-set PROJECTNAME=easy-as-pypi-apppth
+set PROJECTNAME=easy-as-pypi-appdirs
 
 REM *** END: Project customization. Remainder of file is _boilerplate_.
 

@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -29,8 +29,8 @@ import os
 import pytest
 from unittest import mock
 
-from easy_as_pypi_apppth.app_dirs_with_mkdir import AppDirsWithMkdir
-from easy_as_pypi_apppth.expand_and_mkdirs import must_ensure_directory_exists
+from easy_as_pypi_appdirs.app_dirs_with_mkdir import AppDirsWithMkdir
+from easy_as_pypi_appdirs.expand_and_mkdirs import must_ensure_directory_exists
 
 __all__ = (
     'tmp_appdirs',
@@ -63,7 +63,7 @@ def tmp_appdirs(mocker, tmpdir):
 
     def mocker_patch_app_dirs(mocker, tmpdir, appdir_dir):
         tmp_appdir = ensure_appdir_exists(tmpdir, appdir_dir)
-        pkg_path = 'easy_as_pypi_apppth.app_dirs_with_mkdir.AppDirsWithMkdir'
+        pkg_path = 'easy_as_pypi_appdirs.app_dirs_with_mkdir.AppDirsWithMkdir'
         prop_name = '{}_dir'.format(appdir_dir)
         target = '{}.{}'.format(pkg_path, prop_name)
         mocker.patch(target, new_callable=mock.PropertyMock(return_value=tmp_appdir))
@@ -91,7 +91,7 @@ def xdg_appdirs(mocker, tmpdir):
 
 
 def ensure_appdir_exists(tmpdir, appdir_dir):
-    tmp_appdir = os.path.join(tmpdir.mkdir(appdir_dir).strpath, 'easy-as-pypi-apppth')
+    tmp_appdir = os.path.join(tmpdir.mkdir(appdir_dir).strpath, 'easy-as-pypi-appdirs')
     # Because mocking property, which is wrapped by @mkdir_side_effect, do same,
     # albeit preemptively. (lb): Seriously, such a smelly side effect.
     must_ensure_directory_exists(tmp_appdir)

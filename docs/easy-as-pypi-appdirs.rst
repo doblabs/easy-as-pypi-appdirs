@@ -1,13 +1,13 @@
-###########################
-easy_as_pypi_apppth package
-###########################
+############################
+easy-as-pypi-appdirs package
+############################
 
 Module Contents
 ---------------
 
-.. (lb): This file is *not* generated like easy_as_pypi_apppth.rst, modules.rst, etc.
+.. (lb): This file is *not* generated like easy-as-pypi-appdirs.rst, modules.rst, etc.
 ..
-..       Rather, this file was copyied from a generated docs/easy_as_pypi_apppth.rst
+..       Rather, this file was copyied from a generated docs/easy-as-pypi-appdirs.rst
 ..       and altered with additional options.
 ..
 ..       - Note that the Sphinx and autodoc extension docs suggest these options
@@ -16,7 +16,7 @@ Module Contents
 ..       - See comment in Makefile docs-html re: controlling which auto-generated
 ..         files are created.
 
-.. automodule:: easy_as_pypi_apppth
+.. automodule:: easy-as-pypi-appdirs
     :members:
     :special-members: __new__
     :undoc-members:

@@ -1,6 +1,6 @@
-# This file exists within 'easy-as-pypi-apppth':
+# This file exists within 'easy-as-pypi-appdirs':
 #
-#   https://github.com/tallybark/easy-as-pypi-apppth#🛣
+#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
 #
 # Copyright © 2018-2020 Landon Bouma. All rights reserved.
 #
@@ -29,7 +29,7 @@ import os
 import pytest
 from unittest import mock
 
-from easy_as_pypi_apppth import (
+from easy_as_pypi_appdirs import (
     must_ensure_appdirs_path,
     register_application,
     AppDirs
@@ -74,7 +74,7 @@ class TestMustGetAppDirsSubDirFilePath():
 
     def test_raises_if_user_cache_dir_cannot_be_created(self, tmp_appdirs):
         with mock.patch(
-            'easy_as_pypi_apppth.AppDirs.user_cache_dir',
+            'easy_as_pypi_appdirs.AppDirs.user_cache_dir',
             new_callable=mock.PropertyMock,
         ) as mock_user_cache_dir:
             mock_user_cache_dir.side_effect = Exception('forced test failure')
