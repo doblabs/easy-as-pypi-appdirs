@@ -36,6 +36,12 @@ easy-as-pypi-appdirs
 .. |pip| replace:: ``pip``
 .. _pip: https://pip.pypa.io/en/stable/
 
+.. |br| raw:: html
+
+  <div style="line-height: 0; padding: 0; margin: 0"></div>
+
+|br|
+
 ``AppDirs`` overlay with ``mkdir -p`` side effect and Singleton access.
 
 .. Install with ``pip``::
