@@ -1,5 +1,3 @@
-# Specifies packages for local testing with and without tox,
-# as well as for testing on the CI servers.
 
 # *** Py.Test Framework & Related
 
@@ -29,7 +27,7 @@ pytest-cov >= 2.6.1
 # - Upload to codecov.io.
 #
 #   https://github.com/codecov/codecov-python
-codecov >= 2.0.15
+#codecov >= 2.0.15
 
 # *** Datetime testing.
 

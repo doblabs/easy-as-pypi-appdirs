@@ -22,6 +22,8 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
+"""Register an application and receive a handle to the singleton."""
+
 from .app_dirs_with_mkdir import AppDirsWithMkdir
 
 __all__ = (
@@ -30,7 +32,7 @@ __all__ = (
 
 
 def register_application(package_name):
-    """Registers appname for future uses of AppDirsWithMkdir."""
+    """Register appname for future uses of AppDirsWithMkdir."""
     # This should be the first time this class is instantiated,
     # because it's a singleton. Otherwise, the constructor will
     # raise on it having already been called.

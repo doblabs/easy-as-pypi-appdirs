@@ -22,6 +22,8 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
+"""Helper function tries to make AppDirs path directories, if necessary, or raises."""
+
 from gettext import gettext as _
 
 import os
@@ -42,9 +44,7 @@ def must_ensure_appdirs_path(
     appdirs_dir=None,
     basename_fmt=DEFAULT_APPDIRS_FILE_BASENAME_FMT,
 ):
-    """
-    Return the path to a file stored in a subdirectory of an AppDirs directory.
-    """
+    """Return the path to a file stored in a subdirectory of an AppDirs directory."""
 
     def _must_ensure_appdirs_path():
         app_dir_path = must_use_user_cache_dir_unless_appdirs_dir()

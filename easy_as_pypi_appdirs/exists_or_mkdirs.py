@@ -22,6 +22,8 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
+"""Functions to ensure directories exist."""
+
 import os
 
 __all__ = (
@@ -47,6 +49,7 @@ def must_ensure_directory_exists(directory):
 
 
 def must_ensure_file_path_dirred(filename):
+    """Ensure parent directory for passed path exists, if not just a filename."""
     # This function assumes the path exists to the current working directory,
     # so if filename is empty or just a filename, and doesn't specify a path
     # with a directory in it, this function doesn't do anything. If it did

@@ -1,5 +1,12 @@
 # Specifies packages required to develop and release, except test packages.
 
+# - "A simple, correct PEP 517 build frontend."
+#
+# Replaces `python setup.py sdist bdist_wheel`.
+# - Also, how did they get the PyPI "build" project name,
+#   had it really not been claimed until 2020?! Such wow.
+build >= 0.8.0
+
 # - "Check MANIFEST.in ... for completeness"
 #
 #   https://github.com/mgedmin/check-manifest
@@ -24,12 +31,18 @@ isort >= 4.3.21
 # - "Easily download, build, install, upgrade, and uninstall Python packages"
 #
 #   https://setuptools.readthedocs.io/en/latest/
-setuptools >= 45.1.0
+#
+#
+# FIXME/2022-09-28: Still need this?
+#setuptools >= 45.1.0
 
 # - "the blessed package to manage your versions by scm tags"
 #
 #   https://github.com/pypa/setuptools_scm/
-setuptools_scm >= 3.5.0
+#
+#
+# FIXME/2022-09-28: Still need this?
+#setuptools_scm >= 3.5.0
 
 # - "generic virtualenv management and test command line tool"
 #
@@ -39,10 +52,16 @@ tox >= 3.14.3
 # - "Collection of utilities for publishing packages on PyPI"
 #
 #   https://twine.readthedocs.io/en/latest/
-twine >= 3.1.1
+#
+#
+# FIXME/2022-09-28: Still need this?
+#twine >= 3.1.1
 
 # - "A built-package format for Python."
 #
 #   https://github.com/pypa/wheel
-wheel >= 0.33.6
+#
+#
+# FIXME/2022-09-28: Still need this?
+#wheel >= 0.33.6
 

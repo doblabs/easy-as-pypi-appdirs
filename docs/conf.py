@@ -21,7 +21,7 @@ import datetime
 import os
 import shlex
 import sys
-from pkg_resources import get_distribution
+from pkg_resources import get_distribution, DistributionNotFound
 
 import sphinx_rtd_theme
 
@@ -55,12 +55,6 @@ project_copy = 'Landon Bouma.'
 project_auth = 'Landon Bouma'
 project_orgn = 'Tally Bark LLC'
 
-exclude_patterns = [
-    'CODE-OF-CONDUCT.rst',
-    'CONTRIBUTING.rst',
-    'README.rst',
-]
-
 # ┃                                                                     ┃
 # ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
@@ -89,6 +83,21 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
+# Similar to Module Contents directive:
+#  .. automodule:: easy_as_pypi_appdirs
+#      :special-members: __new__
+#      :noindex:
+#      ...
+# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
+autoclass_content = 'both'
+autodoc_default_options = {
+#      'members': 'var1, var2',
+#      'member-order': 'bysource',
+      'special-members': '__init__',
+#      'undoc-members': True,
+#      'exclude-members': '__weakref__'
+}
+
 # Prevent non local image warnings from showing.
 suppress_warnings = ['image.nonlocal_uri']
 
@@ -106,6 +115,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = project_dist
+#project = package_name
 copyright = project_copy
 author = project_auth
 
@@ -118,7 +128,14 @@ author = project_auth
 # the built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = get_distribution(project_dist).version
+release = get_distribution(package_name).version
+#release = "0.0.0"
+#  try:
+#      release = get_distribution(package_name).version
+#  except DistributionNotFound:
+#      # When running on GitHub Actions before the app has been released,
+#      # get_distribution will fail...
+#      release = '0.0'
 # The short X.Y version.
 # - (lb): One place I see `release` used -- to name the browser page.
 version = '.'.join(release.split('.')[:2])
@@ -135,7 +152,21 @@ version = '.'.join(release.split('.')[:2])
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = [
+    '_build',
+    # Note that docs/readme.rst merely includes the top-level README.rst.
+    # - E.g., docs/readme.rst contains a single directive:
+    #     .. include:: ../README.rst
+    # - If we don't exclude that file here, you'll see two warnings:
+    #     ...
+    #     reading sources... [100%] readme
+    #     /path/to/this-project/README.rst:3: WARNING: duplicate label this-project,
+    #       other instance in /path/to/this-project/docs/index.rst
+    #     ...
+    #     checking consistency... /path/to/this-project/docs/readme.rst: WARNING:
+    #       document isn't included in any toctree
+    'readme.rst',
+]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
