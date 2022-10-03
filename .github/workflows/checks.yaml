@@ -367,6 +367,10 @@ jobs:
       #run: make install
       run: poetry install --only main
 
+    - name: Dump VENV
+      run: echo "${VENV}"
+      shell: bash
+
     # - name: Compute coverage
     #   run: |
     #     coverage run -m pytest tests
@@ -376,6 +380,8 @@ jobs:
       # FIXME/2022-10-03 16:31: Should we run poetry for this job?
       #run: make coverage-to-html
       run: |
+        # MAYBE/2022-10-03 17:04: Prefer `poetry run` vs. `source $VENV`?
+        source $VENV
         python -m coverage run -m pytest tests
         python -m coverage report
         python -m coverage html
