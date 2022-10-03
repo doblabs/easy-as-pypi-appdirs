@@ -352,7 +352,7 @@ quickfix:
 # -----------------------------------------------------------------------
 
 coverage: virtualenv-exists
-	@poetry run python -m coverage run -m pytest $(TEST_ARGS) tests
+	@poetry run python -m coverage run -m pytest $(TEST_ARGS) tests/
 	@poetry run python -m coverage report
 .PHONY: coverage
 

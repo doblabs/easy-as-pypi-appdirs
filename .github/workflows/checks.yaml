@@ -94,8 +94,9 @@ jobs:
         # So the windows-latest works, use the environ, not a hardcoded path.
         #  source .venv/bin/activate
         source $VENV
-        python -m pytest tests/
         #poetry run python -m pytest tests/ --import-mode importlib
+        #python -m pytest tests/
+	      python -m coverage run -m pytest tests/
         python -m coverage report
       env:
         PLATFORM: ${{ matrix.platform }}
@@ -133,7 +134,13 @@ jobs:
         python -m pip install flake8 doc8
         #python -m pip install black flake8 doc8
     - name: Lint
-      run: make lint
+      # FIXME/2022-10-03 16:31: Should we run poetry for this job?
+      #run: make lint
+      run: |
+        python -m flake8 setup.py easy_as_pypi_appdirs/ tests/
+        python -m doc8
+        # TRYME/2022-10-03 16:36: Give black a try.
+        #python -m black --check setup.py easy_as_pypi_appdirs/ tests/
 
   # *** DOCS
 
@@ -188,12 +195,13 @@ jobs:
     - name: Install package
       run: make install
     # - name: Generate HTML docs
-    #   run: |
-    #     sphinx-apidoc --force -o docs/ "${PROJNAME}"
-    #     make -C docs clean
-    #     make -C docs html
     - name: Docs build
-      run: make docs-html
+      # FIXME/2022-10-03 16:31: Should we run poetry for this job?
+      #run: make docs-html
+      run: |
+        sphinx-apidoc --force -o docs/ "${PROJNAME}"
+        make -C docs clean
+        make -C docs html
 
   # *** DIST
 
@@ -222,7 +230,9 @@ jobs:
     # - name: Check dist
     #   run: twine check dist/*
     - name: Dist check
-      run: make check-dist
+      # FIXME/2022-10-03 16:31: Should we run poetry for this job?
+      #run: make check-dist
+      run: python -m twine check dist/*
 
   # *** MANIFEST
 
@@ -275,14 +285,18 @@ jobs:
     #   with:
     #     path: ~/.local
     #     key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      #run: poetry install --no-interaction --no-root
-      run: poetry install --no-interaction --no-root --with dev,docs,test,extras
+
+    # WAIT/2022-10-03 16:30: I don't need `po install`, do I?
+    #
     # - name: Install dependencies
-    #   run: |
-    #     python -m pip install --upgrade pip
-    #     python -m pip install check-manifest
+    #   if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+    #   #run: poetry install --no-interaction --no-root
+    #   run: poetry install --no-interaction --no-root --with dev,docs,test,extras
+    # # - name: Install dependencies
+    # #   run: |
+    # #     python -m pip install --upgrade pip
+    # #     python -m pip install check-manifest
+
     # # - name: Check manifest
     # #   run: check-manifest -v
     # - name: Manifest check
@@ -312,7 +326,9 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pydocstyle toml
     - name: Docstring check
-      run: make check-pydocstyle
+      # FIXME/2022-10-03 16:31: Should we run poetry for this job?
+      #run: make check-pydocstyle
+      run: python -m pydocstyle easy_as_pypi_appdirs/ tests/
 
   # *** COVERAGE
 
@@ -341,7 +357,12 @@ jobs:
     #     coverage report
     #     coverage html
     - name: Coverage compute
-      run: make coverage-to-html
+      # FIXME/2022-10-03 16:31: Should we run poetry for this job?
+      #run: make coverage-to-html
+      run: |
+        python -m coverage run -m pytest tests
+        python -m coverage report
+        python -m coverage html
 
 
 # FIXME/2022-09-28 02:11: Add remaining Makefile and tox checks:
