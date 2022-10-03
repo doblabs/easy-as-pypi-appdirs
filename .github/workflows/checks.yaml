@@ -167,8 +167,9 @@ jobs:
     #   env:
     #     PROJNAME: ${GITHUB_REPOSITORY#*/}
     # Trying again:
-    - name: Dump repository name
-      run: echo "PROJNAME=$(echo "${GITHUB_REPOSITORY#*/}")" >> $GITHUB_ENV
+    - name: Set repository name environ
+      #run: echo "PROJNAME=$(echo "${GITHUB_REPOSITORY#*/}")" >> $GITHUB_ENV
+      run: echo "PROJNAME=$(echo "$(grep -e 'PROJNAME = ' Makefile | sed 's/^.* = //')")" >> $GITHUB_ENV
       shell: bash
     # Blank (so env not available later steps, at least not by default):
     - name: Dump PROJNAME
@@ -357,14 +358,14 @@ jobs:
         #python -m pip install -U -e .
     # make-install is `python -m pip install -U -e .`
 
-    # FIXME/2022-10-03 16:43: Need this?
-    # - name: Install Poetry
-    #   uses: snok/install-poetry@v1
-    #   with:
-    #     virtualenvs-create: true
-    #     virtualenvs-in-project: true
-    # - name: Install package
-    #   run: make install
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    - name: Install package
+      #run: make install
+      run: poetry install --only main
 
     # - name: Compute coverage
     #   run: |
