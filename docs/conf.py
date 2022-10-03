@@ -90,13 +90,13 @@ extensions = [
 #      ...
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
 autoclass_content = 'both'
-autodoc_default_options = {
+#  autodoc_default_options = {
 #      'members': 'var1, var2',
 #      'member-order': 'bysource',
-      'special-members': '__init__',
+#      'special-members': '__init__',
 #      'undoc-members': True,
 #      'exclude-members': '__weakref__'
-}
+#  }
 
 # Prevent non local image warnings from showing.
 suppress_warnings = ['image.nonlocal_uri']

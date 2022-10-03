@@ -196,16 +196,19 @@ jobs:
     # - name: Install package
     #   run: python setup.py install
     - name: Install package
-      #run: make install
-      run: poetry install --only main
+      run: make install
+      #run: poetry install --only main
     # - name: Generate HTML docs
     - name: Docs build
       # FIXME/2022-10-03 16:31: Should we run poetry for this job?
       #run: make docs-html
       run: |
-        sphinx-apidoc --force -o docs/ "${PROJNAME}"
-        make -C docs clean
-        make -C docs html
+        # # MAYBE/2022-10-03 17:04: Prefer `poetry run` vs. `source $VENV`?
+        # source $VENV
+        # sphinx-apidoc --force -o docs/ "${PROJNAME}"
+        # make -C docs clean
+        # make -C docs html
+        make docs-html
 
   # *** DIST
 
@@ -238,9 +241,8 @@ jobs:
     - name: Build package
       run: poetry build
     - name: Dist check
-      # FIXME/2022-10-03 16:31: Should we run poetry for this job?
-      #run: make check-dist
-      run: python -m twine check dist/*
+      #run: python -m twine check dist/*
+      run: make check-dist
 
   # *** MANIFEST
 
@@ -310,7 +312,8 @@ jobs:
     # - name: Manifest check
     #   run: make check-manifest
     - name: Poetry check
-      run: poetry check
+      #run: poetry check
+      run: make check-config
 
   # *** PYDOCSTYLE
 
@@ -364,8 +367,8 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
     - name: Install package
-      #run: make install
-      run: poetry install --only main
+      run: make install
+      #run: poetry install --only main
 
     - name: Dump VENV
       run: echo "${VENV}"
@@ -381,10 +384,11 @@ jobs:
       #run: make coverage-to-html
       run: |
         # MAYBE/2022-10-03 17:04: Prefer `poetry run` vs. `source $VENV`?
-        source $VENV
-        python -m coverage run -m pytest tests
-        python -m coverage report
-        python -m coverage html
+        # source $VENV
+        # python -m coverage run -m pytest tests
+        # python -m coverage report
+        # python -m coverage html
+        make coverage-to-html
 
 
 # FIXME/2022-09-28 02:11: Add remaining Makefile and tox checks:
