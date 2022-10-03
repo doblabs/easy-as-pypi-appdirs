@@ -96,7 +96,7 @@ jobs:
         source $VENV
         #poetry run python -m pytest tests/ --import-mode importlib
         #python -m pytest tests/
-	      python -m coverage run -m pytest tests/
+        python -m coverage run -m pytest tests/
         python -m coverage report
       env:
         PLATFORM: ${{ matrix.platform }}
