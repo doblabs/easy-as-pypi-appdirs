@@ -183,9 +183,10 @@ jobs:
     - name: Install Poetry
       uses: snok/install-poetry@v1
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install pydocstyle Sphinx sphinx_rtd_theme
+      # run: |
+      #   python -m pip install --upgrade pip
+      #   python -m pip install pydocstyle Sphinx sphinx_rtd_theme
+      run: poetry install --with dev,docs
     # - name: Clean docs
     #   run: |
     #     make -C docs clean BUILDDIR=_build
@@ -195,9 +196,9 @@ jobs:
     #     /bin/rm -f "docs/modules.rst"
     # - name: Install package
     #   run: python setup.py install
-    - name: Install package
-      run: make install
-      #run: poetry install --only main
+    # - name: Install package
+    #   run: make install
+    #   #run: poetry install --only main
     # - name: Generate HTML docs
     - name: Docs build
       # FIXME/2022-10-03 16:31: Should we run poetry for this job?
@@ -241,8 +242,9 @@ jobs:
     - name: Build package
       run: poetry build
     - name: Dist check
-      #run: python -m twine check dist/*
-      run: make check-dist
+      run: python -m twine check dist/*
+      # MAYBE/2022-10-03 17:11: Call `po install --with dev` && `make check-dist` instead?
+      #run: make check-dist
 
   # *** MANIFEST
 
@@ -264,7 +266,7 @@ jobs:
   #   - name: Manifest check
   #     run: make check-manifest
 
-  poetrycheck:
+  poetry-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -313,7 +315,7 @@ jobs:
     #   run: make check-manifest
     - name: Poetry check
       #run: poetry check
-      run: make check-config
+      run: make check-project
 
   # *** PYDOCSTYLE
 

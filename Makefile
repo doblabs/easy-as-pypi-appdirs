@@ -246,9 +246,9 @@ clean-test:
 # -----------------------------------------------------------------------
 
 # Checks the validity of the pyproject.toml file.
-check-config: virtualenv-exists
+check-project:
 	@poetry check
-.PHONY: check-config
+.PHONY: check-project
 
 check-dist: virtualenv-exists dist-build
 	@poetry run python -m twine check dist/*
