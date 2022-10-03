@@ -370,7 +370,7 @@ view-coverage:
 # -----------------------------------------------------------------------
 
 clean-docs: clean-apidocs
-	$(MAKE) -C docs clean BUILDDIR=$(DOCS_BUILDDIR)
+	poetry run $(MAKE) -C docs clean BUILDDIR=$(DOCS_BUILDDIR)
 .PHONY: clean-docs
 
 clean-apidocs:
@@ -386,7 +386,7 @@ view-docs:
 .PHONY: view-docs
 
 servedocs: virtualenv-exists docs
-	@poetry run watchmedo shell-command -p "*.rst" -c "$(MAKE) -C docs html" -R -D .
+	@poetry run watchmedo shell-command -p "*.rst" -c "poetry run $(MAKE) -C docs html" -R -D .
 .PHONY: servedocs
 
 linkcheck: virtualenv-exists docs-html
