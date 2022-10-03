@@ -281,6 +281,8 @@ check-pydocstyle: virtualenv-exists
 #   any documentation on if this is okay to do, and I didn't check source,
 #   so this is my own unsanctioned hack, and it could easily break in a
 #   future Poetry release. -(lb))
+#
+# FIXME/2022-10-03: Demo `black --check {paths}`, maybe add to `lint` task.
 lint: not-github-actions virtualenv-exists
 	@cd "$(BASENAME_LINT)" && \
 		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m flake8 setup.py $(PROJNAME)/ tests/'"
