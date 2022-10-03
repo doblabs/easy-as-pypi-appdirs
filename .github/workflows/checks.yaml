@@ -64,13 +64,13 @@ jobs:
         path: ~/.local
         key: dotlocal-${{ runner.os }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     # FIXME/2022-10-03 16:15: Try this:
-    # - name: Load cached venv
-    #   id: cached-poetry-dependencies
-    #   uses: actions/cache@v2.1.6
-    #   with:
-    #     #path: deployer/.venv
-    #     path: .venv
-    #     key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/pr-deployer.yml') }}
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2.1.6
+      with:
+        #path: deployer/.venv
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     # - name: Install deployer
     #   run: |
     #     #cd deployer
