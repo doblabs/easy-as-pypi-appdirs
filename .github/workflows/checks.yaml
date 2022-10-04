@@ -31,6 +31,7 @@ jobs:
         shell: bash
 
     steps:
+    # https://github.com/actions/cache
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -202,6 +203,11 @@ jobs:
       #run: poetry install --with dist,docs,test
       #run: poetry install --with docs
       run: poetry install --no-interaction --with docs
+
+    # FIXME/2022-10-03 22:07: Not .venv, so cache not saved.
+    - name: Print ls
+      run: ls -la
+      shell: bash
 
     - name: Docs build
       run: make docs-html

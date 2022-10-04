@@ -301,12 +301,12 @@ check-pydocstyle: virtualenv-exists
 #   future Poetry release. -(lb))
 lint: lint-virtualenv-exists
 	@cd "$(BASENAME_LINT)" && \
-		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m flake8 setup.py $(PROJNAME)/ tests/'"
+		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m flake8 $(PROJNAME)/ tests/'"
 	@cd "$(BASENAME_LINT)" && \
 		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m doc8'"
 	# FIXME/2022-10-03: Demo `black --check {paths}`, maybe permanently add:
 	#@cd "$(BASENAME_LINT)" && \
-	#	bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m black --check setup.py $(PROJNAME)/ tests/'"
+	#	bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m black --check $(PROJNAME)/ tests/'"
 .PHONY: lint
 
 # -----------------------------------------------------------------------
@@ -503,7 +503,7 @@ endif
 #   in the first column, and not some other column because the last
 #   line is not blank).
 isort: not-github-actions virtualenv-exists
-	@poetry run python -m isort --recursive setup.py $(PROJNAME)/ tests/
+	@poetry run python -m isort --recursive $(PROJNAME)/ tests/
 	git ls-files | while read file; do \
 		if [ -n "$$(tail -n1 $$file)" ]; then \
 			echo "Blanking: $$file"; \
@@ -516,7 +516,7 @@ isort: not-github-actions virtualenv-exists
 .PHONY: isort
 
 isort-check: virtualenv-exists
-	@poetry run python -m isort --check-only --recursive --verbose setup.py $(PROJNAME)/ tests/
+	@poetry run python -m isort --check-only --recursive --verbose $(PROJNAME)/ tests/
 .PHONY: isort-check
 
 # -----------------------------------------------------------------------
