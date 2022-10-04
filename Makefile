@@ -175,12 +175,19 @@ install:
 # - So we enforce `no-virtualenv` when running the `make develop` command.
 # Note also the `cd .` so you (the DEV) see a visual separation between
 # the two `po install` commands.
-develop: no-virtualenv reset-virtualenv
-	@echo
-	cd . && poetry install --with dev,docs,test,extras
-	@echo
-	cd "$(BASENAME_LINT)" && poetry install
+develop: no-virtualenv reset-virtualenv install-pkgs-core install-pkgs-docs
 .PHONY: develop
+
+install-pkgs-core:
+	@echo
+	cd . && poetry install --with dist,docstyle,docs,test,extras
+.PHONY: install-pkgs-core
+
+install-pkgs-docs:
+	@echo
+	#cd "$(BASENAME_LINT)" && poetry install
+	cd "$(BASENAME_LINT)" && poetry install --no-interaction --no-root
+.PHONY: install-pkgs-docs
 
 # Determines the virtual environment name from `poetry env list` and
 # removes the corresponding ~/.cache/pypoetry/virtualenvs/ directory.
@@ -281,13 +288,14 @@ check-pydocstyle: virtualenv-exists
 #   any documentation on if this is okay to do, and I didn't check source,
 #   so this is my own unsanctioned hack, and it could easily break in a
 #   future Poetry release. -(lb))
-#
-# FIXME/2022-10-03: Demo `black --check {paths}`, maybe add to `lint` task.
 lint: not-github-actions virtualenv-exists
 	@cd "$(BASENAME_LINT)" && \
 		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m flake8 setup.py $(PROJNAME)/ tests/'"
 	@cd "$(BASENAME_LINT)" && \
 		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m doc8'"
+	# FIXME/2022-10-03: Demo `black --check {paths}`, maybe permanently add:
+	#@cd "$(BASENAME_LINT)" && \
+	#	bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m black --check setup.py $(PROJNAME)/ tests/'"
 .PHONY: lint
 
 # -----------------------------------------------------------------------

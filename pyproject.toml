@@ -116,12 +116,20 @@ exclude = [
 python = "^3.7"
 appdirs = ">=1.4.4"
 
-# Specify packages required to develop and release,
-# but not packages required to test or build docs.
-#[tool.poetry.group.dev]
-#optional = true
+# ***
 
-[tool.poetry.group.dev.dependencies]
+# Not using the special `dev` group:
+#
+#   [tool.poetry.group.dev.dependencies]
+
+# ***
+
+# Specify package(s) for verifying the build.
+
+[tool.poetry.group.dist]
+optional = true
+
+[tool.poetry.group.dist.dependencies]
 # - "Collection of utilities for publishing packages on PyPI"
 #   - We use Poetry to publish to PyPI, but we also run `twine check`
 #     (which might be redundant, because we also run `poetry check`).
@@ -191,11 +199,11 @@ fauxfactory = ">=3.1.0"
 
 # ***
 
-[tool.poetry.group.docs]
+[tool.poetry.group.docstyle]
 optional = true
 
-# Specify packages required to build the documentation.
-[tool.poetry.group.docs.dependencies]
+# Specify packages required to lint the documentation.
+[tool.poetry.group.docstyle.dependencies]
 # - Python docstring checker.
 #
 #   https://github.com/PyCQA/pydocstyle/
@@ -213,6 +221,13 @@ pydocstyle = ">=6.1.1"
 #                ignored, because the `toml` package is not installed.
 toml = ">=0.10.2"
 
+# ***
+
+[tool.poetry.group.docs]
+optional = true
+
+# Specify packages required to build the documentation.
+[tool.poetry.group.docs.dependencies]
 # - "Python documentation generator"
 #
 #   https://www.sphinx-doc.org/en/master/
