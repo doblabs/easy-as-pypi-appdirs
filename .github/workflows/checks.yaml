@@ -45,7 +45,7 @@ jobs:
     # REFER: https://www.peterbe.com/plog/install-python-poetry-github-actions-faster
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -74,7 +74,7 @@ jobs:
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
@@ -107,6 +107,7 @@ jobs:
         #  python -m coverage run -m pytest tests/
         #  python -m coverage report
         make test
+      # FIXME: I don't think we need `PLATFORM`, it was probably for tox.
       env:
         PLATFORM: ${{ matrix.platform }}
 
@@ -136,7 +137,7 @@ jobs:
 
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -147,7 +148,7 @@ jobs:
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
@@ -179,7 +180,7 @@ jobs:
 
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -190,7 +191,7 @@ jobs:
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
@@ -222,7 +223,7 @@ jobs:
 
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -233,11 +234,11 @@ jobs:
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       #run: poetry install --with dist
@@ -267,7 +268,7 @@ jobs:
 
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -301,7 +302,7 @@ jobs:
 
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -312,7 +313,7 @@ jobs:
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
@@ -342,7 +343,7 @@ jobs:
 
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
@@ -353,7 +354,7 @@ jobs:
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
-      uses: actions/cache@v2.1.6
+      uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
