@@ -51,5 +51,7 @@ class TestTestsAppdirsMock():
 
     def test_tests_xdg_appdirs_mock_safe_effect(self, xdg_appdirs):
         adir_path = xdg_appdirs.safe.user_cache_dir
+        print(f"adir_path: {adir_path}")
+        assert False
         assert not os.path.exists(adir_path)
 

@@ -18,12 +18,16 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        #platform: [ubuntu-latest]
-        # FIXME/2022-10-03 21:31: Enable these:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.7', '3.8']
         # FIXME/2022-10-03 21:31: Enable these:
         #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        #platform: [ubuntu-latest, macos-latest, windows-latest]
+        # For now, testing:
+        #platform: [ubuntu-latest]
+        #python-version: ['3.7', '3.8']
+        #platform: [ubuntu-latest, macos-latest, windows-latest]
+        #python-version: ['3.7', '3.8']
+        platform: [macos-latest]
+        python-version: ['3.8']
 
     # Set the default shell, required for "windows-latest".
     defaults:
@@ -128,6 +132,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 00:33: REMOVE_IFs:
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -182,6 +189,9 @@ jobs:
   docs:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 00:33: REMOVE_IFs:
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -233,6 +243,9 @@ jobs:
   dist-check:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 00:33: REMOVE_IFs:
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -281,6 +294,9 @@ jobs:
   poetry-check:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 00:33: REMOVE_IFs:
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -317,6 +333,9 @@ jobs:
 
   pydocstyle:
     runs-on: ubuntu-latest
+
+    # FIXME/2022-10-04 00:33: REMOVE_IFs:
+    if: ${{ false }}
 
     steps:
     - name: Checkout repository
@@ -361,6 +380,9 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+
+    # FIXME/2022-10-04 00:33: REMOVE_IFs:
+    if: ${{ false }}
 
     steps:
     - name: Checkout repository
