@@ -113,10 +113,11 @@ jobs:
         #     run: make coverage-to-html
         #  python -m coverage run -m pytest tests/
         #  python -m coverage report
-        #make test
-        #poetry run python -m pytest -k test_function tests/
-        #poetry run python -m pytest -k test_tests_xdg_appdirs_mock_safe_effect tests/
-        poetry run python -m pytest -k TestTestsAppdirsMock tests/
+
+        make test
+        # DEV: If you need to test a specific function or class, try, e.g.,:
+        #   poetry run python -m pytest -k test_function tests/
+
       # FIXME: I don't think we need `PLATFORM`, it was probably for tox.
       env:
         PLATFORM: ${{ matrix.platform }}
