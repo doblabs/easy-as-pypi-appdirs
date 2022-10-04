@@ -161,11 +161,8 @@ jobs:
     #  - name: Print ls AppData cache
     #    run: ls -la ~\AppData\Local\pip\cache
     #    shell: bash
-    - name: Print pwd
-      run: pwd
-      shell: bash
-    - name: Print ls AppData
-      run: ls -la AppData
+    - name: Print ~ pwd
+      run: cd ~ && pwd
       shell: bash
     - name: Print ls AppData cache win-style
       run: ls -la ~/AppData
