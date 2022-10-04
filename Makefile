@@ -476,6 +476,9 @@ dist-build: clean
 	@poetry build
 .PHONY: dist-build
 
+build: dist-build
+.PHONY: build
+
 dist: dist-build
 	@ls -l dist | tail -n -2
 .PHONY: dist
