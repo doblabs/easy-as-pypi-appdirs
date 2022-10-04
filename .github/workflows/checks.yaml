@@ -43,6 +43,8 @@ jobs:
 
     # Cache the pip wheels (avoid re-downloading from PyPI), and give
     # install-poetry a boost. Shaves ~10s off step time, from 15s to 5s.
+    # - Enable `virtualenvs-in-project` so local .venv/ is used,
+    #   so cached-poetry-dependencies works.
     # REFER: https://www.peterbe.com/plog/install-python-poetry-github-actions-faster
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
@@ -145,6 +147,9 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -188,6 +193,9 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -236,6 +244,9 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -281,6 +292,9 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      # with:
+      #   virtualenvs-create: true
+      #   virtualenvs-in-project: true
 
     - name: Poetry check
       run: make check-project
@@ -315,6 +329,9 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -356,6 +373,9 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
