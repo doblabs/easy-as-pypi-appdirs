@@ -2,10 +2,16 @@ name: Run checks
 
 on:
   - push
-    # What's the deal with pull_request vs. pull_request_target?
+    # SPIKE: What's the deal with pull_request vs. pull_request_target?
     # - If someone opens a PR from their fork, would this workflow
     #   run their (possibly malicious) code?
     #   https://docs.github.com/en/actions/managing-workflow-runs/approving-workflow-runs-from-public-forks
+    # - 2022-10-04: It's pull_request_target you want to avoid, except to
+    #               maybe label or comment on pull requests from forks.
+    #               Just don't build code via pull_request_target.
+    #               - pull_request, on the other hand, should prompt
+    #                 project admins before they run checks, so that
+    #                 you can vet the code first.
   - pull_request
 
 jobs:
@@ -20,7 +26,7 @@ jobs:
       fail-fast: true
       matrix:
         #platform: ['ubuntu-latest']
-        #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+          #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
         # DUNNO/2022-10-04: GitHub doesn't always spin up macOS and Windows
         # immediately ("Waiting for runner to start this task..."). And on
@@ -38,7 +44,7 @@ jobs:
           - platform: 'macos-latest'
             python-version: '3.10'
               #- platform: 'windows-latest'
-              #python-version: '3.10'
+              #  python-version: '3.10'
 
     # Set the default shell, required for "windows-latest".
     defaults:
@@ -115,7 +121,12 @@ jobs:
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
+        key: venv-${{ runner.os
+          }}-${{ steps.setup-python.outputs.python-version
+          }}-${{ github.job
+          }}-${{ hashFiles('**/poetry.lock')
+          }}-${{ hashFiles('.github/workflows/checks.yaml')
+          }}
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
@@ -148,4 +159,6 @@ jobs:
   # all jobs related to the same push or PR within the same workflow
   # (at least when possible: workflows that run after checks complete,
   #  like the coverage workflow, cannot be combined herein).
+
+  # *** LINT
 
