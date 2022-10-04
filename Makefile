@@ -107,7 +107,7 @@ whoami:
 
 not-github-actions:
 	@if [ -n "${GITHUB_ACTION}" ]; then \
-		>&2 echo "ERROR: Do not call this Makefile from GitHub Actions."; \
+		>&2 echo "ERROR: Do not call this Makefile task from GitHub Actions."; \
 		exit 1; \
 	fi
 .PHONY: not-github-actions
@@ -124,6 +124,14 @@ virtualenv-exists:
 		exit 1; \
 	fi
 .PHONY: virtualenv-exists
+
+lint-virtualenv-exists:
+	@if cd $(BASENAME_LINT)/ && [ -z "$$(poetry env list)" ]; then \
+		>&2 echo "ERROR: You must setup the Poetry virtual environment first."; \
+		>&2 echo "- Hint: Try running \`make install-pkgs-docs\`."; \
+		exit 1; \
+	fi
+.PHONY: lint-virtualenv-exists
 
 no-virtualenv:
 	@if [ -n "${VIRTUAL_ENV}" ] || [ -n "${POETRY_ACTIVE}" ]; then \
@@ -190,6 +198,10 @@ install-pkgs-docs:
 
 # Determines the virtual environment name from `poetry env list` and
 # removes the corresponding ~/.cache/pypoetry/virtualenvs/ directory.
+# - NOTE: This only removes the active virtualenvs, most likely the
+#   latest Python version environments. It won't delete all the
+#   environments, such as those setup by `tox` for older Python
+#   versions.
 clean-install: not-github-actions no-virtualenv
 	@if [ -n "$$(poetry env list)" ]; then \
 		poetry env remove "$$(poetry env list | grep -e ' (Activated)$$' | sed 's/ (Activated)$$//')"; \
@@ -218,7 +230,7 @@ reset: reset-virtualenv
 
 # The following `make clean[-*]` tasks are only used by `make dist-build`.
 
-clean: not-github-actions clean-build clean-pyc clean-test
+clean: clean-build clean-pyc clean-test
 .PHONY: clean
 
 clean-build:
@@ -287,7 +299,7 @@ check-pydocstyle: virtualenv-exists
 #   any documentation on if this is okay to do, and I didn't check source,
 #   so this is my own unsanctioned hack, and it could easily break in a
 #   future Poetry release. -(lb))
-lint: virtualenv-exists
+lint: lint-virtualenv-exists
 	@cd "$(BASENAME_LINT)" && \
 		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m flake8 setup.py $(PROJNAME)/ tests/'"
 	@cd "$(BASENAME_LINT)" && \
@@ -380,7 +392,7 @@ clean-docs: clean-apidocs
 	poetry run $(MAKE) -C docs clean BUILDDIR=$(DOCS_BUILDDIR)
 .PHONY: clean-docs
 
-clean-apidocs: not-github-actions
+clean-apidocs:
 	/bin/rm -f docs/$(PROJNAME).*rst
 	/bin/rm -f docs/modules.rst
 .PHONY: clean-apidocs
