@@ -151,7 +151,7 @@ no-virtualenv:
 #	  first thing I figured out in the five minutes of diagnosing the issue.
 #	- But also a good thing. Release candidates are allowed to break things,
 #	  so it's not a bad idea to manually manage this version.
-pyenv:
+pyenv: not-github-actions
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.7\.' | tail -1)
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.8\.' | tail -1)
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.9\.' | tail -1)
@@ -178,20 +178,19 @@ install:
 develop: no-virtualenv reset-virtualenv install-pkgs-core install-pkgs-docs
 .PHONY: develop
 
-install-pkgs-core:
+install-pkgs-core: not-github-actions
 	@echo
 	cd . && poetry install --with dist,docstyle,docs,test,extras
 .PHONY: install-pkgs-core
 
 install-pkgs-docs:
 	@echo
-	#cd "$(BASENAME_LINT)" && poetry install
 	cd "$(BASENAME_LINT)" && poetry install --no-interaction --no-root
 .PHONY: install-pkgs-docs
 
 # Determines the virtual environment name from `poetry env list` and
 # removes the corresponding ~/.cache/pypoetry/virtualenvs/ directory.
-clean-install: no-virtualenv
+clean-install: not-github-actions no-virtualenv
 	@if [ -n "$$(poetry env list)" ]; then \
 		poetry env remove "$$(poetry env list | grep -e ' (Activated)$$' | sed 's/ (Activated)$$//')"; \
 	fi
@@ -207,7 +206,7 @@ clean-install: no-virtualenv
 # - This command ensures that you're using whatever version of Python
 #   that you normally use when developing (and not, say, a version you
 #   might have been temporarily using to debug some issue).
-reset-virtualenv: no-virtualenv
+reset-virtualenv: not-github-actions no-virtualenv
 	@poetry env use $(PYTHON_VERS)
 	@cd "$(BASENAME_LINT)" && poetry env use $(PYTHON_VERS)
 .PHONY: reset-virtualenv
@@ -219,7 +218,7 @@ reset: reset-virtualenv
 
 # The following `make clean[-*]` tasks are only used by `make dist-build`.
 
-clean: clean-build clean-pyc clean-test
+clean: not-github-actions clean-build clean-pyc clean-test
 .PHONY: clean
 
 clean-build:
@@ -288,7 +287,7 @@ check-pydocstyle: virtualenv-exists
 #   any documentation on if this is okay to do, and I didn't check source,
 #   so this is my own unsanctioned hack, and it could easily break in a
 #   future Poetry release. -(lb))
-lint: not-github-actions virtualenv-exists
+lint: virtualenv-exists
 	@cd "$(BASENAME_LINT)" && \
 		bash -c "unset VIRTUAL_ENV ; poetry run -- bash -c 'cd .. && python -m flake8 setup.py $(PROJNAME)/ tests/'"
 	@cd "$(BASENAME_LINT)" && \
@@ -314,7 +313,7 @@ test: virtualenv-exists
 # - Hint: To run a specific tox task (aka "environment"), which is helpful
 #   when debugging tox, try, e.g.,:
 #     poetry run python -m tox -e flake8
-test-all: virtualenv-exists
+test-all: not-github-actions virtualenv-exists
 	@poetry run -- bash -c 'PYTHONPATH= python -m tox'
 .PHONY: test-all
 
@@ -332,7 +331,7 @@ test-debug: test-local quickfix
 #   outside the task (maybe also `export SHELL`), but using PIPESTATUS is more
 #   readable -- anyone reading this code won't have to guess what the return
 #   code might be.)
-test-local: virtualenv-exists
+test-local: not-github-actions virtualenv-exists
 	@poetry run python -m pytest $(TEST_ARGS) tests/ | tee .make.out
 	exit ${PIPESTATUS[0]}
 .PHONY: test-local
@@ -342,7 +341,7 @@ test-local: virtualenv-exists
 #   TEST_ARGS=-x make test
 # - To keep debugging the same test, isolate it, e.g.,:
 #   pytest --pdb -vv -k test_function tests/
-test-one: virtualenv-exists
+test-one: not-github-actions virtualenv-exists
 	@poetry run python -m pytest $(TEST_ARGS) -x tests/
 .PHONY: test-one
 
@@ -352,7 +351,7 @@ test-one: virtualenv-exists
 # - The second substitute command:
 #   Converts double-colons in messages (not file:line:s) -- at least
 #   those that we can identify -- to avoid quickfix errorformat hits.
-quickfix:
+quickfix: not-github-actions
 	sed -r "s#^([^ ]+:[0-9]+:)#$(shell pwd)/\1#" -i .make.out
 	sed -r "s#^(.* .*):([0-9]+):#\1∷\2:#" -i .make.out
 .PHONY: quickfix
@@ -371,7 +370,7 @@ coverage-to-html: coverage
 coverage-html: coverage-to-html view-coverage
 .PHONY: coverage-html
 
-view-coverage:
+view-coverage: not-github-actions
 	$(PYBROWSER) htmlcov/index.html
 .PHONY: view-coverage
 
@@ -381,7 +380,7 @@ clean-docs: clean-apidocs
 	poetry run $(MAKE) -C docs clean BUILDDIR=$(DOCS_BUILDDIR)
 .PHONY: clean-docs
 
-clean-apidocs:
+clean-apidocs: not-github-actions
 	/bin/rm -f docs/$(PROJNAME).*rst
 	/bin/rm -f docs/modules.rst
 .PHONY: clean-apidocs
@@ -389,11 +388,11 @@ clean-apidocs:
 docs: docs-html view-docs
 .PHONY: docs
 
-view-docs:
+view-docs: not-github-actions
 	$(PYBROWSER) docs/_build/html/index.html
 .PHONY: view-docs
 
-servedocs: virtualenv-exists docs
+servedocs: not-github-actions virtualenv-exists docs
 	@poetry run watchmedo shell-command -p "*.rst" -c "poetry run $(MAKE) -C docs html" -R -D .
 .PHONY: servedocs
 
