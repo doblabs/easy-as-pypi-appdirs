@@ -324,12 +324,22 @@ build-backend = "poetry_dynamic_versioning.backend"
 [tool.pytest.ini_options]
 addopts = "--tb=short --strict-markers -ra"
 
+# ***
+
+# DUNNO/2022-10-03: I tried differenct coverage options, like:
+#   precision = 3
+#   branch = false
+#   source = "XXX"
+# but I don't see any changes in the final report.
+# - Nor did trying these values in setup.cfg do anything.
 [tool.coverage.report]
 precision = 0
 
 [tool.coverage.run]
 branch = true
 source = "easy_as_pypi_appdirs"
+
+# ***
 
 [tool.doc8]
 # The poetry-shell-lint/.venv/ path is from checks.yaml's `lint` GitHub Actions job.
@@ -342,6 +352,8 @@ file-encoding = "utf-8"
 #  ignore-path-errors=/tmp/other_thing.rst;D001;D002
 # DEVs: Uncomment verbose for TMI.
 #  verbose = 1
+
+# ***
 
 [tool.isort]
 # The line_length should match similar values applied to doc8 and flake8.
