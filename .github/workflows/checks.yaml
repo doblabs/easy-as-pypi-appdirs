@@ -20,9 +20,9 @@ jobs:
       fail-fast: true
       matrix:
         # FIXME/2022-10-03 21:31: Enable these:
-        platform: ['ubuntu-latest']
-        python-version: ['3.7', '3.8']
-        #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        #platform: ['ubuntu-latest']
+        #python-version: ['3.7', '3.8']
+        ##python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
         # DUNNO/2022-10-04: GitHub doesn't always spin up macOS and Windows
         # immediately ("Waiting for runner to start this task...." And on
@@ -33,8 +33,8 @@ jobs:
         #       platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
         #     Use the matrix.include option.
         include:
-          - platform: 'macos-latest'
-            python-version: '3.10'
+          #- platform: 'macos-latest'
+          #  python-version: '3.10'
           - platform: 'windows-latest'
             python-version: '3.10'
 
@@ -61,23 +61,46 @@ jobs:
     # REFER: https://github.com/snok/install-poetry/
     # REFER: https://github.com/actions/cache
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
+    - name: Suss pip wheels path (Ubuntu/macOS)
+      run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
+      shell: bash
+      if: matrix.platform == 'ubuntu-latest'
+    - name: Suss pip wheels path (Windows)
+      run: echo "PIP_CACHE=~/.cache" >> $GITHUB_ENV
+      shell: bash
+      if: matrix.platform == 'windows-latest'
+    - name: Print PIP_CACHE
+      run: echo "${PIP_CACHE}"
+      shell: bash
+    - name: Print ls PIP_CACHE
+      run: ls -la "${{ env.PIP_CACHE }}"
+      shell: bash
+    - name: Print ls ~
+      run: ls -la ~
+      shell: bash
     - name: Load cached $HOME/.local (Ubuntu/macOS)
       uses: actions/cache@v3
       with:
-        path: ~/.local
+        path: ${{ env.PIP_CACHE }}
         # Invalidate the cache whenever this Yaml changes.
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-        #path: ~/.local
-      if: matrix.platform == 'ubuntu-latest'
-    - name: Load cached $HOME/.local (Windows)
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-        #path: ~/.local
-      if: matrix.platform == 'windows-latest'
-      #if: runner.os == 'Windows'
+    # - name: Load cached $HOME/.local (Ubuntu/macOS)
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/.local
+    #     # Invalidate the cache whenever this Yaml changes.
+    #     key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
+    #     #path: ~/.local
+    #   if: matrix.platform == 'ubuntu-latest'
+    # - name: Load cached $HOME/.local (Windows)
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: ~/.cache
+    #     # Invalidate the cache whenever this Yaml changes.
+    #     key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
+    #     #path: ~/.local
+    #   if: matrix.platform == 'windows-latest'
+    #   #if: runner.os == 'Windows'
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
@@ -115,6 +138,10 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
 
+    - name: Print ls .
+      run: ls -la .
+      shell: bash
+
     - name: Test
       run: |
 
@@ -148,6 +175,9 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+
+    # FIXME/2022-10-04 01:59: REMOVE_IFs
+    if: ${{ false }}
 
     steps:
     - name: Checkout repository
@@ -203,6 +233,9 @@ jobs:
   docs:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 01:59: REMOVE_IFs
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -254,6 +287,9 @@ jobs:
   dist-check:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 01:59: REMOVE_IFs
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -302,6 +338,9 @@ jobs:
   poetry-check:
     runs-on: ubuntu-latest
 
+    # FIXME/2022-10-04 01:59: REMOVE_IFs
+    if: ${{ false }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -338,6 +377,9 @@ jobs:
 
   pydocstyle:
     runs-on: ubuntu-latest
+
+    # FIXME/2022-10-04 01:59: REMOVE_IFs
+    if: ${{ false }}
 
     steps:
     - name: Checkout repository
@@ -382,6 +424,9 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+
+    # FIXME/2022-10-04 01:59: REMOVE_IFs
+    if: ${{ false }}
 
     steps:
     - name: Checkout repository
