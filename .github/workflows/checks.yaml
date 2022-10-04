@@ -28,6 +28,7 @@ jobs:
         # immediately ("Waiting for runner to start this task...." And on
         # private repos, they charge more per minute than Ubuntu (not that
         # that affects free projects).
+        # - Windows also seems slow. I see checkout alone ~45s!
         # - So, I dunno, don't bother with old Python on macOS and Windows.
         #   - Instead of using a platform array:
         #       platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
@@ -69,12 +70,13 @@ jobs:
       run: echo "PIP_CACHE=~/.cache" >> $GITHUB_ENV
       shell: bash
       if: matrix.platform == 'windows-latest'
+    # The environ setting and `if` worked.
     - name: Print PIP_CACHE
       run: echo "${PIP_CACHE}"
       shell: bash
-    - name: Print ls PIP_CACHE
-      run: ls -la "${{ env.PIP_CACHE }}"
-      shell: bash
+    # - name: Print ls PIP_CACHE
+    #   run: ls -la "${{ env.PIP_CACHE }}"
+    #   shell: bash
     - name: Print ls ~
       run: ls -la ~
       shell: bash
