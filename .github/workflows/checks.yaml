@@ -162,7 +162,8 @@ jobs:
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         # Because the psuedo subproject is used, use subproject `.venv/`.
-        path: ${BASENAME_LINT}/.venv
+        #path: ${BASENAME_LINT}/.venv
+        path: poetry-shell-lint/.venv
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
