@@ -56,6 +56,7 @@ class TestTestsAppdirsMock():
 
 # FIXME/2022-10-04 00:52: macos: Not removing the directory...
     def test_tests_xdg_appdirs_mock_side_effect(self, xdg_appdirs):
+        adir_path = xdg_appdirs.safe.user_cache_dir
         assert not os.path.exists(adir_path)
 
         adir_path = xdg_appdirs.user_cache_dir
