@@ -80,9 +80,9 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ env.PIP_CACHE }}
-        key: dotlocal-${{ runner.os \
-          }}-${{ steps.setup-python.outputs.python-version \
-          }}-${{ hashFiles('.github/workflows/checks.yaml') \
+        key: dotlocal-${{ runner.os
+          }}-${{ steps.setup-python.outputs.python-version
+          }}-${{ hashFiles('.github/workflows/checks.yaml')
           }}
 
     - name: Install Poetry
@@ -142,12 +142,5 @@ jobs:
         PLATFORM: ${{ matrix.platform }}
 
   # *** SAVVY
-
-  # While it might be nice to isolate jobs in separate Yaml files, each
-  # file is its own workflow, and each workflow appears separately under
-  # the Actions workflow list, so easier to examine results if you keep
-  # all jobs related to the same push or PR within the same workflow
-  # (at least when possible: workflows that run after checks complete,
-  #  like the coverage workflow, cannot be combined herein).
 
 
