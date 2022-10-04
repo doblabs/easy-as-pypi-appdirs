@@ -26,7 +26,8 @@ jobs:
       fail-fast: true
       matrix:
         platform: ['ubuntu-latest']
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        # REFER: https://github.com/actions/python-versions/releases
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11.0-rc.1']
 
         # DUNNO/2022-10-04: GitHub doesn't always spin up macOS and Windows
         # immediately ("Waiting for runner to start this task..."). And on

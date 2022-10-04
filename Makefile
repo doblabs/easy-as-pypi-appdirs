@@ -159,12 +159,15 @@ no-virtualenv:
 #	  first thing I figured out in the five minutes of diagnosing the issue.
 #	- But also a good thing. Release candidates are allowed to break things,
 #	  so it's not a bad idea to manually manage this version.
+#	- Note there's usually a pre-release dev, e.g., 3.12-dev.
+#	  But I'm not sure I care until there are release candidates.
+# - SYNC_ME: Keep this list in sync with tox.ini [testenv:py*] jobs.
 pyenv: not-github-actions
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.7\.' | tail -1)
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.8\.' | tail -1)
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.9\.' | tail -1)
 	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.10\.' | tail -1)
-	@pyenv install --skip-existing 3.11.0rc1
+	@pyenv install --skip-existing $$(pyenv install -l | grep '^ \+3\.11\.0rc' | tail -1)
 .PHONY: pyenv
 
 install:
