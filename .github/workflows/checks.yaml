@@ -151,13 +151,18 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
 
+    - name: Suss psuedo subproject name
+      run: echo "BASENAME_LINT=$(echo "$(grep -e 'BASENAME_LINT = ' Makefile | sed 's/^.* = //')")" >> $GITHUB_ENV
+      shell: bash
+
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
-        path: .venv
+        # Because the psuedo subproject is used, use subproject `.venv/`.
+        path: ${BASENAME_LINT}/.venv
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
