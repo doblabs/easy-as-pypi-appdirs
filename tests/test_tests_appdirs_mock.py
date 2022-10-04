@@ -37,16 +37,26 @@ class TestTestsAppdirsMock():
     def register_application(self, app_name):
         register_application(app_name)
 
+    def test_tests_xdg_appdirs_mock_safe_effect_EARLY(self, xdg_appdirs):
+        adir_path = xdg_appdirs.safe.user_cache_dir
+# macos: adir_path: /Users/runner/Library/Caches/easy-as-pypi-appdirs-tests
+        print(f"adir_path: {adir_path}")
+        #assert False
+        assert not os.path.exists(adir_path)
+
     def test_tests_tmp_appdirs_mock_side_effect(self, tmp_appdirs):
         adir_path = tmp_appdirs.user_cache_dir
+        print(f"adir_path: {adir_path}")
         assert os.path.exists(adir_path)
 
     def test_tests_tmp_appdirs_mock_safe_effect(self, tmp_appdirs):
         adir_path = tmp_appdirs.safe.user_cache_dir
+        print(f"adir_path: {adir_path}")
         assert not os.path.exists(adir_path)
 
     def test_tests_xdg_appdirs_mock_side_effect(self, xdg_appdirs):
         adir_path = xdg_appdirs.user_cache_dir
+        print(f"adir_path: {adir_path}")
         assert os.path.exists(adir_path)
 
     def test_tests_xdg_appdirs_mock_safe_effect(self, xdg_appdirs):
