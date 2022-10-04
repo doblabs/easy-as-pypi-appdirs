@@ -143,6 +143,15 @@ jobs:
     - name: Print ls .
       run: ls -la .
       shell: bash
+    - name: Print pip cache
+      run: poetry run python -m pip cache dir
+    - name: Print pip info
+      run: poetry run python -m pip cache info
+    - name: Print pip list
+      run: poetry run python -m pip cache list
+    - name: Print ls AppData cache
+      run: ls -la ~\AppData\Local\pip\cache
+      shell: bash
 
     - name: Test
       run: |
