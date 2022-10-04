@@ -61,17 +61,24 @@ jobs:
     # REFER: https://github.com/snok/install-poetry/
     # REFER: https://github.com/actions/cache
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
+    - name: Load cached $HOME/.local (Ubuntu/macOS)
       uses: actions/cache@v3
       with:
-        #path: ~/.local
-        - path: ~/.local
-          if: matrix.platform == 'ubuntu-latest'
-        - path: ~/.cache
-          if: matrix.platform == 'windows-latest'
-          #if: runner.os == 'Windows'
+        path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
+        #path: ~/.local
+      if: matrix.platform == 'ubuntu-latest'
+    - name: Load cached $HOME/.local (Windows)
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache
+        # Invalidate the cache whenever this Yaml changes.
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
+        #path: ~/.local
+      if: matrix.platform == 'windows-latest'
+      #if: runner.os == 'Windows'
+
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
