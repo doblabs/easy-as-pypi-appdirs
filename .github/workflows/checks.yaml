@@ -171,6 +171,23 @@ jobs:
       # Using `make` keeps this more maintainable, or DRY... except in comments.
       run: make install-pkgs-docs
 
+    # FIXME: Nothing cached...
+    - name: Print pwd
+      run: pwd
+      shell: bash
+    - name: Print ls .
+      run: ls -la .
+      shell: bash
+    - name: Print ls poetry-shell-lint/
+      run: ls -la poetry-shell-lint/
+      shell: bash
+    - name: Print BASENAME_LINT
+      run: echo "${BASENAME_LINT}"
+      shell: bash
+    - name: Print BASENAME_LINT/.venv
+      run: echo "${BASENAME_LINT}/.venv"
+      shell: bash
+
     - name: Lint
       run: make lint
 
