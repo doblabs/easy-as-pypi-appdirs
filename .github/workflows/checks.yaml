@@ -20,27 +20,36 @@ jobs:
       fail-fast: true
       matrix:
         # FIXME/2022-10-03 21:31: Enable these:
-        #python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-        #platform: [ubuntu-latest, macos-latest, windows-latest]
+        #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        #platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
         # For now, testing:
-        platform: [ubuntu-latest]
-        python-version: ["3.7", "3.8"]
-        #platform: [ubuntu-latest, macos-latest, windows-latest]
-        #python-version: ["3.7", "3.8"]
-        #platform: [macos-latest]
-        #python-version: ["3.8"]
-        #platform: [windows-latest]
-        #python-version: ["3.8"]
+        platform: ['ubuntu-latest']
+        python-version: ['3.7', '3.8']
+        #platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
+        #python-version: ['3.7', '3.8']
+        #platform: ['macos-latest']
+        #python-version: ['3.8']
+        #platform: ['windows-latest']
+        #python-version: ['3.8']
         include:
-          - platform: "macos-latest"
-            python-version: "3.10"
-          - platform: "windows-latest"
-            python-version: "3.10"
+          - platform: 'macos-latest'
+            python-version: '3.10'
+          - platform: 'windows-latest'
+            python-version: '3.10'
 
     # Set the default shell, required for "windows-latest".
     defaults:
       run:
         shell: bash
+
+    # MAYBE/2022-10-04 01:08: Don't bother with old Python on macOS and Windows.
+    #if: (${{ matrix.platform }} == "ubuntu-latest")
+    #if: ("ubuntu-latest" == ${{ matrix.platform }})
+    #if: (matrix.platform == "ubuntu-latest")
+    #if: ${{ (matrix.platform == "ubuntu-latest") || (matrix.platform == "macos-latest" && matrix.python-version == "3.10") || (matrix.platform == "windows-latest" && matrix.python-version == "3.10") }}
+    # if: ${{ (matrix.platform == "ubuntu-latest") \
+    #      || (matrix.platform == "macos-latest" && matrix.python-version == "3.10") \
+    #      || (matrix.platform == "windows-latest" && matrix.python-version == "3.10") }}
 
     steps:
     - name: Checkout repository
@@ -64,7 +73,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -93,9 +102,9 @@ jobs:
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles("**/poetry.lock") }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != "true"
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
 
     # LATER: Test on Windows, and see what VENV is.
@@ -163,7 +172,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -183,11 +192,11 @@ jobs:
       uses: actions/cache@v3
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `poetry-shell-lint/.venv`.
-        # Because the psuedo subproject is used, use subproject"s `.venv/`.
+        # Because the psuedo subproject is used, use subproject's `.venv/`.
         path: ${{ env.BASENAME_LINT }}/.venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles("**/poetry.lock") }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != "true"
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       # We use `make` for this `poetry install`, though we could just as easily:
       #   run: cd poetry-shell-lint && poetry install --no-interaction --no-root
       # Using `make` keeps this more maintainable, or DRY... except in comments.
@@ -220,7 +229,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -234,9 +243,9 @@ jobs:
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles("**/poetry.lock") }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != "true"
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       #run: poetry install --with dev,docs,test
       #run: poetry install --with dist,docs,test
       #run: poetry install --with docs
@@ -274,7 +283,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -288,9 +297,9 @@ jobs:
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles("**/poetry.lock") }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != "true"
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       #run: poetry install --with dist
       run: poetry install --no-interaction --no-root --with dist
       # FIXME/2022-10-03 21:12: I'm seeing an error but did before,
@@ -325,7 +334,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       # with:
@@ -365,7 +374,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -379,9 +388,9 @@ jobs:
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles("**/poetry.lock") }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != "true"
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       #run: poetry install --with docstyle
       run: poetry install --no-interaction --no-root --with docstyle
 
@@ -412,7 +421,7 @@ jobs:
       with:
         path: ~/.local
         # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
       with:
@@ -426,9 +435,9 @@ jobs:
       with:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles("**/poetry.lock") }}-${{ hashFiles(".github/workflows/checks.yaml") }}
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != "true"
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
     # - name: Install dependencies
     #   #run: poetry install --with test
