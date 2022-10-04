@@ -324,8 +324,15 @@ build-backend = "poetry_dynamic_versioning.backend"
 [tool.pytest.ini_options]
 addopts = "--tb=short --strict-markers -ra"
 
+[tool.coverage.report]
+precision = 0
+
+[tool.coverage.run]
+branch = true
+source = "easy_as_pypi_appdirs"
+
 [tool.doc8]
-# The poetry-shell-lint/.env/ path is from checks.yaml's `lint` GitHub Actions job.
+# The poetry-shell-lint/.venv/ path is from checks.yaml's `lint` GitHub Actions job.
 ignore-path = [".eggs/", "*.egg-info/", ".tox/", "docs/_build/", "poetry-shell-lint/.venv/"]
 max-line-length = 89
 # Here's an old note: "Specify encoding lest doc8 think it's 'Windows-1254'
