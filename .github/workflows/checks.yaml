@@ -20,17 +20,18 @@ jobs:
       fail-fast: true
       matrix:
         # FIXME/2022-10-03 21:31: Enable these:
-        #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
-        #platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        # For now, testing:
         platform: ['ubuntu-latest']
         python-version: ['3.7', '3.8']
-        #platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        #python-version: ['3.7', '3.8']
-        #platform: ['macos-latest']
-        #python-version: ['3.8']
-        #platform: ['windows-latest']
-        #python-version: ['3.8']
+        #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+
+        # DUNNO/2022-10-04: GitHub doesn't always spin up macOS and Windows
+        # immediately ("Waiting for runner to start this task...." And on
+        # private repos, they charge more per minute than Ubuntu (not that
+        # that affects free projects).
+        # - So, I dunno, don't bother with old Python on macOS and Windows.
+        #   - Instead of using a platform array:
+        #       platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
+        #     Use the matrix.include option.
         include:
           - platform: 'macos-latest'
             python-version: '3.10'
@@ -41,15 +42,6 @@ jobs:
     defaults:
       run:
         shell: bash
-
-    # MAYBE/2022-10-04 01:08: Don't bother with old Python on macOS and Windows.
-    #if: (${{ matrix.platform }} == "ubuntu-latest")
-    #if: ("ubuntu-latest" == ${{ matrix.platform }})
-    #if: (matrix.platform == "ubuntu-latest")
-    #if: ${{ (matrix.platform == "ubuntu-latest") || (matrix.platform == "macos-latest" && matrix.python-version == "3.10") || (matrix.platform == "windows-latest" && matrix.python-version == "3.10") }}
-    # if: ${{ (matrix.platform == "ubuntu-latest") \
-    #      || (matrix.platform == "macos-latest" && matrix.python-version == "3.10") \
-    #      || (matrix.platform == "windows-latest" && matrix.python-version == "3.10") }}
 
     steps:
     - name: Checkout repository
@@ -66,12 +58,18 @@ jobs:
     # - Enable `virtualenvs-in-project` so local .venv/ is used,
     #   so cached-poetry-dependencies works.
     # REFER: https://www.peterbe.com/plog/install-python-poetry-github-actions-faster
+    # REFER: https://github.com/snok/install-poetry/
     # REFER: https://github.com/actions/cache
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
     - name: Load cached $HOME/.local
       uses: actions/cache@v3
       with:
-        path: ~/.local
+        #path: ~/.local
+        - path: ~/.local
+          if: matrix.platform == 'ubuntu-latest'
+        - path: ~/.cache
+          if: matrix.platform == 'windows-latest'
+          #if: runner.os == 'Windows'
         # Invalidate the cache whenever this Yaml changes.
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
@@ -95,6 +93,9 @@ jobs:
     #   The causes a cache miss if you edit this file, causing a fresh install...
     #   though maybe we don't need to be that aggressive?
     #   - REFER: https://www.peterbe.com/plog/install-python-poetry-github-actions-faster
+    # - BWARE: install-poetry warns that Windows sometimes hangs on this step.
+    #     https://github.com/snok/install-poetry/#caching-on-windows-runners
+    #   So they recommend caching pip wheels instead of .venv.
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
       id: cached-poetry-dependencies
@@ -107,21 +108,9 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
 
-    # LATER: Test on Windows, and see what VENV is.
-    # - Ubuntu: VENV=.venv/bin/activate
-    - name: Dump VENV
-      run: echo "${VENV}"
-      shell: bash
-
     - name: Test
       run: |
-        # # So that windows-latest works, use the environ, not a hardcoded path.
-        # # On Ubuntu, this is essentially:
-        # #  source .venv/bin/activate
-        # source $VENV
 
-        #poetry run python -m pytest tests/ --import-mode importlib
-        #python -m pytest tests/
         # FIXME/2022-10-03 20:56: Where did I see coverage being run for tests?
         # - Do I care about coverage for all Python versions?
         # - Also, the README badge only shows one coverage...
@@ -132,7 +121,7 @@ jobs:
         #  python -m coverage report
 
         make test
-        # DEV: If you need to test a specific function or class, try, e.g.,:
+        # DEVs: If you need to test a specific function or class, try, e.g.,:
         #   poetry run python -m pytest -k test_function tests/
 
       # FIXME: I don't think we need `PLATFORM`, it was probably for tox.
@@ -152,9 +141,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 00:33: REMOVE_IFs:
-    #if: ${{ false }}
 
     steps:
     - name: Checkout repository
@@ -210,9 +196,6 @@ jobs:
   docs:
     runs-on: ubuntu-latest
 
-    # FIXME/2022-10-04 00:33: REMOVE_IFs:
-    #if: ${{ false }}
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -264,9 +247,6 @@ jobs:
   dist-check:
     runs-on: ubuntu-latest
 
-    # FIXME/2022-10-04 00:33: REMOVE_IFs:
-    #if: ${{ false }}
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -315,9 +295,6 @@ jobs:
   poetry-check:
     runs-on: ubuntu-latest
 
-    # FIXME/2022-10-04 00:33: REMOVE_IFs:
-    #if: ${{ false }}
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -354,9 +331,6 @@ jobs:
 
   pydocstyle:
     runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 00:33: REMOVE_IFs:
-    #if: ${{ false }}
 
     steps:
     - name: Checkout repository
@@ -401,9 +375,6 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 00:33: REMOVE_IFs:
-    #if: ${{ false }}
 
     steps:
     - name: Checkout repository
