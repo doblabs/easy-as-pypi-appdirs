@@ -25,78 +25,78 @@
 # """Distributable Python application packaging metadata."""
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# FIXME/2022-09-30 22:05: Remove this file after confirming pyproject.toml.
+# FIXME/2022-09-30 22:05: Edit this file after confirming pyproject.toml.
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 # (lb): Note that using `-` or `_` in key names is interchangeable, e.g.,
 #         long-description is the
 # same as long_description.
 
-[metadata]
-# NOTE: Values specified in setup.py will shadow those here.
-#       (Although there are very few values left in setup().)
-name = easy-as-pypi-appdirs
-author = Tally Bark LLC
-author_email = easy-as-pypi-appdirs.pypi@tallybark.com
-home_page = https://github.com/doblabs/easy-as-pypi-appdirs
-description = AppDirs overlay with mkdir -p side effect and Singleton access
-long_description = file: README.rst
-long_description_content_type = text/x-rst; charset=UTF-8
-project_urls =
-    Bug Tracker = https://github.com/doblabs/easy-as-pypi-appdirs/issues
-    Documentation = https://easy-as-pypi-appdirs.readthedocs.io/en/latest/
-    Source Code = https://github.com/doblabs/easy-as-pypi-appdirs
-license = MIT
-license_files = LICENSE
-platform = any
-# https://pypi.org/classifiers/
-classifier =
-    License :: OSI Approved :: MIT License
-    Development Status :: 5 - Production/Stable
-    Intended Audience :: Developers
-    Natural Language :: English
-    Operating System :: OS Independent
-    # See list of supported Python versions:
-    #   https://devguide.python.org/versions/
-    Programming Language :: Python :: 3
-    Programming Language :: Python :: 3.7
-    Programming Language :: Python :: 3.8
-    Programming Language :: Python :: 3.9
-    Programming Language :: Python :: 3.10
-    # LATER/2022-09-27: Pending official 3.11 release:
-    #  Programming Language :: Python :: 3.11
-    Programming Language :: Python
-    Topic :: Software Development :: Libraries :: Python Modules
-# Keywords for PyPI to display, and to use for search results.
-keywords =
-    python version library
-
-[options]
-# Per docs, try `zip_safe = true` until proven otherwise, i.e., publish
-# to PyPI or otherwise install distribution package, and test if your
-# project can run from zip file, or if it needs to be installed to a
-# directory (generally if it's not purely Pythonic and carries along
-# data files or otherwise needs to access its package file).
+# [metadata]
+# # NOTE: Values specified in setup.py will shadow those here.
+# #       (Although there are very few values left in setup().)
+# name = easy-as-pypi-appdirs
+# author = Tally Bark LLC
+# author_email = easy-as-pypi-appdirs.pypi@tallybark.com
+# home_page = https://github.com/doblabs/easy-as-pypi-appdirs
+# description = AppDirs overlay with mkdir -p side effect and Singleton access
+# long_description = file: README.rst
+# long_description_content_type = text/x-rst; charset=UTF-8
+# project_urls =
+#     Bug Tracker = https://github.com/doblabs/easy-as-pypi-appdirs/issues
+#     Documentation = https://easy-as-pypi-appdirs.readthedocs.io/en/latest/
+#     Source Code = https://github.com/doblabs/easy-as-pypi-appdirs
+# license = MIT
+# license_files = LICENSE
+# platform = any
+# # https://pypi.org/classifiers/
+# classifier =
+#     License :: OSI Approved :: MIT License
+#     Development Status :: 5 - Production/Stable
+#     Intended Audience :: Developers
+#     Natural Language :: English
+#     Operating System :: OS Independent
+#     # See list of supported Python versions:
+#     #   https://devguide.python.org/versions/
+#     Programming Language :: Python :: 3
+#     Programming Language :: Python :: 3.7
+#     Programming Language :: Python :: 3.8
+#     Programming Language :: Python :: 3.9
+#     Programming Language :: Python :: 3.10
+#     # LATER/2022-09-27: Pending official 3.11 release:
+#     #  Programming Language :: Python :: 3.11
+#     Programming Language :: Python
+#     Topic :: Software Development :: Libraries :: Python Modules
+# # Keywords for PyPI to display, and to use for search results.
+# keywords =
+#     python version library
 #
-#   Ref: "Setting the zip_safe flag":                              ¶
+# [options]
+# # Per docs, try `zip_safe = true` until proven otherwise, i.e., publish
+# # to PyPI or otherwise install distribution package, and test if your
+# # project can run from zip file, or if it needs to be installed to a
+# # directory (generally if it's not purely Pythonic and carries along
+# # data files or otherwise needs to access its package file).
+# #
+# #   Ref: "Setting the zip_safe flag":                              ¶
+# #
+# #       https://setuptools.readthedocs.io/en/latest/setuptools.html#setting-the-zip-safe-flag
+# #
+# # FIXME: DEV/YOU: A reminder to remove this FIXME (and call it good),
+# #                 or to disable zip_safe, after test.PyPI pip-install.
+# #
+# #           zip_safe = false  # Maybe?
+# #
+# zip_safe = true
+# # Enable setuptools_scm's use_scm_version.
+# setup_requires =
+#     setuptools
+#     setuptools_scm
 #
-#       https://setuptools.readthedocs.io/en/latest/setuptools.html#setting-the-zip-safe-flag
 #
-# FIXME: DEV/YOU: A reminder to remove this FIXME (and call it good),
-#                 or to disable zip_safe, after test.PyPI pip-install.
 #
-#           zip_safe = false  # Maybe?
-#
-zip_safe = true
-# Enable setuptools_scm's use_scm_version.
-setup_requires =
-    setuptools
-    setuptools_scm
-
-
-
-# FIXME/2022-09-30 21:25: Following is not yet consumed in pyproject.toml.
-# - I think I got everything above, though.
+# # FIXME/2022-09-30 21:25: Following is not yet consumed in pyproject.toml.
+# # - I think I got everything above, though.
 
 
 
