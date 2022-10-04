@@ -37,7 +37,8 @@ jobs:
         shell: bash
 
     # MAYBE/2022-10-04 01:08: Don't bother with old Python on macOS and Windows.
-    if: (${{ matrix.platform }} == "ubuntu-latest")
+    #if: (${{ matrix.platform }} == "ubuntu-latest")
+    if: ("ubuntu-latest" == ${{ matrix.platform }})
     #if: (matrix.platform == "ubuntu-latest")
     #if: ${{ (matrix.platform == "ubuntu-latest") || (matrix.platform == "macos-latest" && matrix.python-version == "3.10") || (matrix.platform == "windows-latest" && matrix.python-version == "3.10") }}
     # if: ${{ (matrix.platform == "ubuntu-latest") \
