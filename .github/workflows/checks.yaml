@@ -90,7 +90,7 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
 
-    # LATER: Test on Windows.
+    # LATER: Test on Windows, and see what VENV is.
     # - Ubuntu: VENV=.venv/bin/activate
     - name: Dump VENV
       run: echo "${VENV}"

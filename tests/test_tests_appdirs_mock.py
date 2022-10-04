@@ -54,10 +54,10 @@ class TestTestsAppdirsMock():
         print(f"adir_path: {adir_path}")
         assert not os.path.exists(adir_path)
 
-    def test_tests_xdg_appdirs_mock_side_effect(self, xdg_appdirs):
-        adir_path = xdg_appdirs.user_cache_dir
-        print(f"adir_path: {adir_path}")
-        assert os.path.exists(adir_path)
+    #  def test_tests_xdg_appdirs_mock_side_effect(self, xdg_appdirs):
+    #      adir_path = xdg_appdirs.user_cache_dir
+    #      print(f"adir_path: {adir_path}")
+    #      assert os.path.exists(adir_path)
 
     def test_tests_xdg_appdirs_mock_safe_effect(self, xdg_appdirs):
         adir_path = xdg_appdirs.safe.user_cache_dir
