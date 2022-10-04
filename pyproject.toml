@@ -326,7 +326,7 @@ addopts = "--tb=short --strict-markers -ra"
 
 [tool.doc8]
 # The poetry-shell-lint/.env/ path is from checks.yaml's `lint` GitHub Actions job.
-ignore-path = [".eggs/", "*.egg-info/", ".tox/", "docs/_build/", "poetry-shell-lint/.env/"]
+ignore-path = [".eggs/", "*.egg-info/", ".tox/", "docs/_build/", "poetry-shell-lint/.venv/"]
 max-line-length = 89
 # Here's an old note: "Specify encoding lest doc8 think it's 'Windows-1254'
 #                      and raise UnicodeDecodeError."
