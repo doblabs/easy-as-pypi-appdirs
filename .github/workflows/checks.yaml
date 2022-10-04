@@ -154,6 +154,9 @@ jobs:
     - name: Suss psuedo subproject name
       run: echo "BASENAME_LINT=$(echo "$(grep -e 'BASENAME_LINT = ' Makefile | sed 's/^.* = //')")" >> $GITHUB_ENV
       shell: bash
+    - name: Dump BASENAME_LINT
+      run: echo "${{ env.BASENAME_LINT }}"
+      shell: bash
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -163,7 +166,7 @@ jobs:
         # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         # Because the psuedo subproject is used, use subproject's `.venv/`.
         #path: ${BASENAME_LINT}/.venv
-        path: ${{ github.BASENAME_LINT }}/.venv
+        path: ${{ env.BASENAME_LINT }}/.venv
         #path: poetry-shell-lint/.venv
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
@@ -201,11 +204,9 @@ jobs:
     - name: Suss psuedo subproject name
       run: echo "BASENAME_LINT=$(echo "$(grep -e 'BASENAME_LINT = ' Makefile | sed 's/^.* = //')")" >> $GITHUB_ENV
       shell: bash
-    - name: Dump github context
-      run: echo "${GITHUB_CONTEXT}"
+    - name: Dump github env
+      run: echo "${GITHUB_ENV}"
       shell: bash
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
 
 
   # *** DOCS
