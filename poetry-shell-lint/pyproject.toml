@@ -44,3 +44,19 @@ doc8 = ">=1.0.0"
 #   https://pypi.org/project/flake8
 flake8 = ">=5.0.4"
 
+[tool.doc8]
+# The poetry-shell-lint/.env/ path is from checks.yaml's `lint` GitHub Actions job.
+ignore-path = [".eggs/", "*.egg-info/", ".tox/", "docs/_build/", "poetry-shell-lint/.env/"]
+max-line-length = 89
+# Here's an old note: "Specify encoding lest doc8 think it's 'Windows-1254'
+#                      and raise UnicodeDecodeError."
+file-encoding = "utf-8"
+# If you need to ignore specific errors in a specific file:
+#  ignore-path-errors=/tmp/other_thing.rst;D001;D002
+# DEVs: Uncomment verbose for TMI.
+#  verbose = 1
+
+# NOTE: flake8 does not support pyproject.toml.
+# - MAYBE/2022-10-03: Add plugin, such as Flake8-pyproject:
+#   https://pypi.org/project/Flake8-pyproject/
+
