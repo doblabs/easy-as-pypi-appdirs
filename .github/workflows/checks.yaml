@@ -163,11 +163,9 @@ jobs:
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
-        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
+        # FIXME/2022-10-03: Until I test on Windows, using `poetry-shell-lint/.venv`.
         # Because the psuedo subproject is used, use subproject's `.venv/`.
-        #path: ${BASENAME_LINT}/.venv
         path: ${{ env.BASENAME_LINT }}/.venv
-        #path: poetry-shell-lint/.venv
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -176,38 +174,8 @@ jobs:
       # Using `make` keeps this more maintainable, or DRY... except in comments.
       run: make install-pkgs-docs
 
-    # FIXME: Nothing cached...
-    - name: Print pwd
-      run: pwd
-      shell: bash
-    - name: Print ls .
-      run: ls -la .
-      shell: bash
-    - name: Print ls poetry-shell-lint/
-      run: ls -la poetry-shell-lint/
-      shell: bash
-    - name: Print BASENAME_LINT
-      run: echo "${BASENAME_LINT}"
-      shell: bash
-    - name: Print BASENAME_LINT/.venv
-      run: echo "${BASENAME_LINT}/.venv"
-      shell: bash
-
     - name: Lint
       run: make lint
-
-
-  dump:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Suss psuedo subproject name
-      run: echo "BASENAME_LINT=$(echo "$(grep -e 'BASENAME_LINT = ' Makefile | sed 's/^.* = //')")" >> $GITHUB_ENV
-      shell: bash
-    - name: Dump github env
-      run: echo "${GITHUB_ENV}"
-      shell: bash
-
 
   # *** DOCS
 
