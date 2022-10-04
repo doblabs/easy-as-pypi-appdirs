@@ -19,25 +19,26 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # FIXME/2022-10-03 21:31: Enable these:
         #platform: ['ubuntu-latest']
-        #python-version: ['3.7', '3.8']
-        ##python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
         # DUNNO/2022-10-04: GitHub doesn't always spin up macOS and Windows
-        # immediately ("Waiting for runner to start this task...." And on
+        # immediately ("Waiting for runner to start this task..."). And on
         # private repos, they charge more per minute than Ubuntu (not that
         # that affects free projects).
-        # - Windows also seems slow. I see checkout alone ~45s!
+        # - Windows is also a lot slower. I see checkout alone ~45s!
+        #   - Versus 1s on Ubuntu! (Ridiculously slower.)
         # - So, I dunno, don't bother with old Python on macOS and Windows.
+        #   (Although if people report issues on missing Python versions,
+        #    then consider enabling.)
         #   - Instead of using a platform array:
         #       platform: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        #     Use the matrix.include option.
+        #     Use matrix.include to add specific platform-Python combinations.
         include:
-          #- platform: 'macos-latest'
-          #  python-version: '3.10'
-          - platform: 'windows-latest'
+          - platform: 'macos-latest'
             python-version: '3.10'
+              #- platform: 'windows-latest'
+              #python-version: '3.10'
 
     # Set the default shell, required for "windows-latest".
     defaults:
@@ -56,50 +57,33 @@ jobs:
 
     # Cache the pip wheels (avoid re-downloading from PyPI), and give
     # install-poetry a boost. Shaves ~10s off step time, from 15s to 5s.
-    # - Enable `virtualenvs-in-project` so local .venv/ is used,
-    #   so cached-poetry-dependencies works.
+    # - Enable `virtualenvs-in-project` so local .venv/ is used and cached.
+    # - With or without caches, Windows takes a longer time.
+    #   - 2022-10-04: This test job took 4m. The install-poetry took 2m.
+    #     With the cache ready on the next run, install-poetry took 54s.
+    #     And with both caches used, the 4m job run was reduced to 1m 38s.
+    #     Still a lot longer than Ubuntu, but also a decent improvement.
+    # - Note the cache key: It invalidates cache whenever this Yaml changed.
     # REFER: https://www.peterbe.com/plog/install-python-poetry-github-actions-faster
     # REFER: https://github.com/snok/install-poetry/
     # REFER: https://github.com/actions/cache
     # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Suss pip wheels path (Ubuntu/macOS)
+    - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
       if: matrix.platform == 'ubuntu-latest'
-    - name: Suss pip wheels path (Windows)
+    - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
       if: matrix.platform == 'windows-latest'
-    # The environ setting and `if` worked.
-    - name: Print PIP_CACHE
-      run: echo "${PIP_CACHE}"
-      shell: bash
-    - name: Print ls PIP_CACHE
-      run: ls -la "${{ env.PIP_CACHE }}" || true
-      shell: bash
     - name: Load cached $HOME/.local (Ubuntu/macOS)
       uses: actions/cache@v3
       with:
         path: ${{ env.PIP_CACHE }}
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    # - name: Load cached $HOME/.local (Ubuntu/macOS)
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/.local
-    #     # Invalidate the cache whenever this Yaml changes.
-    #     key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    #     #path: ~/.local
-    #   if: matrix.platform == 'ubuntu-latest'
-    # - name: Load cached $HOME/.local (Windows)
-    #   uses: actions/cache@v3
-    #   with:
-    #     path: ~/.cache
-    #     # Invalidate the cache whenever this Yaml changes.
-    #     key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    #     #path: ~/.local
-    #   if: matrix.platform == 'windows-latest'
-    #   #if: runner.os == 'Windows'
+        key: dotlocal-${{ runner.os \
+          }}-${{ steps.setup-python.outputs.python-version \
+          }}-${{ hashFiles('.github/workflows/checks.yaml') \
+          }}
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
@@ -137,10 +121,6 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
 
-    - name: Print ls AppData/Local/pip/cache/http
-      run: ls -la ~/AppData/Local/pip/cache/http
-      shell: bash
-
     - name: Test
       run: |
 
@@ -170,301 +150,4 @@ jobs:
   # (at least when possible: workflows that run after checks complete,
   #  like the coverage workflow, cannot be combined herein).
 
-  # *** LINT
-
-  lint:
-    runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 01:59: REMOVE_IFs
-    if: ${{ false }}
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.7
-
-    # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-
-    - name: Suss psuedo subproject name
-      run: echo "BASENAME_LINT=$(echo "$(grep -e 'BASENAME_LINT = ' Makefile | sed 's/^.* = //')")" >> $GITHUB_ENV
-      shell: bash
-    - name: Dump BASENAME_LINT
-      run: echo "${{ env.BASENAME_LINT }}"
-      shell: bash
-
-    # SYNC_ME_1: The next two steps are the same for many jobs in this document.
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        # FIXME/2022-10-03: Until I test on Windows, using `poetry-shell-lint/.venv`.
-        # Because the psuedo subproject is used, use subproject's `.venv/`.
-        path: ${{ env.BASENAME_LINT }}/.venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      # We use `make` for this `poetry install`, though we could just as easily:
-      #   run: cd poetry-shell-lint && poetry install --no-interaction --no-root
-      # Using `make` keeps this more maintainable, or DRY... except in comments.
-      run: make install-pkgs-docs
-
-    - name: Lint
-      run: make lint
-
-  # *** DOCS
-
-  docs:
-    runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 01:59: REMOVE_IFs
-    if: ${{ false }}
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.7
-
-    # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-
-    # SYNC_ME_1: The next two steps are the same for many jobs in this document.
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      #run: poetry install --with dev,docs,test
-      #run: poetry install --with dist,docs,test
-      #run: poetry install --with docs
-      run: poetry install --no-interaction --with docs
-
-    # FIXME/2022-10-03 22:07: Not .venv, so cache not saved.
-    - name: Print ls
-      run: ls -la
-      shell: bash
-
-    - name: Docs build
-      run: make docs-html
-
-  # *** DIST
-
-  dist-check:
-    runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 01:59: REMOVE_IFs
-    if: ${{ false }}
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.7
-
-    # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-
-    # SYNC_ME_1: The next two steps are the same for many jobs in this document.
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      #run: poetry install --with dist
-      run: poetry install --no-interaction --no-root --with dist
-      # FIXME/2022-10-03 21:12: I'm seeing an error but did before,
-      # possibly because --no-root? Seems weird.
-      #  ERROR: You must setup the Poetry virtual environment first.
-      #  - Hint: Try running `make develop`.
-
-    - name: Dist check
-      run: make check-dist
-
-  # *** VERIFY pyproject.toml
-
-  poetry-check:
-    runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 01:59: REMOVE_IFs
-    if: ${{ false }}
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.7
-
-    # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
-
-    - name: Poetry check
-      run: make check-project
-
-  # *** PYDOCSTYLE
-
-  # Note that adding Docstrings can be tedious. For many projects, they
-  # might not add value. So oftentimes you'll want to disable this job:
-  #
-  #   pydocstyle:
-  #     if: ${{ false }}
-
-  pydocstyle:
-    runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 01:59: REMOVE_IFs
-    if: ${{ false }}
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.7
-
-    # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-
-    # SYNC_ME_1: The next two steps are the same for many jobs in this document.
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      #run: poetry install --with docstyle
-      run: poetry install --no-interaction --no-root --with docstyle
-
-    - name: Docstring check
-      run: make check-pydocstyle
-
-  # *** COVERAGE
-
-  coverage:
-    runs-on: ubuntu-latest
-
-    # FIXME/2022-10-04 01:59: REMOVE_IFs
-    if: ${{ false }}
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.7
-
-    # SYNC_ME_0: The next two steps are the same for many jobs in this document.
-    - name: Load cached $HOME/.local
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        # Invalidate the cache whenever this Yaml changes.
-        key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-
-    # SYNC_ME_1: The next two steps are the same for many jobs in this document.
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-root --with test
-    # - name: Install dependencies
-    #   #run: poetry install --with test
-    #   run: poetry install --no-interaction --no-root --with test
-
-    - name: Coverage compute
-      run: make coverage-to-html
 
