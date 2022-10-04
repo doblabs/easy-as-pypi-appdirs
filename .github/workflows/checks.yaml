@@ -18,9 +18,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        platform: [ubuntu-latest]
+        #platform: [ubuntu-latest]
         # FIXME/2022-10-03 21:31: Enable these:
-        #platform: [ubuntu-latest, macos-latest, windows-latest]
+        platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.7', '3.8']
         # FIXME/2022-10-03 21:31: Enable these:
         #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
