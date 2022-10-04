@@ -67,18 +67,15 @@ jobs:
       shell: bash
       if: matrix.platform == 'ubuntu-latest'
     - name: Suss pip wheels path (Windows)
-      run: echo "PIP_CACHE=~/.cache" >> $GITHUB_ENV
+      run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
       if: matrix.platform == 'windows-latest'
     # The environ setting and `if` worked.
     - name: Print PIP_CACHE
       run: echo "${PIP_CACHE}"
       shell: bash
-    # - name: Print ls PIP_CACHE
-    #   run: ls -la "${{ env.PIP_CACHE }}"
-    #   shell: bash
-    - name: Print ls ~
-      run: ls -la ~
+    - name: Print ls PIP_CACHE
+      run: ls -la "${{ env.PIP_CACHE }}" || true
       shell: bash
     - name: Load cached $HOME/.local (Ubuntu/macOS)
       uses: actions/cache@v3
@@ -140,43 +137,8 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
 
-    - name: Print ls .
-      run: ls -la .
-      shell: bash
-    # Windows: c:\users\runneradmin\appdata\local\pip\cache
-    - name: Print pip cache
-      run: poetry run python -m pip cache dir
-    # Windows: pip info:
-    #   Package index page cache location: c:\users\runneradmin\appdata\local\pip\cache\http
-    #   Package index page cache size: 12.5 MB
-    #   Number of HTTP files: 77
-    #   Locally built wheels location: c:\users\runneradmin\appdata\local\pip\cache\wheels
-    #   Locally built wheels size: 0 bytes
-    #   Number of locally built wheels: 0
-    - name: Print pip info
-      run: poetry run python -m pip cache info
-    - name: Print pip list
-      run: poetry run python -m pip cache list
-    # No such path: ~\AppData\Local\pip\cache
-    #  - name: Print ls AppData cache
-    #    run: ls -la ~\AppData\Local\pip\cache
-    #    shell: bash
-    # Prints: /c/Users/runneradmin
-    - name: Print ~ pwd
-      run: cd ~ && pwd
-      shell: bash
-    # CWD on Windows (via `pwd`): /d/a/easy-as-pypi-appdirs/easy-as-pypi-appdirs
-    - name: Print ls AppData cache win-style
-      run: ls -la ~/AppData
-      shell: bash
-    - name: Print ls AppData/Local
-      run: ls -la ~/AppData/Local
-      shell: bash
-    - name: Print ls AppData/Local/pip
-      run: ls -la ~/AppData/Local/pip
-      shell: bash
-    - name: Print ls AppData/Local/pip/cache
-      run: ls -la ~/AppData/Local/pip/cache
+    - name: Print ls AppData/Local/pip/cache/http
+      run: ls -la ~/AppData/Local/pip/cache/http
       shell: bash
 
     - name: Test
