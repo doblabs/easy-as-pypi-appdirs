@@ -203,7 +203,7 @@ jobs:
       #run: poetry install --with dev,docs,test
       #run: poetry install --with dist,docs,test
       #run: poetry install --with docs
-      run: poetry install --no-interaction --no-root --with docs
+      run: poetry install --no-interaction --with docs
 
     - name: Docs build
       run: make docs-html
