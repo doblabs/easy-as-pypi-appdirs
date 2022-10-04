@@ -71,12 +71,12 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: matrix.platform == 'ubuntu-latest'
+      if: (matrix.platform == 'ubuntu-latest') || (matrix.platform == 'macos-latest')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
       if: matrix.platform == 'windows-latest'
-    - name: Load cached $HOME/.local (Ubuntu/macOS)
+    - name: Load cached $HOME/.local
       uses: actions/cache@v3
       with:
         path: ${{ env.PIP_CACHE }}
@@ -114,7 +114,6 @@ jobs:
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
-        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
         path: .venv
         key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
@@ -143,4 +142,10 @@ jobs:
 
   # *** SAVVY
 
+  # While it might be nice to isolate jobs in separate Yaml files, each
+  # file is its own workflow, and each workflow appears separately under
+  # the Actions workflow list, so easier to examine results if you keep
+  # all jobs related to the same push or PR within the same workflow
+  # (at least when possible: workflows that run after checks complete,
+  #  like the coverage workflow, cannot be combined herein).
 
