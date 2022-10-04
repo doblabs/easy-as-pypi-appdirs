@@ -19,8 +19,10 @@ jobs:
       fail-fast: true
       matrix:
         platform: [ubuntu-latest]
+        # FIXME/2022-10-03 21:31: Enable these:
         #platform: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.7', '3.8']
+        # FIXME/2022-10-03 21:31: Enable these:
         #python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
 
     # Set the default shell, required for "windows-latest".
@@ -37,8 +39,6 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
-# FIXME/2022-10-03 17:41: Share caching with other jobs.
 
     # Cache the pip wheels (avoid re-downloading from PyPI), and give
     # install-poetry a boost. Shaves ~10s off step time, from 15s to 5s.
@@ -110,14 +110,17 @@ jobs:
       env:
         PLATFORM: ${{ matrix.platform }}
 
-  # *** LINT
+  # *** SAVVY
 
-  # SAVVY: While it might be nice to isolate jobs in separate Yaml files,
-  # each file is its own workflow, and each workflow appears separately
-  # under the Actions workflow list, so better (cleaner, IMO) to keep
+  # While it might be nice to isolate jobs in separate Yaml files, each
+  # file is its own workflow, and each workflow appears separately under
+  # the Actions workflow list, so easier to examine results if you keep
   # all jobs related to the same push or PR within the same workflow
   # (at least when possible: workflows that run after checks complete,
   #  like the coverage workflow, cannot be combined herein).
+
+  # *** LINT
+
   lint:
     runs-on: ubuntu-latest
 
@@ -140,9 +143,6 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -186,9 +186,6 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -232,9 +229,6 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -280,9 +274,6 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
 
     - name: Poetry check
       run: make check-project
@@ -317,9 +308,6 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
 
     # SYNC_ME_1: The next two steps are the same for many jobs in this document.
     - name: Load cached venv
@@ -361,13 +349,21 @@ jobs:
         key: dotlocal-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install Poetry
       uses: snok/install-poetry@v1
-      # with:
-      #   virtualenvs-create: true
-      #   virtualenvs-in-project: true
 
+    # SYNC_ME_1: The next two steps are the same for many jobs in this document.
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2.1.6
+      with:
+        # FIXME/2022-10-03: Until I test on Windows, using `.venv`.
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ github.job }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/checks.yaml') }}
     - name: Install dependencies
-      #run: poetry install --with test
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --no-interaction --no-root --with test
+    # - name: Install dependencies
+    #   #run: poetry install --with test
+    #   run: poetry install --no-interaction --no-root --with test
 
     - name: Coverage compute
       run: make coverage-to-html
