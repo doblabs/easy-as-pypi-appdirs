@@ -161,14 +161,22 @@ jobs:
     #  - name: Print ls AppData cache
     #    run: ls -la ~\AppData\Local\pip\cache
     #    shell: bash
+    # Prints: /c/Users/runneradmin
     - name: Print ~ pwd
       run: cd ~ && pwd
       shell: bash
+    # CWD on Windows (via `pwd`): /d/a/easy-as-pypi-appdirs/easy-as-pypi-appdirs
     - name: Print ls AppData cache win-style
       run: ls -la ~/AppData
       shell: bash
-    - name: Print ls AppData cache nix-style
-      run: ls -la ~\appdata\local\pip\cache
+    - name: Print ls AppData/Local
+      run: ls -la ~/AppData/Local
+      shell: bash
+    - name: Print ls AppData/Local/pip
+      run: ls -la ~/AppData/Local/pip
+      shell: bash
+    - name: Print ls AppData/Local/pip/cache
+      run: ls -la ~/AppData/Local/pip/cache
       shell: bash
 
     - name: Test
