@@ -62,9 +62,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-#      if: (matrix.platform == 'ubuntu-latest') || (matrix.platform == 'macos-latest')
-#      if: matrix.platform == 'windows-latest'
-
     # Cache the pip wheels (avoid re-downloading from PyPI), and give
     # install-poetry a boost. Shaves ~10s off step time, from 15s to 5s.
     # - Enable `virtualenvs-in-project` so local .venv/ is used and cached.
@@ -81,7 +78,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
@@ -182,7 +179,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
@@ -253,7 +250,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
@@ -310,7 +307,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
@@ -367,7 +364,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
@@ -415,7 +412,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
@@ -472,7 +469,7 @@ jobs:
     - name: Set pip wheels path (Ubuntu/macOS)
       run: echo "PIP_CACHE=~/.local" >> $GITHUB_ENV
       shell: bash
-      if: (runner.os == 'Linux') || (matrix.platform == 'macOS')
+      if: (runner.os == 'Linux') || (runner.os == 'macOS')
     - name: Set pip wheels path (Windows)
       run: echo "PIP_CACHE=~/AppData/Local/pip/cache" >> $GITHUB_ENV
       shell: bash
