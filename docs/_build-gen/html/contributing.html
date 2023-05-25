@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contributing &mdash; easy-as-pypi-appdirs 0.0.0.post62.dev0+2d1528b documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Code of Conduct" href="code-of-conduct.html" />
+    <link rel="prev" title="easy_as_pypi_appdirs package" href="easy_as_pypi_appdirs.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> easy-as-pypi-appdirs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Help Us Improve</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-contribute">How to Contribute</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#report-bugs">Report Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fix-bugs">Fix Bugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implement-features">Implement Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-documentation">Write Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submit-feedback">Submit Feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request-guidelines">Pull Request Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging-tips">Debugging Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#style-guide">Style Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#style-enforcement">Style Enforcement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#style-reference">Style Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conventional-deviations">Conventional Deviations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#of-readability">Of Readability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#altogether-now">Altogether Now</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#contributor-code-of-conduct">Contributor Code of Conduct</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Developer Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Software License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">Project History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">easy-as-pypi-appdirs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Contributing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/tallybark/easy-as-pypi-appdirs/blob/develop/docs/contributing.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">¶</a></h1>
+<div class="contents local topic" id="contributing-contents">
+<p class="topic-title">Contributing Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#how-to-contribute" id="id5">How to Contribute</a></p>
+<ul>
+<li><p><a class="reference internal" href="#report-bugs" id="id6">Report Bugs</a></p></li>
+<li><p><a class="reference internal" href="#fix-bugs" id="id7">Fix Bugs</a></p></li>
+<li><p><a class="reference internal" href="#implement-features" id="id8">Implement Features</a></p></li>
+<li><p><a class="reference internal" href="#write-documentation" id="id9">Write Documentation</a></p></li>
+<li><p><a class="reference internal" href="#submit-feedback" id="id10">Submit Feedback</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#getting-started" id="id11">Getting Started</a></p></li>
+<li><p><a class="reference internal" href="#pull-request-guidelines" id="id12">Pull Request Guidelines</a></p></li>
+<li><p><a class="reference internal" href="#debugging-tips" id="id13">Debugging Tips</a></p></li>
+<li><p><a class="reference internal" href="#style-guide" id="id14">Style Guide</a></p>
+<ul>
+<li><p><a class="reference internal" href="#style-enforcement" id="id15">Style Enforcement</a></p></li>
+<li><p><a class="reference internal" href="#style-reference" id="id16">Style Reference</a></p></li>
+<li><p><a class="reference internal" href="#conventional-deviations" id="id17">Conventional Deviations</a></p></li>
+<li><p><a class="reference internal" href="#of-readability" id="id18">Of Readability</a></p></li>
+<li><p><a class="reference internal" href="#altogether-now" id="id19">Altogether Now</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#contributor-code-of-conduct" id="id20">Contributor Code of Conduct</a></p></li>
+</ul>
+</div>
+<p>Contributions are welcome, and they are greatly appreciated!</p>
+<p>Every little bit helps, and credit will always be given (if so desired).</p>
+<section id="how-to-contribute">
+<h2><a class="toc-backref" href="#id5">How to Contribute</a><a class="headerlink" href="#how-to-contribute" title="Permalink to this heading">¶</a></h2>
+<p>You can contribute in many ways:</p>
+<section id="report-bugs">
+<h3><a class="toc-backref" href="#id6">Report Bugs</a><a class="headerlink" href="#report-bugs" title="Permalink to this heading">¶</a></h3>
+<p>Report bugs at <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs/issues">https://github.com/doblabs/easy-as-pypi-appdirs/issues</a>.</p>
+<p>When reporting a bug, please include:</p>
+<ul class="simple">
+<li><p>Your operating system name and version, and the Python version you are using.</p></li>
+<li><p>Any details about your local setup that might be helpful for troubleshooting.</p></li>
+<li><p>Detailed steps to reproduce the bug.</p></li>
+</ul>
+</section>
+<section id="fix-bugs">
+<h3><a class="toc-backref" href="#id7">Fix Bugs</a><a class="headerlink" href="#fix-bugs" title="Permalink to this heading">¶</a></h3>
+<p>Look through the GitHub issues for anything tagged with “bug”.
+Pick one, assign yourself to it, and work on the issue.</p>
+</section>
+<section id="implement-features">
+<h3><a class="toc-backref" href="#id8">Implement Features</a><a class="headerlink" href="#implement-features" title="Permalink to this heading">¶</a></h3>
+<p>Look through the GitHub issues for anything tagged with “feature”.
+Pick one, assign yourself to it, and work on the issue.</p>
+</section>
+<section id="write-documentation">
+<h3><a class="toc-backref" href="#id9">Write Documentation</a><a class="headerlink" href="#write-documentation" title="Permalink to this heading">¶</a></h3>
+<p>If you find documentation out of date, missing, or confusing, please help
+us to improve it.</p>
+<p>This includes the official <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs/tree/release/docs">user documentation</a>,
+the <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs/blob/release/README.rst">README</a>,
+and the inline docstrings that generate the <a class="reference external" href="https://easy-as-pypi-appdirs.readthedocs.io/en/latest/modules.html">API documentation</a>
+(per <a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a> and <a class="reference external" href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings">Google Python Style Guide</a>).</p>
+<p>We also appreciate reference from blog posts, articles, and other projects.</p>
+</section>
+<section id="submit-feedback">
+<h3><a class="toc-backref" href="#id10">Submit Feedback</a><a class="headerlink" href="#submit-feedback" title="Permalink to this heading">¶</a></h3>
+<p>The best way to send feedback is to file an issue at
+<a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs/issues">https://github.com/doblabs/easy-as-pypi-appdirs/issues</a>.</p>
+<p>See above for reporting bugs.</p>
+<p>If you are proposing a feature:</p>
+<ul class="simple">
+<li><p>Explain in detail how the feature should work.</p></li>
+<li><p>Unless you expect to work on the code yourself, your chances of having a
+feature implemented are greater if you keep the scope focused and narrow
+such that it’s as simple as possible for a developer to work on.
+That, or a monetary contribution speaks volumes.</p></li>
+<li><p>Remember that this is a volunteer-driven project, and that contributions
+are welcome! You are encouraged to fork the project, hack away, and submit
+pull requests for new features (and bug fixes).</p></li>
+<li><p>Above all else, please be considerate and kind.
+A few nice words can go a long way!</p></li>
+</ul>
+<p>Please also feel free to email the author directly if you have any other
+questions or concerns. Response times may vary depending on season.</p>
+</section>
+</section>
+<section id="getting-started">
+<h2><a class="toc-backref" href="#id11">Getting Started</a><a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h2>
+<p>Ready to contribute? Here’s how to set up <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs"><code class="docutils literal notranslate"><span class="pre">easy-as-pypi-appdirs</span></code></a>
+for local development.</p>
+<ol class="arabic">
+<li><p>Fork the <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs"><code class="docutils literal notranslate"><span class="pre">easy-as-pypi-appdirs</span></code></a> repo on GitHub.</p>
+<ul class="simple">
+<li><p>Visit <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs">https://github.com/doblabs/easy-as-pypi-appdirs</a>
+and click <em>Fork</em>.</p></li>
+</ul>
+</li>
+<li><p>Clone your fork locally.</p>
+<p>Open a local terminal, change to a directory you’d like to develop from,
+and run the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:&lt;your_login&gt;/easy-as-pypi-appdirs.git
+</pre></div>
+</div>
+</li>
+<li><p>Install <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs"><code class="docutils literal notranslate"><span class="pre">easy-as-pypi-appdirs</span></code></a> into a Python virtual instance,
+or <a class="reference external" href="https://virtualenv.pypa.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">virtualenv</span></code></a>.</p>
+<p>First, ensure that you have <a class="reference external" href="https://pypi.org/project/virtualenvwrapper/"><code class="docutils literal notranslate"><span class="pre">virtualenvwrapper</span></code></a> installed.</p>
+<p>Next, set up a virtual environment for local development:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd easy-as-pypi-appdirs/
+$ mkvirtualenv -a $(pwd) easy-as-pypi-appdirs
+(easy-as-pypi-appdirs) $
+</pre></div>
+</div>
+<p><em>Note:</em> We use the <code class="docutils literal notranslate"><span class="pre">-a</span></code> option so that <code class="docutils literal notranslate"><span class="pre">cdproject</span></code> changes directories
+to the <code class="docutils literal notranslate"><span class="pre">easy-as-pypi-appdirs/</span></code> directory when we’re in the virtual
+environment.</p>
+<p>Next, set up your fork for local development:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(easy-as-pypi-appdirs) $ cdproject
+(easy-as-pypi-appdirs) $ make develop
+</pre></div>
+</div>
+<p><em>Hint:</em> As usual, run <code class="docutils literal notranslate"><span class="pre">workon</span></code> to activate the virtual environment, and
+<code class="docutils literal notranslate"><span class="pre">deactivate</span></code> to leave it. E.g.,:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Load the Python virtual instance.
+$ workon easy-as-pypi-appdirs
+(easy-as-pypi-appdirs) $
+
+# Do your work.
+(easy-as-pypi-appdirs) $ ...
+
+# Finish up.
+(easy-as-pypi-appdirs) $ deactivate
+$
+</pre></div>
+</div>
+</li>
+<li><p>Before starting work on a new feature or bug fix, make sure your
+<code class="docutils literal notranslate"><span class="pre">develop</span></code> branch is up to date with the official branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(easy-as-pypi-appdirs) $ cdproject
+(easy-as-pypi-appdirs) $ git remote add upstream git@github.com:doblabs/easy-as-pypi-appdirs.git
+(easy-as-pypi-appdirs) $ git fetch upstream
+(easy-as-pypi-appdirs) $ git checkout develop
+(easy-as-pypi-appdirs) $ git rebase upstream/develop
+(easy-as-pypi-appdirs) $ git push origin HEAD
+</pre></div>
+</div>
+</li>
+<li><p>Create a branch for local development. If you are working on an known issue,
+you may want to reference the Issue number in the branch name, e.g.,:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout -b feature/ISSUE-123-name-of-your-issue
+</pre></div>
+</div>
+<p>Now you can add and edit code in your local working directory.</p>
+</li>
+<li><p>Do your work and make one or more neat, concise commits:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git add -p
+$ git commit -m &quot;&lt;Category&gt;: &lt;Short description of changes.&gt;
+
+- &lt;Longer description, if necessary.&gt;&quot;
+</pre></div>
+</div>
+<p>IMPORTANT: Please make each commit as small and neat as possible.</p>
+<p>Follow these guidelines:</p>
+<ul>
+<li><p>Each commit should generally focus on one thing, and one thing only,
+and that thing should be clearly described in the first line of the
+commit message.</p></li>
+<li><p>Please use a one-word categorical prefix (see below) to make it easy for
+someone reading the git log to understand the breadth of your changes.</p></li>
+<li><p>If you move or refactor code, the move or refactor should be captured
+in a single commit <em>with no other code changes.</em></p>
+<p>E.g., if you want to enhance a function, but you find that you need to
+refactor it to make it easier to hack on, first refactor the function
+– without adding any new code or making any other changes – and then
+make a commit, using the <code class="docutils literal notranslate"><span class="pre">Refactor:</span></code> prefix. Next, add your new code,
+and then make a second commit for the new feature/enhancement.</p>
+</li>
+<li><p>Following are some examples of acceptable commit message prefixes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Feature:</span> <span class="pre">Added</span> <span class="pre">new</span> <span class="pre">feature.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bugfix:</span> <span class="pre">Fixed</span> <span class="pre">problem</span> <span class="pre">doing</span> <span class="pre">something.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Refactor:</span> <span class="pre">Split</span> <span class="pre">long</span> <span class="pre">function</span> <span class="pre">into</span> <span class="pre">many.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Version:</span> <span class="pre">X.Y.Z.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tests:</span> <span class="pre">Did</span> <span class="pre">something</span> <span class="pre">to</span> <span class="pre">tests.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Docs:</span> <span class="pre">Update</span> <span class="pre">developer</span> <span class="pre">README.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Debug:</span> <span class="pre">Add</span> <span class="pre">trace</span> <span class="pre">messages.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Developer:</span> <span class="pre">Improved</span> <span class="pre">developer</span> <span class="pre">experience</span> <span class="pre">[akin</span> <span class="pre">to</span> <span class="pre">`Debug:`</span> <span class="pre">prefix].</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linting:</span> <span class="pre">Adjust</span> <span class="pre">whitespace.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Regression:</span> <span class="pre">Oh,</span> <span class="pre">boy,</span> <span class="pre">when</span> <span class="pre">did</span> <span class="pre">this</span> <span class="pre">get</span> <span class="pre">broke?</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i18n/l10n:</span> <span class="pre">Something</span> <span class="pre">about</span> <span class="pre">words.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Feedback:</span> <span class="pre">Fix</span> <span class="pre">something</span> <span class="pre">per</span> <span class="pre">PR</span> <span class="pre">feedback.</span></code></p></li>
+</ul>
+<p>(You’ll notice that this strategy is similar to
+<a class="reference external" href="https://gitmoji.carloscuesta.me/">gitmoji</a>,
+but it’s more concise, and less obtuse.)</p>
+</li>
+</ul>
+</li>
+<li><p>Throughout development, run tests and the linter – and definitely before
+you submit a Pull Request.</p>
+<p><a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs"><code class="docutils literal notranslate"><span class="pre">easy-as-pypi-appdirs</span></code></a> uses
+<a class="reference external" href="http://flake8.pycqa.org/en/latest/"><code class="docutils literal notranslate"><span class="pre">flake8</span></code></a> for linting,
+<a class="reference external" href="https://docs.pytest.org/en/latest/"><code class="docutils literal notranslate"><span class="pre">pytest</span></code></a> for unit testing, and
+<a class="reference external" href="https://tox.readthedocs.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">tox</span></code></a> for verifying against the many versions of Python.</p>
+<p>You can run all of these tools with one command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make test-all
+</pre></div>
+</div>
+<p>which simply executes <a class="reference external" href="https://tox.readthedocs.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">tox</span></code></a>.</p>
+</li>
+<li id="rebase-and-squash"><p>Rebase and squash your work, if necessary, before submitting a Pull Request.</p>
+<p>E.g., if the linter caught an error, rather than making a new commit
+with just the linting fix(es), make a temporary commit with the linting
+fixes, and then squash that commit into the previous commit wherein
+you originally added the code that didn’t lint.</p>
+<p>(<em>Note:</em> Rebasing is an intermediate Git skill.
+If you’re unfamiliar, read up elsewhere.
+But consider a few reminders.
+First, ensure that you are not rebasing any branch that other developers
+are also working on (which should not apply to your feature branch, unless
+you are collaborating with others on that branch, which you are probably not).
+Second, remember that <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">--abort</span></code> can save you from having to
+resolve any unanticipated or complicated conflicts, should you find
+yourself faced with rebase conflicts and unsure how to get your work back
+(abort the rebase and maybe ask someone for help, and try another approach).)</p>
+<p>For example, pretend that I have the following git history:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git log --oneline | head -3
+
+b1c07a4 Regression: Fix some old bug.
+17d1e38 Feature: Add my new feature.
+2e888c3 Bugfix: Oops! Did I do that?
+</pre></div>
+</div>
+<p>and then I commit a linting fix that should have been included with
+the second-to-last commit, <code class="docutils literal notranslate"><span class="pre">17d1e38</span></code>.</p>
+<p>First, add the linting fix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git add -A
+$ git ci -m &quot;Squash me!&quot;
+</pre></div>
+</div>
+<p>Next, start a rebase:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git rebase -i 2e888c3
+</pre></div>
+</div>
+<p>(<em>Note:</em> Use the SHA1 hash of the commit <em>after</em> the one you want squash into.)</p>
+<p>Git should open your default editor with a file that starts out like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pick 2e888c3 Bugfix: Oops! Did I do that?
+pick 17d1e38 Feature: Add my new feature.
+pick b1c07a4 Regression: Fix some old bug.
+pick f05e080 Squash me!
+</pre></div>
+</div>
+<p>Reorder the commit you want to squash so that it’s after the commit
+you want to combine it with, and change the command from <code class="docutils literal notranslate"><span class="pre">pick</span></code> to
+<code class="docutils literal notranslate"><span class="pre">squash</span></code> (or <code class="docutils literal notranslate"><span class="pre">s</span></code> for short):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pick 2e888c3 Bugfix: Oops! Did I do that?
+pick 17d1e38 Feature: Add my new feature.
+squash f05e080 Squash me!
+pick b1c07a4 Regression: Fix some old bug.
+</pre></div>
+</div>
+<p>Save and close the file, and Git will rebase your work.</p>
+<p>When Git rebases the commit being squashed, it will pop up your editor
+again so you can edit the commit message of the new, squashed commit.
+Delete the squash comment (<code class="docutils literal notranslate"><span class="pre">Squash</span> <span class="pre">me!</span></code>), and save and close the file.</p>
+<p>Git should hopefully finish up and report, <code class="docutils literal notranslate"><span class="pre">Successfully</span> <span class="pre">rebased</span> <span class="pre">and</span> <span class="pre">updated</span></code>.</p>
+<p>(If not, you can manually resolve any conflicts. Or, you can run
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">--abort</span></code> to rollback to where you were before the rebase,
+and you can look online for more help rebasing.)</p>
+</li>
+<li><p>Push the changes to your GitHub account.</p>
+<p>After testing and linting, and double-checking that your new feature or
+bugfix works, and rebasing, and committing your changes, push them to
+the branch on your GitHub account:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin feature/ISSUE-123-name-of-your-issue
+</pre></div>
+</div>
+<p><em>Note:</em> If you pushed your work and then rebased, you may have to force-push:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin feature/ISSUE-123-name-of-your-issue --force
+</pre></div>
+</div>
+</li>
+<li id="rebase-atop-develop"><p>Finally,
+<a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs/pulls">submit a pull request</a>
+through the GitHub website.</p>
+<p><em>Important:</em> Please rebase your code against <code class="docutils literal notranslate"><span class="pre">develop</span></code> and resolve
+merge conflicts, so that the main project maintainer does not have
+to do so themselves. E.g.,:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout feature/ISSUE-123-name-of-your-issue
+$ git fetch upstream
+$ git rebase upstream/develop
+# Resolve any conflicts, then force-push.
+$ git push origin HEAD --force
+# And then open the Pull Request.
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="pull-request-guidelines">
+<h2><a class="toc-backref" href="#id12">Pull Request Guidelines</a><a class="headerlink" href="#pull-request-guidelines" title="Permalink to this heading">¶</a></h2>
+<p>Before you submit a pull request, check that it meets these guidelines:</p>
+<ol class="arabic simple">
+<li><p>Update docs.</p>
+<ul class="simple">
+<li><p>Use docstrings to document new functions, and use (hopefully concise)
+inline comments as appropriate.</p>
+<ul>
+<li><p>Follow the conventions defined by <a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">PEP 257</a> and <a class="reference external" href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings">Google Python Style Guide</a>.</p></li>
+</ul>
+</li>
+<li><p>Document broader concepts and capture API changes and additions
+in the <a class="reference external" href="https://github.com/doblabs/easy-as-pypi-appdirs/tree/release/docs">user documentation</a>.</p></li>
+</ul>
+</li>
+<li><p>Include tests.</p>
+<ul class="simple">
+<li><p>If a pull request adds new classes or methods, they should be tested,
+either implicitly, because they’re already called by an existing test.
+Or they should be tested explicitly, because you added new tests for them.</p></li>
+<li><p>We strive for test coverage in the high-90s (it’s too tedious to hit
+all branches and get 100%), but we do not enforce it.
+Please provide tests that provide majority coverage of your new code
+(you can ignore or consider error handling branches less important to
+cover, but all branches would still be good to test!).</p></li>
+</ul>
+</li>
+<li><p>Commit sensibly.</p>
+<ul class="simple">
+<li><p>Each commit should be succinct and singular in focus.
+Refer to <a class="reference internal" href="#rebase-and-squash">rebasing and squashing</a>, above.</p>
+</li>
+<li><p>Rebase your work atop develop (as <a class="reference internal" href="#rebase-atop-develop">mentioned above</a>)
+before creating the PR, or after making any requested
+changes.</p>
+</li>
+</ul>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-all</span></code>.</p>
+<ul class="simple">
+<li><p>‘nough said.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="debugging-tips">
+<h2><a class="toc-backref" href="#id13">Debugging Tips</a><a class="headerlink" href="#debugging-tips" title="Permalink to this heading">¶</a></h2>
+<p>To run one test or a subset of tests, you can specify a substring
+expression using the <code class="docutils literal notranslate"><span class="pre">-k</span></code> option with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make test TEST_ARGS=&quot;-k NAME_OF_TEST_OR_SUB_MODULE&quot;
+</pre></div>
+</div>
+<p>The substring will be Python-evaluated. As such, you can test multiple
+tests using <code class="docutils literal notranslate"><span class="pre">or</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">'test_method</span> <span class="pre">or</span> <span class="pre">test_other'</span></code>.
+Or you can exclude tests using <code class="docutils literal notranslate"><span class="pre">not</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">'not</span> <span class="pre">test_method'</span></code>.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">readline</span></code> functionality will not work from any breakpoint
+you encounter under <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>. (For example, pressing the Up arrow
+will print a control character sequence to the terminal, rather than
+showing the last command you ran.)</p>
+<ul class="simple">
+<li><p>If you want to interact with the code at runtime,
+run <code class="docutils literal notranslate"><span class="pre">pytest</span></code> directly (see next).</p></li>
+</ul>
+<p>If you’d like to break into a debugger when a test fails, run <code class="docutils literal notranslate"><span class="pre">pytest</span></code>
+directly and have it start the interactive Python debugger on errors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pytest --pdb tests/
+</pre></div>
+</div>
+<p>If you’d like a more complete stack trace when a test fails, add verbosity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pytest -v tests/
+
+# Or, better yet, two vees!
+$ python -m pytest -vv tests/
+</pre></div>
+</div>
+<p>If you’d like to run a specific test, use <code class="docutils literal notranslate"><span class="pre">-k</span></code>, as mentioned above. E.g.,:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pytest -k test__repr__no_start_no_end tests/
+</pre></div>
+</div>
+<p>Put it all together to quickly debug a broken test.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pytest --pdb -vv -k &lt;test_name&gt; tests/
+</pre></div>
+</div>
+<p>You can also set breakpoints in the code with <a class="reference external" href="https://docs.python.org/3/library/pdb.html"><code class="docutils literal notranslate"><span class="pre">pdb</span></code></a>.
+Simply add a line like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pdb</span><span class="p">;</span> <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To test against other Python versions than what is setup in your <a class="reference external" href="https://virtualenv.pypa.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">virtualenv</span></code></a>,
+you can use <a class="reference external" href="https://tox.readthedocs.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">tox</span></code></a> and name an environment with the <a class="reference external" href="https://tox.readthedocs.io/en/latest/config.html#conf-envlist"><code class="docutils literal notranslate"><span class="pre">envlist</span></code></a> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tox -e NAME_OR_ENVIRONMENT
+</pre></div>
+</div>
+</section>
+<section id="style-guide">
+<h2><a class="toc-backref" href="#id14">Style Guide</a><a class="headerlink" href="#style-guide" title="Permalink to this heading">¶</a></h2>
+<p>Code style should be readily apparent by reading existing code.</p>
+<section id="style-enforcement">
+<h3><a class="toc-backref" href="#id15">Style Enforcement</a><a class="headerlink" href="#style-enforcement" title="Permalink to this heading">¶</a></h3>
+<p>The style of new code can be easily and incontrovertibly verified
+by running various developer tasks.</p>
+<ol class="arabic">
+<li><p>You can lint the code easily with one command.</p>
+<p>But you have your choice of which one command to run.</p>
+<p>The following three commands are essentially equivalent, and run the code linter:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># The Makefile lint task:</span>
+$ make lint
+
+<span class="c1"># is similar to the tox task:</span>
+$ tox -e flake8
+
+<span class="c1"># is just like running flake8:</span>
+$ flake8 setup.py easy_as_pypi_appdirs/ tests/
+</pre></div>
+</div>
+</li>
+<li><p>You can lint the docs easily with one or two commands.</p>
+<p>The inline docstrings used to create the documentation can be verified with
+the docstrings linter, which returns nonzero on error. (You can also build
+the docs, but the builder is a little more forgiving and doesn’t complain
+as much as the linter.)</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the docstrings linter:</span>
+$ tox -e pydocstyle
+
+<span class="c1"># Generate the reST docs (peruse the output for errors and warnings):</span>
+$ make docs
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="verify-import-statement-order" start="3">
+<li><p>You can verify import statement order manually.</p>
+<p>Imports are grouped by classification, and then ordered alphabetically
+within each group.</p>
+<p>The <a class="reference external" href="https://github.com/timothycrosley/isort"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a> tool will automatically fix import statements to conform.</p>
+<p>But <a class="reference external" href="https://github.com/timothycrosley/isort"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a> also commits certain atrocities such as removing comments
+from <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> and removing trailing file blank lines, the former
+of which is not easy to work-around, so <a class="reference external" href="https://github.com/timothycrosley/isort"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a> is not a part of the
+default <a class="reference external" href="https://tox.readthedocs.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">tox</span></code></a> tasks. You must be run <a class="reference external" href="https://github.com/timothycrosley/isort"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a> manually.</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>$ tox -e isort
+</pre></div>
+</div>
+<p>You will likely find that <a class="reference external" href="https://github.com/timothycrosley/isort"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a> makes unintended changes, and you will
+have to do a selective commit, e.g., <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">-p</span> <span class="pre">&lt;file&gt;</span></code>, while reverting
+other changes, e.g., <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">--</span> <span class="pre">setup.cfg</span></code>.</p>
+</li>
+</ol>
+</section>
+<section id="style-reference">
+<h3><a class="toc-backref" href="#id16">Style Reference</a><a class="headerlink" href="#style-reference" title="Permalink to this heading">¶</a></h3>
+<p>The project style tracks as closely as possible to community conventions,
+mostly established in 2001 by Python’s creator, Guido van Rossum, and others:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8 – Style Guide for Python Code</a></p></li>
+<li><p><a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">PEP 257 – Docstring Conventions</a></p></li>
+</ul>
+<p>In lieu of
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0287/">PEP 287 – reStructuredText Docstring Format</a>,
+the project prefers Google-style docstrings, as defined in the
+<a class="reference external" href="https://google.github.io/styleguide/pyguide.html">Google Python Style Guide</a>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://google.github.io/styleguide/pyguide.html#381-docstrings">Google-style docstrings convention</a></p></li>
+</ul>
+<p>When building the HTML documentation from the sources,
+Google-style docstrings are recognized by a
+<a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a>
+extension:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">napoleon</a>:
+Support for NumPy and Google style docstrings.</p></li>
+</ul>
+</section>
+<section id="conventional-deviations">
+<h3><a class="toc-backref" href="#id17">Conventional Deviations</a><a class="headerlink" href="#conventional-deviations" title="Permalink to this heading">¶</a></h3>
+<p>The conventions outlined in <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a>
+are enforced by the <a class="reference external" href="http://flake8.pycqa.org/en/latest/">Flake8</a> linter, with
+the following custom rules:</p>
+<ul>
+<li><p>Use a maximum line length of 89 characters.</p>
+<p>This accommodates two files side-by-side in an editor on a small laptop screen.</p>
+<p>It also makes code more quickly readable, e.g., think of the width of columns
+in a newspaper or magazine.</p>
+</li>
+<li><p><em>Disabled:</em> “<strong>W391</strong>: blank line at end of file”.</p>
+<p>Ending every file with a blank line accommodates the developer jumping
+their cursor to the bottom of a file in a text editor (say, by pressing
+<code class="docutils literal notranslate"><span class="pre">&lt;Ctrl-End&gt;</span></code>) and knowing the cursor will always land in the same
+column (rather than landing at the end of some arbitrary-length line).</p>
+</li>
+<li><p><em>Disabled:</em> “<strong>W503</strong>: line break before binary operator”.</p>
+<p>This produces, IMO, more readable code.</p>
+<p>For instance, write this:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">some_thing</span>
+    <span class="ow">and</span> <span class="n">another</span>
+    <span class="ow">and</span> <span class="n">another_thing</span><span class="p">):</span>
+</pre></div>
+</div>
+<p>or write this:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span>
+  <span class="n">some_thing</span>
+  <span class="ow">and</span> <span class="n">another</span>
+  <span class="ow">and</span> <span class="n">another_thing</span>
+<span class="p">):</span>
+</pre></div>
+</div>
+<p>but do not write this:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">some_thing</span> <span class="ow">and</span>
+    <span class="n">another</span> <span class="ow">and</span>
+    <span class="n">another_thing</span><span class="p">):</span>
+</pre></div>
+</div>
+</li>
+<li><p><em>Disabled:</em> “<strong>W605</strong>: invalid escape sequence”.</p>
+<p>This rules incorrectly fires on some regex expression,
+such as <code class="docutils literal notranslate"><span class="pre">\d{2}</span></code>, thus, shunned.</p>
+</li>
+</ul>
+<p>There are some unwritten rules (because there are unenforceable by
+the existing linters, by way of not being features), including:</p>
+<ul>
+<li><p>Keep methods <em>small and focused</em>.</p>
+<p>Use function-level scoping to break up a long method into many
+smaller pieces.</p>
+<p>When you use lots of smaller methods rather than one larger method,
+it has the side effect of forcing you to better document the code,
+by forcing you to consider and assign method names to each function.</p>
+<p>While this project does not need to be strict about method length –
+in Ruby, for instance, the <a class="reference external" href="https://docs.rubocop.org/rubocop/index.html">RuboCop</a>
+linter enforces a <a class="reference external" href="https://docs.rubocop.org/rubocop/cops_metrics.html#metricsmethodlength">maximum method length</a>
+of 10 lines, by default –
+it’s a good idea to strive for shorter methods, and it’s not all that
+difficult to do, once you develop your own tricks.</p>
+<p>(For instance, one could write a long function at first, and then break
+it up into smaller, more coherent pieces, selecting multiple lines of code
+at once, hitting <code class="docutils literal notranslate"><span class="pre">&lt;Tab&gt;</span></code> to indent the code one stop, then adding <code class="docutils literal notranslate"><span class="pre">def</span></code>
+lines to each grouping of code and assigning descriptive method names.)</p>
+</li>
+<li><p><em>Prefer</em> single quotes over double quotes. (This is a loose rule).</p>
+<p>In other programming languages, like Bash and Ruby, double-quoted strings
+are interpolated, but single-quoted strings are not. This affects whether
+or not certain characters need to be escaped with a delimiter. And it
+can cause unintended consequences, e.g., a developer uses double quotation
+marks but forgets to escape characters within the string.</p>
+<p>One rule we could enforce is to use double quotes for human-readable
+strings, and to use single quotes for all other strings. But human-
+readable strings should already be encased in the localization method,
+e.g., <code class="docutils literal notranslate"><span class="pre">_(&quot;I'm</span> <span class="pre">human-readable!&quot;)</span></code>, so this demarcation has little
+additional utility.</p>
+<p>So do what feels right in the moment. Oftentimes, using single quotes
+is easiest, because the developer can avoid the Shift key and type the
+quotation mark with one finger.</p>
+</li>
+<li><p>Use a single underscore prefix to indicate <em>private</em> functions and methods.</p>
+<p>E.g.,: <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">_my_private_method():</span> <span class="pre">...</span></code>.</p>
+</li>
+<li><p>Python 2 compatibility has been retired.</p>
+<p>These conventions are no longer necessary (and were removed from the code):</p>
+<ul class="simple">
+<li><p>Declare the encoding at the top of every file: <code class="docutils literal notranslate"><span class="pre">-*-</span> <span class="pre">coding:</span> <span class="pre">utf-8</span> <span class="pre">-*-</span></code></p></li>
+<li><p>Use <em>absolute_import</em> and <em>unicode_literals</em> from the <code class="docutils literal notranslate"><span class="pre">__future__</span></code> package.</p></li>
+<li><p>Use <em>six.text_type</em> to cast a string (to Unicode).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="of-readability">
+<h3><a class="toc-backref" href="#id18">Of Readability</a><a class="headerlink" href="#of-readability" title="Permalink to this heading">¶</a></h3>
+<p>Concerning Writing <em>Tests, Docstrings, Comments, and Documentation</em>:</p>
+<ul>
+<li><p>Strive to write code that is <em>self-documenting</em>.</p>
+<p>Use <em>expressive</em> variable and methods names (and use long names, if they need to be).</p>
+<p>Break long functions into a collection of shorter methods. This will inherently
+document how the long function works if you give each smaller unit of work a
+descriptive method name.</p>
+<p>Use well-named, intermediate variables to make code more readable, rather than
+writing a long one-liner. By naming intermediate values, you will provide
+inherent documentation to the code.</p>
+</li>
+<li><p>Prefer <em>tests and coverage</em> over docstrings and documentation.</p>
+<p>You are encouraged to spend your time writing self-documenting code, and to
+develop tests that are illustrative of the usage of the new code, rather than
+worrying about writing docstrings and documentation, which can be tedious and
+time consuming to write (and to read! if you made it this far, dear
+reader!). Written documentation is also likely to become outdated quickly,
+as new code is added and old code is changed, and documents lie in the dust.
+(Which is not to say that docstrings have no utility! Just that docstrings
+are essentially worthless if what you documented has no test coverage, say.)</p>
+</li>
+</ul>
+</section>
+<section id="altogether-now">
+<h3><a class="toc-backref" href="#id19">Altogether Now</a><a class="headerlink" href="#altogether-now" title="Permalink to this heading">¶</a></h3>
+<p>Save for running <a class="reference external" href="https://github.com/timothycrosley/isort"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a> (<a class="reference internal" href="#verify-import-statement-order">see above</a>),
+you can run all linter and test tasks with one 3-letter command:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>$ tox
+</pre></div>
+</div>
+<p>Once this command is passing, you should be good to commit (or rebase) your
+work and to submit a <a class="reference internal" href="#pull-request-guidelines">Pull Request</a>.</p>
+</section>
+</section>
+<section id="contributor-code-of-conduct">
+<h2><a class="toc-backref" href="#id20">Contributor Code of Conduct</a><a class="headerlink" href="#contributor-code-of-conduct" title="Permalink to this heading">¶</a></h2>
+<p>Please respect and adhere to the <a class="reference external" href="code-of-conduct.html">Code of Conduct</a>
+(please also read it!).</p>
+<p>** 🐬 Happy 🐠 easy-as-pypi-appdirs 🦖 Hacking!! 🐡 **</p>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="code-of-conduct.html" class="btn btn-neutral float-right" title="Code of Conduct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="easy_as_pypi_appdirs.html" class="btn btn-neutral float-left" title="easy_as_pypi_appdirs package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright Landon Bouma.
+
+    </p>
+  </div>
+    
+    
+      Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

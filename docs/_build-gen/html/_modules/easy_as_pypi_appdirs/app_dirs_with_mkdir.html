@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>easy_as_pypi_appdirs.app_dirs_with_mkdir &mdash; easy-as-pypi-appdirs 0.0.0.post62.dev0+2d1528b documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> easy-as-pypi-appdirs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Help Us Improve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Developer Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">Software License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">Project History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">easy-as-pypi-appdirs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>easy_as_pypi_appdirs.app_dirs_with_mkdir</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for easy_as_pypi_appdirs.app_dirs_with_mkdir</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This file exists within &#39;easy-as-pypi-appdirs&#39;:</span>
+<span class="c1">#</span>
+<span class="c1">#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018-2020 Landon Bouma. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted,  free of charge,  to any person obtaining a</span>
+<span class="c1"># copy of this software and associated documentation files (the &quot;Software&quot;),</span>
+<span class="c1"># to deal in the Software without restriction, including without limitation</span>
+<span class="c1"># the rights to use, copy, modify, merge,  publish,  distribute, sublicense,</span>
+<span class="c1"># and/or  sell copies  of the Software,  and to permit persons  to whom the</span>
+<span class="c1"># Software  is  furnished  to do so,  subject  to  the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The  above  copyright  notice  and  this  permission  notice  shall  be</span>
+<span class="c1"># included  in  all  copies  or  substantial  portions  of  the  Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE  SOFTWARE  IS  PROVIDED  &quot;AS IS&quot;,  WITHOUT  WARRANTY  OF ANY KIND,</span>
+<span class="c1"># EXPRESS OR IMPLIED,  INCLUDING  BUT NOT LIMITED  TO THE WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</span>
+<span class="c1"># IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE  FOR ANY</span>
+<span class="c1"># CLAIM,  DAMAGES OR OTHER LIABILITY,  WHETHER IN AN ACTION OF CONTRACT,</span>
+<span class="c1"># TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE</span>
+<span class="c1"># SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;AppDirs subclass adds mkdir side effect.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">update_wrapper</span>
+
+<span class="kn">import</span> <span class="nn">appdirs</span>
+
+<span class="kn">from</span> <span class="nn">.exists_or_mkdirs</span> <span class="kn">import</span> <span class="n">must_ensure_directory_exists</span>
+<span class="kn">from</span> <span class="nn">.singleton</span> <span class="kn">import</span> <span class="n">Singleton</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;AppDirsWithMkdir&#39;</span><span class="p">,</span>
+    <span class="c1"># PRIVATE:</span>
+    <span class="c1">#  &#39;mkdir_side_effect&#39;,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">mkdir_side_effect</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_mkdir_side_effect</span><span class="p">(</span><span class="n">app_dirs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">app_dir_path</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">app_dirs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">app_dirs</span><span class="o">.</span><span class="n">create</span><span class="p">:</span>
+            <span class="c1"># Ensure path exists, which might raise, most likely one of:</span>
+            <span class="c1">#   PermissionError, FileExistsError, or NotADirectoryError.</span>
+            <span class="n">must_ensure_directory_exists</span><span class="p">(</span><span class="n">app_dir_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">app_dir_path</span>
+
+    <span class="k">return</span> <span class="n">update_wrapper</span><span class="p">(</span><span class="n">_mkdir_side_effect</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+
+<span class="c1"># aka AppDirsWithMkdirSideEffect</span>
+<div class="viewcode-block" id="AppDirsWithMkdir"><a class="viewcode-back" href="../../easy_as_pypi_appdirs.html#easy_as_pypi_appdirs.app_dirs_with_mkdir.AppDirsWithMkdir">[docs]</a><span class="k">class</span> <span class="nc">AppDirsWithMkdir</span><span class="p">(</span><span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">Singleton</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Singleton AppDirs with ``mkdir`` side effect.</span>
+
+<span class="sd">    - As a Singleton, this class can be instantiated and used without</span>
+<span class="sd">      knowing the appname, provided some bootstrap code registers it.</span>
+
+<span class="sd">      E.g., when the app is first loaded, have it call::</span>
+
+<span class="sd">        first_instance = AppDirsWithMkdir(appname=&#39;my-awesome-app&#39;)</span>
+
+<span class="sd">      and then, later, access the same instance by instantiating anew:</span>
+
+<span class="sd">        user_data_dir = AppDirsWithMkdir().user_data_dir</span>
+
+<span class="sd">    - Has a Side effect, which is that, just by querying a directory</span>
+<span class="sd">      path, this class creates that path, or ensures it exists.</span>
+
+<span class="sd">      The author (lb) isn&#39;t super jazzed by this &quot;feature&quot;, but it</span>
+<span class="sd">      was useful to get a downstream app up and running more easily</span>
+<span class="sd">      without having to manage mkdir&#39;ing application directories...</span>
+<span class="sd">      and now it&#39;s been baked in so long I don&#39;t want to spend the</span>
+<span class="sd">      time changing it... it&#39;s just something of which to be aware:</span>
+
+<span class="sd">      - Asking for an application directory path may create that path.</span>
+
+<span class="sd">    - Regarding Singleton (again), which is not the most respected</span>
+<span class="sd">      pattern (some might say it&#39;s always a smell), consider this</span>
+<span class="sd">      classic discussion on ways to implement Singleton in Python,</span>
+<span class="sd">      and whether or not they&#39;re a good idea:</span>
+
+<span class="sd">      - *Creating a singleton in Python*:</span>
+
+<span class="sd">        https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Although the class is a Singleton, a user may need to access the class</span>
+    <span class="c1"># without actually creating it or before it&#39;s actually created. So here&#39;s</span>
+    <span class="c1"># a (hacky) class member to indicate when the singleton instance is ready.</span>
+    <span class="n">is_ready</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add create flag value to instance.&quot;&quot;&quot;</span>
+        <span class="c1"># The appdirs.AppDirs base class takes a number of parameters:</span>
+        <span class="c1">#   appname=None,</span>
+        <span class="c1">#   appauthor=None,</span>
+        <span class="c1">#   version=None,</span>
+        <span class="c1">#   roaming=False,</span>
+        <span class="c1">#   multipath=False,</span>
+        <span class="c1"># but we only care about appname.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AppDirsWithMkdir</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raise_if_appname_not_specified</span><span class="p">()</span>
+        <span class="n">AppDirsWithMkdir</span><span class="o">.</span><span class="n">is_ready</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_ensure_dirs_on_query</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare two AppDirsWithMkdir using the ``appname`` for each object.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">appname</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">appname</span>
+
+    <span class="k">def</span> <span class="nf">_raise_if_appname_not_specified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">appname</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;DEV: Call register_application before using AppDirs or AppDirsWithMkdir.&#39;</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_default_ensure_dirs_on_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># FIXME: (lb): I&#39;m not super cool with this side-effect:</span>
+        <span class="c1">#          Calling any property herein will cause its</span>
+        <span class="c1">#          directory path to be created! Creating paths</span>
+        <span class="c1">#          should be a deliberate action and not a side effect</span>
+        <span class="c1">#          of just asking for a path. In any case, it currently</span>
+        <span class="c1">#          works this way, so just rolling with the flow, for now.</span>
+        <span class="c1">#        See Click: it has concept of lazy-creating paths, i.e.,</span>
+        <span class="c1">#          only create path when a file therein opened for write.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># ***</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">safe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return parent object, without `mkdirs -p` side effect.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">AppDirsWithMkdir</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="c1"># ***</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">user_data_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``user_data_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">user_data_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">site_data_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``site_data_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">site_data_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">user_config_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``user_config_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">user_config_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">site_config_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``site_config_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">site_config_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">user_cache_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``user_cache_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">user_cache_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">user_state_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``user_state_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">user_state_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@mkdir_side_effect</span>
+    <span class="k">def</span> <span class="nf">user_log_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return ``user_log_dir``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">appdirs</span><span class="o">.</span><span class="n">AppDirs</span><span class="o">.</span><span class="n">user_log_dir</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1"># ***</span>
+
+<span class="c1"># ***</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright Landon Bouma.
+
+    </p>
+  </div>
+    
+    
+      Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

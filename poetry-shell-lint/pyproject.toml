@@ -1,0 +1,46 @@
+# This psuedo project exists because of dependency conflicts between
+# Sphinx and flake8 (and we include doc8 herein because it's part of
+# the same `make lint` that runs flake8).
+#
+# - *Unable to install latest version of flake8 and Sphinx together*
+#   https://github.com/sphinx-doc/sphinx/issues/10241
+#
+# At issue, if you include all the dev libraries in the top-level pyproject.toml,
+# `poetry install` fails against the latest Sphinx and flake8, e.g.,:
+#   ... sphinx (5.2.3) depends on importlib-metadata (>=4.8) ...
+#   ... flake8 (5.0.4) depends on importlib-metadata (>=1.1.0,<4.3) ...
+# If you try downgrading Sphinx, then it conflicts with the doc8 package:
+#   ... sphinx (4.5.0) depends on docutils (>=0.14,<0.18) ...
+#   ... doc8 (1.0.0) depends on docutils (>=0.19,<0.21) ...
+#
+# The author is at a loss for a better solution. In fact, I'm not sure
+# there is a better solution, at least not if we expect to use Poetry.
+
+[tool.poetry]
+name = "poetry-shell-lint"
+version = "0.0.0"
+description = ""
+authors = []
+readme = "README.md"
+packages = [{include = "poetry_shell_lint"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+# - "Style checker for Sphinx (or other) RST documentation"
+#
+#   https://launchpad.net/doc8
+#   https://pypi.org/project/doc8
+doc8 = ">=1.0.0"
+
+# - "the modular source code checker: pep8, pyflakes and co"
+#
+#   https://gitlab.com/pycqa/flake8
+#   https://pypi.org/project/flake8
+flake8 = ">=5.0.4"
+

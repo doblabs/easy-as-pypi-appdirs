@@ -22,6 +22,8 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
+"""Singleton metaclass."""
+
 __all__ = (
     'Singleton',
 )
@@ -40,6 +42,11 @@ class Singleton(type):
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
+        """Return Singleton for specified class and optional arguments.
+
+        Creates Singleton if necessary, or verifies specified arguments
+        match previously-created Singleton for the same arguments.
+        """
         fresh_cls = cls not in cls._instances
         if fresh_cls or args or kwargs:
             new_instance = super(Singleton, cls).__call__(*args, **kwargs)

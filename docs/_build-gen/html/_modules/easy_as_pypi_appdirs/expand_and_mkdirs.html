@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>easy_as_pypi_appdirs.expand_and_mkdirs &mdash; easy-as-pypi-appdirs 0.0.0.post62.dev0+2d1528b documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> easy-as-pypi-appdirs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Help Us Improve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code-of-conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Developer Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">Software License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history.html">Project History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">easy-as-pypi-appdirs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>easy_as_pypi_appdirs.expand_and_mkdirs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for easy_as_pypi_appdirs.expand_and_mkdirs</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This file exists within &#39;easy-as-pypi-appdirs&#39;:</span>
+<span class="c1">#</span>
+<span class="c1">#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018-2020 Landon Bouma. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Permission is hereby granted,  free of charge,  to any person obtaining a</span>
+<span class="c1"># copy of this software and associated documentation files (the &quot;Software&quot;),</span>
+<span class="c1"># to deal in the Software without restriction, including without limitation</span>
+<span class="c1"># the rights to use, copy, modify, merge,  publish,  distribute, sublicense,</span>
+<span class="c1"># and/or  sell copies  of the Software,  and to permit persons  to whom the</span>
+<span class="c1"># Software  is  furnished  to do so,  subject  to  the following conditions:</span>
+<span class="c1">#</span>
+<span class="c1"># The  above  copyright  notice  and  this  permission  notice  shall  be</span>
+<span class="c1"># included  in  all  copies  or  substantial  portions  of  the  Software.</span>
+<span class="c1">#</span>
+<span class="c1"># THE  SOFTWARE  IS  PROVIDED  &quot;AS IS&quot;,  WITHOUT  WARRANTY  OF ANY KIND,</span>
+<span class="c1"># EXPRESS OR IMPLIED,  INCLUDING  BUT NOT LIMITED  TO THE WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</span>
+<span class="c1"># IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE  FOR ANY</span>
+<span class="c1"># CLAIM,  DAMAGES OR OTHER LIABILITY,  WHETHER IN AN ACTION OF CONTRACT,</span>
+<span class="c1"># TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE</span>
+<span class="c1"># SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.</span>
+
+<span class="sd">&quot;&quot;&quot;Helper function tries to make AppDirs path directories, if necessary, or raises.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">gettext</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">.app_dirs_with_mkdir</span> <span class="kn">import</span> <span class="n">AppDirsWithMkdir</span>
+<span class="kn">from</span> <span class="nn">.exists_or_mkdirs</span> <span class="kn">import</span> <span class="n">must_ensure_directory_exists</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;must_ensure_appdirs_path&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">DEFAULT_APPDIRS_FILE_BASENAME_FMT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span>
+
+
+<div class="viewcode-block" id="must_ensure_appdirs_path"><a class="viewcode-back" href="../../easy_as_pypi_appdirs.html#easy_as_pypi_appdirs.expand_and_mkdirs.must_ensure_appdirs_path">[docs]</a><span class="k">def</span> <span class="nf">must_ensure_appdirs_path</span><span class="p">(</span>
+    <span class="n">file_basename</span><span class="p">,</span>
+    <span class="n">dir_dirname</span><span class="p">,</span>
+    <span class="n">appdirs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">basename_fmt</span><span class="o">=</span><span class="n">DEFAULT_APPDIRS_FILE_BASENAME_FMT</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the path to a file stored in a subdirectory of an AppDirs directory.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_must_ensure_appdirs_path</span><span class="p">():</span>
+        <span class="n">app_dir_path</span> <span class="o">=</span> <span class="n">must_use_user_cache_dir_unless_appdirs_dir</span><span class="p">()</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="n">expand_path_and_ensure_parents_exist</span><span class="p">(</span><span class="n">app_dir_path</span><span class="p">)</span>
+        <span class="n">must_verify_path_does_not_exist_or_is_a_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_path</span>
+
+    <span class="k">def</span> <span class="nf">must_use_user_cache_dir_unless_appdirs_dir</span><span class="p">():</span>
+        <span class="c1"># Returns the app_dir caller specified, or AppDirs.user_cache_dir.</span>
+        <span class="k">if</span> <span class="n">appdirs_dir</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">appdirs_dir</span>
+
+        <span class="k">return</span> <span class="n">must_use_user_cache_dir</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">must_use_user_cache_dir</span><span class="p">():</span>
+        <span class="c1"># Repackages mkdir side effect exception if raises, and re-raises;</span>
+        <span class="c1"># otherwise returns fallback app. dir. for path, `user_cache_dir`.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AppDirsWithMkdir</span><span class="p">()</span><span class="o">.</span><span class="n">user_cache_dir</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">exceptional_path</span> <span class="o">=</span> <span class="n">AppDirsWithMkdir</span><span class="p">()</span><span class="o">.</span><span class="n">safe</span><span class="o">.</span><span class="n">user_cache_dir</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> ‘</span><span class="si">{}</span><span class="s1">’ </span><span class="si">{}</span><span class="s1"> “</span><span class="si">{}</span><span class="s1">” (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">),</span>
+                <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Failed to create&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;user_cache_dir&#39;</span><span class="p">,</span>
+                <span class="n">_</span><span class="p">(</span><span class="s1">&#39;path at&#39;</span><span class="p">),</span>
+                <span class="n">exceptional_path</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">expand_path_and_ensure_parents_exist</span><span class="p">(</span><span class="n">app_dir_path</span><span class="p">):</span>
+        <span class="n">subdir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app_dir_path</span><span class="p">,</span> <span class="n">dir_dirname</span><span class="p">)</span>
+        <span class="c1"># This must() raises, e.g., PermissionError, if os.makedirs fails.</span>
+        <span class="n">must_ensure_directory_exists</span><span class="p">(</span><span class="n">subdir_path</span><span class="p">)</span>
+        <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir_path</span><span class="p">,</span> <span class="n">basename_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_basename</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">full_path</span>
+
+    <span class="k">def</span> <span class="nf">must_verify_path_does_not_exist_or_is_a_file</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">full_path</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1"> ‘</span><span class="si">{}</span><span class="s1">’ </span><span class="si">{}</span><span class="s1"> “</span><span class="si">{}</span><span class="s1">”&#39;</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">),</span>
+            <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Path exists for&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;user_cache_dir&#39;</span><span class="p">,</span>
+            <span class="n">_</span><span class="p">(</span><span class="s1">&#39;but it‘s not a file&#39;</span><span class="p">),</span>
+            <span class="n">full_path</span><span class="p">,</span>
+
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_must_ensure_appdirs_path</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright Landon Bouma.
+
+    </p>
+  </div>
+    
+    
+      Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
