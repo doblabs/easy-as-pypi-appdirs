@@ -2,6 +2,8 @@
 .. easy-as-pypi-appdirs Documentation
 .. ##################################
 
+.. vim:tw=0:ts=3:sw=3:et:norl:nospell:ft=rst
+
 .. .. |easy-as-pypi-appdirs| replace:: ``easy-as-pypi-appdirs``
 .. .. _easy-as-pypi-appdirs: https://github.com/doblabs/easy-as-pypi-appdirs
 

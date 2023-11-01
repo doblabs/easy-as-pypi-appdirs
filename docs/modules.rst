@@ -1,5 +1,5 @@
-easy_as_pypi_appdirs
-====================
+src
+===
 
 .. toctree::
    :maxdepth: 4
