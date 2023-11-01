@@ -34,5 +34,6 @@ pytest_plugins = (
 
 @pytest.fixture
 def app_name():
+    """Return Python package name munged for tests."""
     return 'easy-as-pypi-appdirs-tests'
 

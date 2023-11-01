@@ -22,6 +22,8 @@
 # TORT OR OTHERWISE,  ARISING FROM,  OUT OF  OR IN  CONNECTION WITH THE
 # SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN   THE  SOFTWARE.
 
+"""AppDirs subclass adds mkdir side effect."""
+
 from functools import update_wrapper
 
 import appdirs
@@ -104,6 +106,7 @@ class AppDirsWithMkdir(appdirs.AppDirs, metaclass=Singleton):
         self._default_ensure_dirs_on_query()
 
     def __eq__(self, other):
+        """Compare two AppDirsWithMkdir using the ``appname`` for each object."""
         return self.appname == other.appname
 
     def _raise_if_appname_not_specified(self):
