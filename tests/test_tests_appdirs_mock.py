@@ -46,8 +46,22 @@ class TestTestsAppdirsMock():
         assert not os.path.exists(adir_path)
 
     def test_tests_xdg_appdirs_mock_side_effect(self, xdg_appdirs):
+        # 2022-10-04: Testing on macOS via GitHub Actions now, and the
+        # `assert not os.path.exists(adir_path)` in the next test,
+        # test_tests_xdg_appdirs_mock_safe_effect, fails. So we'll remove
+        # that directory at the end of this function. And we'll assert
+        # that the directory does not exist at the start of this test.
+        adir_path = xdg_appdirs.safe.user_cache_dir
+        assert not os.path.exists(adir_path)
+
         adir_path = xdg_appdirs.user_cache_dir
         assert os.path.exists(adir_path)
+
+        # Not sure why, but next text fails in macOS (via GitHub actions)
+        # because directory exists. So remove the directory. This os.rmdir
+        # is not necessary when I test locally on Ubuntu (I have not tried
+        # locally on macOS).
+        os.rmdir(adir_path)
 
     def test_tests_xdg_appdirs_mock_safe_effect(self, xdg_appdirs):
         adir_path = xdg_appdirs.safe.user_cache_dir
