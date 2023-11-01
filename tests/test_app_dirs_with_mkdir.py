@@ -67,7 +67,7 @@ class TestAppDirsWithMkdir(object):
             appdir = app_dirs.register_application(self.app_name)
             appdir.create = create
             # FYI: When testing, if this assert fires and you're running
-            # `py.test --pdb`, entering e.g., `appdir.user_data_dir` at the
+            # `python -m pytest --pdb`, entering e.g., `appdir.user_data_dir` at the
             # pdb prompt shows the non-mocked value! But if you capture the
             # value first and print it, it's correct. So in code you'd have:
             #   show_actual = appdir.user_data_dir
