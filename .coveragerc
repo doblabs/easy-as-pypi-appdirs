@@ -1,9 +1,0 @@
-# vim:tw=0:ts=2:sw=2:et:norl:ft=dosini
-
-# This file exists within 'easy-as-pypi-appdirs':
-#
-#   https://github.com/doblabs/easy-as-pypi-appdirs#🛣
-
-[run]
-source=easy_as_pypi_appdirs
-
