@@ -45,7 +45,7 @@ easy-as-pypi-appdirs
 
 ``AppDirs`` overlay with ``mkdir -p`` side effect and Singleton access.
 
-.. Install with ``pip``::
+.. Install with ``pipx``::
 ..
-..     pip3 install easy-as-pypi-appdirs
+..     pipx install easy-as-pypi-appdirs
 
