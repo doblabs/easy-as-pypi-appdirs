@@ -7,14 +7,14 @@ easy-as-pypi-appdirs
   :alt: Build Status
 
 .. image:: https://codecov.io/gh/doblabs/easy-as-pypi-appdirs/branch/develop/graph/badge.svg
-  :target: https://codecov.io/gh/doblabs/easy-as-pypi-appdirs
+  :target: https://app.codecov.io/gh/doblabs/easy-as-pypi-appdirs
   :alt: Coverage Status
 
 .. .. image:: https://readthedocs.org/projects/easy-as-pypi-appdirs/badge/?version=latest
 ..   :target: https://easy-as-pypi-appdirs.readthedocs.io/en/latest/
 ..   :alt: Documentation Status
 
-.. image:: https://img.shields.io/github/release/doblabs/easy-as-pypi-appdirs.svg?style=flat
+.. image:: https://img.shields.io/github/v/release/doblabs/easy-as-pypi-appdirs.svg?style=flat
   :target: https://github.com/doblabs/easy-as-pypi-appdirs/releases
   :alt: GitHub Release Status
 
