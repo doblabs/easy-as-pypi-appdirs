@@ -28,7 +28,7 @@ import os
 
 from easy_as_pypi_appdirs import (
     must_ensure_directory_exists,
-    must_ensure_file_path_dirred
+    must_ensure_file_path_dirred,
 )
 
 

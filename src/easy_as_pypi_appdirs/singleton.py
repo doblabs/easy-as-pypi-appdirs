@@ -24,9 +24,7 @@
 
 """Singleton metaclass."""
 
-__all__ = (
-    'Singleton',
-)
+__all__ = ("Singleton",)
 
 
 class Singleton(type):
@@ -58,11 +56,10 @@ class Singleton(type):
             cls_instance = cls._instances[cls]
 
         if (args or kwargs) and (new_instance != cls_instance):
-            raise Exception('DEV: Singleton initialized again but differently')
+            raise Exception("DEV: Singleton initialized again but differently")
 
         return cls_instance
 
     @classmethod
     def _reset_instances(cls):
         cls._instances = {}
-

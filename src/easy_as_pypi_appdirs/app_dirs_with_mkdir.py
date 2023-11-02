@@ -32,7 +32,7 @@ from .exists_or_mkdirs import must_ensure_directory_exists
 from .singleton import Singleton
 
 __all__ = (
-    'AppDirsWithMkdir',
+    "AppDirsWithMkdir",
     # PRIVATE:
     #  'mkdir_side_effect',
 )
@@ -113,7 +113,7 @@ class AppDirsWithMkdir(appdirs.AppDirs, metaclass=Singleton):
         if self.appname:
             return
 
-        msg = 'DEV: Call register_application before using AppDirs or AppDirsWithMkdir.'
+        msg = "DEV: Call register_application before using AppDirs or AppDirsWithMkdir."
         raise Exception(msg)
 
     def _default_ensure_dirs_on_query(self):
@@ -180,5 +180,5 @@ class AppDirsWithMkdir(appdirs.AppDirs, metaclass=Singleton):
 
     # ***
 
-# ***
 
+# ***

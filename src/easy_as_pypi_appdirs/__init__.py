@@ -32,7 +32,6 @@ from .app_dirs import register_application  # noqa: F401
 from .app_dirs_with_mkdir import AppDirsWithMkdir as AppDirs  # noqa: F401
 from .exists_or_mkdirs import (  # noqa: F401
     must_ensure_directory_exists,
-    must_ensure_file_path_dirred
+    must_ensure_file_path_dirred,
 )
 from .expand_and_mkdirs import must_ensure_appdirs_path  # noqa: F401
-

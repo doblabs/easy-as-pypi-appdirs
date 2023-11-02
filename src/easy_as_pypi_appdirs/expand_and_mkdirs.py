@@ -24,18 +24,15 @@
 
 """Helper function tries to make AppDirs path directories, if necessary, or raises."""
 
-from gettext import gettext as _
-
 import os
+from gettext import gettext as _
 
 from .app_dirs_with_mkdir import AppDirsWithMkdir
 from .exists_or_mkdirs import must_ensure_directory_exists
 
-__all__ = (
-    'must_ensure_appdirs_path',
-)
+__all__ = ("must_ensure_appdirs_path",)
 
-DEFAULT_APPDIRS_FILE_BASENAME_FMT = '{}'
+DEFAULT_APPDIRS_FILE_BASENAME_FMT = "{}"
 
 
 def must_ensure_appdirs_path(
@@ -67,12 +64,12 @@ def must_ensure_appdirs_path(
         except Exception as err:
             exceptional_path = AppDirsWithMkdir().safe.user_cache_dir
             msg = _(
-                '{}: {} ‘{}’ {} “{}” ({})',
+                "{}: {} ‘{}’ {} “{}” ({})",
             ).format(
-                _('ERROR'),
-                _('Failed to create'),
-                'user_cache_dir',
-                _('path at'),
+                _("ERROR"),
+                _("Failed to create"),
+                "user_cache_dir",
+                _("path at"),
                 exceptional_path,
                 str(err),
             )
@@ -90,16 +87,14 @@ def must_ensure_appdirs_path(
             return
 
         msg = _(
-            '{}: {} ‘{}’ {} “{}”',
+            "{}: {} ‘{}’ {} “{}”",
         ).format(
-            _('ERROR'),
-            _('Path exists for'),
-            'user_cache_dir',
-            _('but it‘s not a file'),
+            _("ERROR"),
+            _("Path exists for"),
+            "user_cache_dir",
+            _("but it‘s not a file"),
             full_path,
-
         )
         raise Exception(msg)
 
     return _must_ensure_appdirs_path()
-

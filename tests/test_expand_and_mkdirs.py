@@ -25,15 +25,11 @@
 """Tests the expand_and_mkdirs.py module."""
 
 import os
-
-import pytest
 from unittest import mock
 
-from easy_as_pypi_appdirs import (
-    must_ensure_appdirs_path,
-    register_application,
-    AppDirs
-)
+import pytest
+
+from easy_as_pypi_appdirs import AppDirs, must_ensure_appdirs_path, register_application
 
 
 class TestMustGetAppDirsSubDirFilePath():

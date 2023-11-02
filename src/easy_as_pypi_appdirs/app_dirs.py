@@ -26,9 +26,7 @@
 
 from .app_dirs_with_mkdir import AppDirsWithMkdir
 
-__all__ = (
-    'register_application',
-)
+__all__ = ("register_application",)
 
 
 def register_application(package_name):
@@ -38,4 +36,3 @@ def register_application(package_name):
     # raise on it having already been called.
     new_singleton = AppDirsWithMkdir(appname=package_name)
     return new_singleton
-

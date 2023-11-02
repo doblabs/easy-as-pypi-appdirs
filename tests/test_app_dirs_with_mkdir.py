@@ -25,9 +25,9 @@
 """Tests the app_dirs_with_mkdir.py module and AppDirsWithMkdir class."""
 
 import os
+from unittest import mock
 
 import pytest
-from unittest import mock
 
 from easy_as_pypi_appdirs import app_dirs
 

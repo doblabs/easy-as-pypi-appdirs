@@ -27,8 +27,8 @@
 import os
 
 __all__ = (
-    'must_ensure_directory_exists',
-    'must_ensure_file_path_dirred',
+    "must_ensure_directory_exists",
+    "must_ensure_file_path_dirred",
 )
 
 
@@ -58,4 +58,3 @@ def must_ensure_file_path_dirred(filename):
     configfile_dir = os.path.dirname(filename)
     if configfile_dir:
         must_ensure_directory_exists(configfile_dir)
-
