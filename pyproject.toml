@@ -65,17 +65,26 @@ include = [
 
 # ***
 
-[tool.easy-as-pypi]
-copyright_years = "2020-2023"
-
-# ***
-
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/doblabs/easy-as-pypi-appdirs/issues"
 "Documentation" = "https://easy-as-pypi-appdirs.readthedocs.io/en/latest"
 "Source Code" = "https://github.com/doblabs/easy-as-pypi-appdirs"
 
 # ***
+
+# YOU: Uncomment and customize to add a CLI entrypoint:
+#
+#   [tool.poetry.scripts]
+#   easy-as-pypi-appdirs = "easy_as_pypi_appdirs:cli"
+
+# ***
+
+[tool.easy-as-pypi]
+copyright_years = "2020-2023"
+
+# ================================================================= #
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+# ================================================================= #
 
 # The default Poetry build-system is these two lines:
 #   requires = ["poetry-core"]
@@ -136,13 +145,6 @@ files = ["src/*/__init__.py"]
 #  patterns = ["(^__version__\\s*(?::.*?)?=\\s*['\\"])[^'\\"]*(['\\"])"]
 # causes "Expected newline or end of document after a statement".
 # - Oh well, default is what we want.
-
-# ***
-
-# YOU: Uncomment and customize to add a CLI entrypoint:
-#
-#   [tool.poetry.scripts]
-#   easy-as-pypi-appdirs = "easy_as_pypi_appdirs:cli"
 
 # ================================================================= #
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
