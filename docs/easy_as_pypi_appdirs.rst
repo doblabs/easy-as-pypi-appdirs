@@ -1,25 +1,53 @@
-############################
-easy-as-pypi-appdirs package
-############################
+easy\_as\_pypi\_appdirs package
+===============================
 
-Module Contents
+Submodules
+----------
+
+easy\_as\_pypi\_appdirs.app\_dirs module
+----------------------------------------
+
+.. automodule:: easy_as_pypi_appdirs.app_dirs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+easy\_as\_pypi\_appdirs.app\_dirs\_with\_mkdir module
+-----------------------------------------------------
+
+.. automodule:: easy_as_pypi_appdirs.app_dirs_with_mkdir
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+easy\_as\_pypi\_appdirs.exists\_or\_mkdirs module
+-------------------------------------------------
+
+.. automodule:: easy_as_pypi_appdirs.exists_or_mkdirs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+easy\_as\_pypi\_appdirs.expand\_and\_mkdirs module
+--------------------------------------------------
+
+.. automodule:: easy_as_pypi_appdirs.expand_and_mkdirs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+easy\_as\_pypi\_appdirs.singleton module
+----------------------------------------
+
+.. automodule:: easy_as_pypi_appdirs.singleton
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
 ---------------
 
-.. (lb): This file is *not* generated like easy-as-pypi-appdirs.rst, modules.rst, etc.
-..
-..       Rather, this file was copyied from a generated docs/easy-as-pypi-appdirs.rst
-..       and altered with additional options.
-..
-..       - Note that the Sphinx and autodoc extension docs suggest these options
-..         should be settable via docs/conf.py, but I had no such success.
-..
-..       - See comment in Makefile docs-html re: controlling which auto-generated
-..         files are created.
-
-.. automodule:: easy-as-pypi-appdirs
-    :members:
-    :special-members: __new__
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
-
+.. automodule:: easy_as_pypi_appdirs
+   :members:
+   :undoc-members:
+   :show-inheritance:
