@@ -48,6 +48,8 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJson(github.event) }}
 
+  # ***
+
   pip-smoke-test:
     name: pip Smoke test PyPI release
 
@@ -133,6 +135,8 @@ jobs:
     outputs:
       is_app: ${{ steps.check-is-app.outputs.is_app }}
 
+  # ***
+
   pipx-smoke-test:
     name: pipx Smoke test PyPI release
 
@@ -205,5 +209,24 @@ jobs:
           [ "$($PACKAGE_NAME version)" = "$PACKAGE_NAME version $VERSION" ] \
             || exit 1
         shell: bash
+
+  # ***
+
+  run-release-cascade:
+    name: Run release cascade
+
+    runs-on: ubuntu-latest
+
+    needs: [pip-smoke-test, pipx-smoke-test]
+
+    # Note the 'if' is skipped if any needs were skipped, unless always.
+    if: always()
+      && needs.pip-smoke-test.result == 'success'
+      && (needs.pipx-smoke-test.result == 'success'
+          || needs.pipx-smoke-test.result == 'skipped')
+
+    steps:
+      - uses: ./.github/workflows/run-release-cascade.yml
+        secrets: inherit
 
 # ***

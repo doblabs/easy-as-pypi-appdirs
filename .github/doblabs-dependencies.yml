@@ -1,0 +1,5 @@
+---
+
+easy-as-pypi:
+  - doblabs/easy-as-pypi-appdirs
+  - doblabs/easy-as-pypi-getver
