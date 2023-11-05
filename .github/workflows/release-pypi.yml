@@ -10,7 +10,6 @@
 
 ---
 
-# USYNC: release-pypi.yml name ↔ run-reversioning.yml on-workflow_run.
 name: Publish release to PyPI
 
 # This workflow reacts to the 'release' event, which sets:
@@ -97,8 +96,9 @@ jobs:
       # MEH: We could support HEAD not being tagged (e.g., user wants to
       # tag and release previous commit) if we looked instead for highest
       # version tag. But it's a handful of shell code to copy here.
-      # - CXREF: ~/.kit/sh/sh-git-nubs/bin/git-nubs.sh
-      #     git_latest_version_tag
+      # - CXREF: https://github.com/landonb/sh-git-nubs#🌰
+      #     ~/.kit/sh/sh-git-nubs/bin/git-nubs.sh
+      #       git_latest_version_tag
       - name: Fail if VERSION_TAG undiscoverable
         run: exit 1
         if: env.VERSION_TAG == ''
@@ -435,10 +435,11 @@ jobs:
       # REFER: https://cli.github.com/manual/gh_workflow_run
       - name: Run external smoke-test workflow
         run: |
-          # USYNC: 'PyPI Release Smoke test'
-          #
-          echo "gh workflow run 'PyPI Release Smoke test'"
-          gh workflow run 'PyPI Release Smoke test' \
+          # USYNC: Use the same name as the workflow.
+          # - Search for: 'PyPI Smoke test'
+          workflow_name="PyPI Smoke test"
+          echo "gh workflow run \"${workflow_name}\""
+          gh workflow run "${workflow_name}" \
             -f "INDEX_PIP=${INDEX_PIP}" \
             -f "INDEX_PIPX=${INDEX_PIPX}" \
             -f "PACKAGE_NAME=${PACKAGE_NAME}" \

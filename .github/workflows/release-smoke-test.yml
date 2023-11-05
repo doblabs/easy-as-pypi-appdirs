@@ -5,8 +5,9 @@
 
 ---
 
-# USYNC: 'PyPI Release Smoke test'
-name: PyPI Release Smoke test
+# USYNC: This name is used by `gh workflow run`.
+# - Search for: 'PyPI Smoke test'
+name: PyPI Smoke test
 
 on:
   workflow_dispatch:
@@ -24,7 +25,7 @@ on:
         required: true
         type: string
 
-run-name: 🎒 — Smoke test — ${{ inputs.VERSION }}
+run-name: 🎒 — Smoke test — ${{ inputs.VERSION }} ... & Cascade dispatch
 
 env:
   # Lest: "The `python-version` input is not set. The version
@@ -37,19 +38,6 @@ env:
   PYTHON_VERSION: "3.11"
 
 jobs:
-
-  blather:
-    name: Blather
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump github.event
-        run: echo "${GITHUB_EVENT}"
-        shell: bash
-        env:
-          GITHUB_EVENT: ${{ toJson(github.event) }}
-
-  # ***
-
   pip-smoke-test:
     name: pip Smoke test PyPI release
 
@@ -212,10 +200,11 @@ jobs:
 
   # ***
 
-  run-release-cascade:
-    name: Run release cascade
+  update-cascade:
+    name: Run update & release cascade
 
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/update-cascade.yml
+    secrets: inherit
 
     needs: [pip-smoke-test, pipx-smoke-test]
 
@@ -224,9 +213,3 @@ jobs:
       && needs.pip-smoke-test.result == 'success'
       && (needs.pipx-smoke-test.result == 'success'
           || needs.pipx-smoke-test.result == 'skipped')
-
-    steps:
-      - uses: ./.github/workflows/run-release-cascade.yml
-        secrets: inherit
-
-# ***
