@@ -7,6 +7,9 @@
 
 name: Release Cascade — Version
 
+run-name: 👣 — Cascade — 3.) Version ${{
+  github.event_name == 'workflow_dispatch' && '(via User)' || '' }}
+
 on:
 
   # CXREF:
@@ -19,13 +22,25 @@ on:
 
   # Via GitHub Actions website button
   workflow_dispatch:
+    inputs:
+      bump-part:
+        description: 'Bump part'
+        type: choice
+        # It is intentional that this only lets users bump patch or alpha.
+        # It is encouraged that users push tags using `git-bump-version-tag`
+        # from their terminal rather than using this workflow_dispatch.
+        options:
+          - alpha
+          - patch
+          - least
+        default: 'alpha'
+      cascade-dispatch:
+        description: 'Start the cascade!'
+        type: boolean
+        default: false
+        required: false
 
-run-name: 👣 — Cascade — 3.) Version
-
-# env:
-#   # USYNC: https://github.com/actions/python-versions/releases
-#   # - USYNC: PYTHON_VERSION usage in .github/workflows/*.
-#   PYTHON_VERSION: 3.11
+# ***
 
 # The workflow runs on *all* closed PRs, so we need to filter.
 #
@@ -33,7 +48,7 @@ run-name: 👣 — Cascade — 3.) Version
 #
 #   - Check that the PR was merged. If not, there's nothing to do.
 #
-#   - Look for the poetry.lock tag, added by .github/bin/update-poetry.
+#   - Look for the 'poetry.lock' tag, added by .github/bin/update-poetry.
 #
 # - We'll run the job but fail if the tagged and merged PR looks fishy:
 #
@@ -45,6 +60,11 @@ run-name: 👣 — Cascade — 3.) Version
 #
 #       $ jq .head_ref pull_request.json
 #       "update-deps/202311041112/9f9255a89e96"
+#
+#     - Where pull_request.json is a local copy of a ${{ github }} dump:
+#
+#       - run: echo "${GITHUB_OBJ}"
+#         env: GITHUB_OBJ: ${{ toJson(github) }}
 #
 # - There are a few more items we could verify, but currently don't:
 #
@@ -81,6 +101,7 @@ jobs:
 
   verify-merged-pr:
 
+    # USYNC: UPDEPS_LABEL_NAME_POETRY_LOCK="poetry.lock"
     if: github.event_name != 'workflow_dispatch'
       && github.event.pull_request.merged == true
       && contains(github.event.pull_request.labels.*.name, 'poetry.lock')
@@ -88,7 +109,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "The PR was merged, and labeled poetry.lock"
+      - run: echo "The PR was merged, and it's labeled 'poetry.lock'"
 
       # Verify tag name looks like one of ours.
       - name: Verify tag name format — “${{ github.head_ref }}”
@@ -97,8 +118,27 @@ jobs:
         env:
           HEAD_REF: ${{ github.head_ref }}
 
-  #   # Steps are designed to exit nonzero to fail, so if we made it
-  #   # this far, the PR looks like one of ours.
+      # The verify-merged-pr steps are designed to exit nonzero to fail,
+      # and then the next, bump job will check verify-merged-pr.result.
+
+  # ***
+
+  wrangle-ci-tags:
+    name: Wrangle CI tags
+
+    # Note that inhibit-cascade only applies if version/release not inhibited.
+    # - USYNC: UPDEPS_LABEL_NAME_INHIBIT_VERSION="ci-inhibit-version"
+    #   USYNC: UPDEPS_LABEL_NAME_INHIBIT_CASCADE="ci-inhibit-cascade"
+    if: (github.event_name == 'workflow_dispatch' && ! inputs.cascade-dispatch)
+      || (contains(github.event.pull_request.labels.*.name, 'poetry.lock')
+        && ! contains(github.event.pull_request.labels.*.name, 'ci-inhibit-version')
+        && contains(github.event.pull_request.labels.*.name, 'ci-inhibit-cascade')
+      )
+
+    uses: ./.github/workflows/ci-tags-wrangle.yml
+
+    with:
+      inhibit-cascade: true
 
   # ***
 
@@ -106,17 +146,22 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    needs: [verify-merged-pr]
+    needs: [verify-merged-pr, wrangle-ci-tags]
 
-    if: always()
+    # USYNC: UPDEPS_LABEL_NAME_INHIBIT_VERSION="ci-inhibit-version"
+    if: ${{ ! cancelled()
+      && (needs.wrangle-ci-tags.result == 'success'
+          || needs.wrangle-ci-tags.result == 'skipped')
       && (github.event_name == 'workflow_dispatch'
           || needs.verify-merged-pr.result == 'success'
          )
+      && ! contains(
+        github.event.pull_request.labels.*.name, 'ci-inhibit-version'
+      ) }}
 
     steps:
-
       - name: Checkout this repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # Fetch all history, so rev-parse HEAD is real HEAD,
           # and we get tag history, so git-bump can read version.
@@ -138,7 +183,7 @@ jobs:
       # ***
 
       - name: Checkout git-bump
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'landonb/git-bump-version-tag'
           # INERT: Pin the version. But we own the tool, so trust in HEAD.
@@ -151,15 +196,67 @@ jobs:
 
       - name: Prepare committer
         run: |
+          assert_git_email_known_ci () {
+            test -n "${UPDEPS_USER_EMAIL}" \
+              && return 0 || true
+
+            >&2 echo "ERROR: Please set UPDEPS_USER_EMAIL " \
+              "organization or project variable"
+
+            exit 1
+          }
+          assert_git_email_known_ci
+
           cd ./versionee/
-          git config user.email "${UPDEPS_USER_EMAIL:-landonb@users.noreply.github.com}"
-          git config user.name "${UPDEPS_USER_NAME:-release-bot}"
+          git config user.email "${UPDEPS_USER_EMAIL}"
+          git config user.name \
+            "${UPDEPS_USER_NAME_VERSION:-${UPDEPS_USER_NAME:-release-bot}}"
+        env:
+          UPDEPS_USER_EMAIL: ${{ vars.UPDEPS_USER_EMAIL }}
+          UPDEPS_USER_NAME: ${{ vars.UPDEPS_USER_NAME }}
+          UPDEPS_USER_NAME_VERSION: ${{ vars.UPDEPS_USER_NAME_VERSION }}
 
       - name: Bump it...
         run: |
           export PATH="$(pwd)/versioner/bin:${PATH}"
           cd ./versionee/
-          # LATER/2023-11-04: Remove tracing
-          set -x
-          git bump-version-tag l
-          set +x
+          # By default, runs:
+          #  git bump-version-tag least
+          echo "git bump-version-tag \"${BUMP_PART}\""
+          git bump-version-tag "${BUMP_PART}"
+        env:
+          # Uses bump-part input if workflow_dispatch;
+          # or looks for special CI label if pull_request;
+          # finally falls-back 'least' (which is bump's default).
+          # - SAVVY: If you start a normal version release cascade but then
+          #   reach a project on pre-release, this bump, because 'least',
+          #   will maintain that pre-release. And then on the next cascade
+          #   dispatch, the prerelease will propagate to the next repo.
+          #   Which seems like a good thing: If one project in the chain
+          #   is on pre-release, then everything downstream should also
+          #   be considered alpha. Alternatively, if the cascade didn't turn
+          #   prerelease on, the prerelease project wouldn't get updated
+          #   in downstream projects, but maybe upstreamer projects would.
+          #   So perhaps it'd be fine to not propagate prerelease when
+          #   encountered along the cascade -- but the CI isn't quite
+          #   plumbed for that case. Rather than update-cascade.yml use
+          #   the PRERELEASE flag passed around (based off the current
+          #   version tag), update-merged.yml would have to add a
+          #   'ci-prerelease' or 'ci-prerelease-cascade' tag to the repo,
+          #   based on the 'ci-prelease' PR label that update-deps.yml
+          #   added (based on the PRERELEASE input from update-cascade.yml).
+          #   Then update-cascade would have to read that tag.
+          #   - TL;DR: If you don't want one prerelease project to make the
+          #     rest of the cascade prerelease versions, you need to add a
+          #     new 'ci-prerelease' tag to ci-tags-wrangle.yml that will be
+          #     set in update-merged.yml (based on same-named PR label),
+          #     and that will be read in update-cascade.yml (and dispatch
+          #     to next repo's update-deps.yml).
+          #     - DEBAR: Do not change from Normal to Prerelease cascade
+          #              when cascade reaches a Prerelease project.
+          # USYNC: UPDEPS_LABEL_NAME_PRERELEASE="ci-prerelease"
+          BUMP_PART: ${{
+            inputs.bump-part
+            || (contains(github.event.pull_request.labels.*.name, 'ci-prerelease')
+                && 'alpha')
+            || 'least' }}

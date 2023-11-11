@@ -5,35 +5,64 @@
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-# FIXME/2023-11-04 04:43: Customize this for each project.
-# - Should workflow pass it in?
-# - What about running locally?
-# USAGE: From GHA, e.g.,
-#   REPO_ORG_PROJ="${{ github.repository }}" ./.github/bin/update-poetry
-REPO_ORG_PROJ="${REPO_ORG_PROJ:-doblabs/easy-as-pypi}"
+UPDEPS_LABEL_NAME_POETRY_LOCK="${UPDEPS_LABEL_NAME_POETRY_LOCK:-\
+poetry.lock}"
+UPDEPS_LABEL_DESC_POETRY_LOCK="${UPDEPS_LABEL_DESC_POETRY_LOCK:-\
+Pull requests that update poetry.lock}"
+UPDEPS_LABEL_NAME_INHIBIT_VERSION="${UPDEPS_LABEL_NAME_INHIBIT_VERSION:-\
+ci-inhibit-version}"
+UPDEPS_LABEL_DESC_INHIBIT_VERSION="${UPDEPS_LABEL_DESC_INHIBIT_VERSION:-\
+Tells CI not to version after auto-merge}"
+UPDEPS_LABEL_NAME_INHIBIT_CASCADE="${UPDEPS_LABEL_NAME_INHIBIT_CASCADE:-\
+ci-inhibit-cascade}"
+UPDEPS_LABEL_DESC_INHIBIT_CASCADE="${UPDEPS_LABEL_DESC_INHIBIT_CASCADE:-\
+Tells CI not to cascade after release}"
+UPDEPS_LABEL_NAME_PRERELEASE="${UPDEPS_LABEL_NAME_PRERELEASE:-\
+ci-prerelease}"
+UPDEPS_LABEL_DESC_PRERELEASE="${UPDEPS_LABEL_DESC_PRERELEASE:-\
+Tells CI to use prerelease versions}"
+UPDEPS_LABELS_COLOR="${UPDEPS_LABELS_COLOR:-74e34f}"
 
-# FIXME/2023-11-03: Make the strings in functions below user-configurable,
-# including: Branch name, Commit message, PR name/title.
-UPDEPS_LABEL_NAME="poetry.lock"
+# CXREF: These are GH organization variables that GHA injects into env:
+#   https://github.com/organizations/doblabs/settings/variables/actions
+# - If you're running locally, git-config values will be used instead.
+UPDEPS_USER_EMAIL="${UPDEPS_USER_EMAIL}"
+UPDEPS_USER_NAME="${UPDEPS_USER_NAME_UPDEPS:-${UPDEPS_USER_NAME:-update-poetry}}"
 
-# FIXME/2023-11-04: Let user set these, somehow.
-UPDEPS_USER_EMAIL="landonb@users.noreply.github.com"
-UPDEPS_USER_NAME="update-poetry"
+# Optional: Customizable Git and GitHub message.
+UPDEPS_COMMIT_MESSAGE="${UPDEPS_COMMIT_MESSAGE:-\
+Build: Deps: Update poetry.lock [update-deps cascade]}"
+UPDEPS_PR_TITLE="${UPDEPS_PR_TITLE:-Build: Bump poetry.lock (bump all)}"
+UPDEPS_PR_BODY="${UPDEPS_PR_BODY:-Cascading release}"
+
+# The UPDEPS_REPO_ORG_PROJ environ will be inferred at runtime.
+# - You can also set from workflow, e.g.,
+#     UPDEPS_REPO_ORG_PROJ="${{ github.repository }}" ./.github/bin/update-poetry
+UPDEPS_REPO_ORG_PROJ="${UPDEPS_REPO_ORG_PROJ}"
+
+# DEVXX: How you might test locally (but note PR self-approve fails):
+__UPDEPS__CPYST__="
+  UPDEPS_FAKE_UPDATE=true \
+  UPDEPS_LABEL_INHIBIT_VERSION=true \
+  UPDEPS_LABEL_INHIBIT_CASCADE=true \
+  UPDEPS_LABEL_PRERELEASE=true \
+    ./.github/bin/update-poetry
+"
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 source_deps () {
-  insist_cmd 'git'
-  insist_cmd 'poetry'
-  insist_cmd 'gh'
+  _updeps_insist_cmd 'git'
+  _updeps_insist_cmd 'poetry'
+  _updeps_insist_cmd 'gh'
 
   # Ensure coreutils installed (from Linux pkg. mgr., or from macOS Homebrew).
-  insist_cmd 'realpath'
+  _updeps_insist_cmd 'realpath'
 
   # For `print_canon_scoped_head` (which uses `identify_scope_ends_at` from git-put-wise).
   # - Supports running this script on local Dev repo with PRIVATE commits.
-  # CXREF: ~/.kit/git/ohmyrepos/lib/update-faithful.sh
-  #   https://github.com/landonb/ohmyrepos#😤
+  # CXREF: ~/.kit/git/git-update-faithful/lib/update-faithful.sh
+  #   https://github.com/thegittinsgood/git-update-faithful#⛲
   # $0 on GHA: ./.github/bin/update-poetry
   # pwd on GHA: /home/runner/work/easy-as-pypi/easy-as-pypi
   . "$(dirname "$(realpath "$0")")/../deps/git-update-faithful/lib/update-faithful.sh"
@@ -44,7 +73,7 @@ source_deps () {
   # . "$(dirname "$(realpath "$0")")/../../deps/sh-git-nubs/bin/git-nubs.sh"
 }
 
-insist_cmd () {
+_updeps_insist_cmd () {
   local cmdname="$1"
 
   command -v "${cmdname}" > /dev/null && return 0 || true
@@ -65,40 +94,54 @@ print_prog () {
 update_poetry_update () {
   assert_git_status_tidy
 
-  print_prog "poetry update... "
+  assert_git_email_known
 
-  # Meh: We could restrict to updating just our org's repos,
-  # e.g., `poetry update doblabs/<pkg> doblabs/<pkg> ...`,
-  # but no reason not to update everything.
-  poetry update -q --lock
+  local branch_name
+  branch_name="$(print_branch_name)"
 
-  print_prog "✓\n"
+  local remote_name
+  remote_name="$(git_upstream_remote)"
+
+  poetry_update_lock
 
   assert_git_status_0_or_1_changes
 
   assert_git_status_only_poetry_lock_changed_if_any
 
-  if test -z "$(git status --porcelain=v1)"; then
-    echo "false"
-  else
-    local branch_name
-    branch_name="$(print_branch_name)"
-
-    local remote_name
-    remote_name="$(git_upstream_remote)"
-
+  if test -n "$(git status --porcelain=v1)"; then
     prepare_branch "${branch_name}" "${remote_name}"
 
     poetry_update_commit_changes "${branch_name}"
 
-    push_branch "${branch_name}"
+    push_branch "${branch_name}" "${remote_name}"
 
+    local NEW_PR_URL
     gh_pr_create_and_auto_merge_when_checks_finish
 
     resume_old_branch_and_cleanup "${branch_name}"
 
-    echo "true"
+    # E.g., https://github.com/doblabs/easy-as-pypi/pull/51
+    echo "$(basename "${NEW_PR_URL}")"
   fi
+  # else, print nothing, means po-update was a no-op.
+}
+
+# ***
+
+poetry_update_lock () {
+  print_prog "poetry update... "
+
+  if ! ${UPDEPS_FAKE_UPDATE:-false}; then
+    # Meh: We could restrict to updating just our org's repos,
+    # e.g., `poetry update doblabs/<pkg> doblabs/<pkg> ...`,
+    # but no reason not to update everything.
+    poetry update -q --lock
+  else
+    # DEVs: UPDEPS_FAKE_UPDATE is a faker to make (GHA) CI testing quicker.
+    echo "# This line generated by poetry-update-faker" >> poetry.lock
+  fi
+
+  print_prog "✓\n"
 }
 
 # ***
@@ -142,7 +185,12 @@ resume_old_branch_and_cleanup () {
   git checkout -q -
 
   # Delete local branch when this script is run from user terminal (not from GHA).
-  if test -z "${GITHUB_ACTIONS}"; then
+  # - SAVVY: Use 'CI' environ to detect CI environment — this is the first
+  #   environ that GH documents. Other candidates include 'GITHUB_ACTIONS'
+  #   and 'GITHUB_ACTION'.
+  #   - REFER:
+  # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+  if ! ${CI:-false}; then
     # FIXME: Might need Big D.
     # Ignore stderr message that -q doesn't inhibit:
     #   warning: deleting branch 'foo' that has been merged to
@@ -158,25 +206,13 @@ poetry_update_commit_changes () {
 
   print_prog "git commit... "
 
-  # REFER/2023-11-04: I found GITHUB_ACTIONS when inspecting GHA runtime
-  #                   with `env`, not sure if it's documented.
-
-  if ${GITHUB_ACTIONS:-false} \
-    && test -z "$(git config user.email)" \
-    && test -z "$(git config user.name)" \
-  ; then
-    # We could use git's -c option, e.g.,
-    #   local commit_user=""
-    #   commit_user="-c user.email=\"${email}\" -c user.name=\"${name}\""
-    # but then we'd need to use eval because of the embedded quotes, e.g.,
-    #   # Using eval, because of the possibly empty string commit_user.
-    #   eval "git ${commit_user} commit -q -m "..."
-    # So we'll go the cleaner route.
+  # See comment above: GHA defines CI=true.
+  if ${CI:-false}; then
     git config user.email "${UPDEPS_USER_EMAIL}"
     git config user.name "${UPDEPS_USER_NAME}"
   fi
 
-  git commit -q -m "Build: Deps: Update poetry.lock [update-deps cascade]"
+  git commit -q -m "${UPDEPS_COMMIT_MESSAGE}"
 
   print_prog "✓\n"
 }
@@ -193,9 +229,7 @@ poetry_update_commit_changes () {
 
 push_branch () {
   local branch_name="$1"
-
-  local remote_name
-  remote_name="$(git_upstream_remote)"
+  local remote_name="$2"
 
   print_prog "git push '${remote_name}'... "
 
@@ -224,24 +258,75 @@ push_branch () {
 # - We don't default to the sole remote if that's all there is.
 #   We're looking for a specific github.com/<org>/<proj> remote.
 git_upstream_remote () {
-# FIXME/2023-11-04: Remove this trace:
->&2 echo git remote -v
->&2 git remote -v
->&2 echo
+  if [ -z "${UPDEPS_REPO_ORG_PROJ}" ]; then
+    local repo_url
 
-  if [ -z "${REPO_ORG_PROJ}" ]; then
-    >&2 echo "ERROR: Please set REPO_ORG_PROJ before calling update-poetry"
+    repo_url="$(print_upstream_remote_url)" || exit 1
 
-    exit 1
+    if [ -n "${repo_url}" ]; then
+      # Trim, e.g., https://github.com/doblabs/easy-as-pypi → doblabs/easy-as-pypi
+      # - Result is same as ${{ github.repository }}
+      UPDEPS_REPO_ORG_PROJ="$(
+        echo "${repo_url}" | sed 's#^.*/\([^/]*/[^/]*\)$#\1#'
+      )"
+
+      if [ -z "${UPDEPS_REPO_ORG_PROJ}" ]; then
+        >&2 echo "ERROR: Could not deduce project repo from URL: ${repo_url}"
+
+        exit 1
+      fi
+    else
+      >&2 echo "ERROR: Could not deduce remote URL from remotes or pyproject.toml"
+      >&2 echo "- Check pyproject.toml values for 'repository' or 'homepage'"
+      >&2 echo "  from [tool.poetry] or [tool.poetry.urls]"
+      >&2 echo "- Check \`git remote get-url origin\`"
+
+      exit 1
+    fi
   fi
 
   if ! git_upstream_remote_deduce; then
     # Note that we're ignoring the tracking branch. We want our GH
     # org/proj repo. Which we didn't find.
     >&2 echo "ERROR: Could not determine the upstream GitHub remote"
-    >&2 echo "- We checked REPO_ORG_PROJ (“${REPO_ORG_PROJ}”)"
+    >&2 echo "- We checked UPDEPS_REPO_ORG_PROJ (“${UPDEPS_REPO_ORG_PROJ}”)"
     >&2 echo "  against these remotes:"
     >&2 echo git remote -v
+
+    exit 1
+  fi
+}
+
+print_upstream_remote_url () {
+  if ${CI:-false}; then
+    git remote get-url "origin"
+  else
+    print_upstream_remote_url_from_pyproject_toml
+  fi
+}
+
+print_upstream_remote_url_from_pyproject_toml () {
+  if ! _updeps_insist_cmd 'tomlq'; then
+    >&2 echo "ERROR: Could not deduce upstream remote"
+    >&2 echo "- Please run from venv with \`tomlq\` installed"
+    >&2 echo "- Or set the 'UPDEPS_REPO_ORG_PROJ' environ"
+
+    exit 1
+  fi
+
+  # REFER: https://github.com/jqlang/jq/issues/354
+  local trim_null="select( . != null )"
+
+  if true \
+    && ! tomlq -r -e ".tool.poetry.repository      | ${trim_null}" "pyproject.toml" \
+    && ! tomlq -r -e ".tool.poetry.urls.repository | ${trim_null}" "pyproject.toml" \
+    && ! tomlq -r -e ".tool.poetry.homepage        | ${trim_null}" "pyproject.toml" \
+    && ! tomlq -r -e ".tool.poetry.urls.homepage   | ${trim_null}" "pyproject.toml" \
+  ; then
+    >&2 echo "ERROR: Could not deduce remote URL from pyproject.toml"
+    >&2 echo "- pyproject.toml is missing 'repository' or 'homepage'"
+    >&2 echo "  from [tool.poetry] or [tool.poetry.urls]"
+    >&2 echo "- You can also set 'UPDEPS_REPO_ORG_PROJ' environ directly"
 
     exit 1
   fi
@@ -250,8 +335,8 @@ git_upstream_remote () {
 git_upstream_remote_deduce () {
   git remote -v \
     | grep \
-        -e "[[:space:]]git@.*:${REPO_ORG_PROJ}\(\.git\)\? (push)\$" \
-        -e "github.com/${REPO_ORG_PROJ}\(\.git\)\? (push)\$" \
+        -e "[[:space:]]git@.*:${UPDEPS_REPO_ORG_PROJ}\(\.git\)\? (push)\$" \
+        -e "github.com/${UPDEPS_REPO_ORG_PROJ}\(\.git\)\? (push)\$" \
     | sed 's/^\([^[:space:]]\+\).*/\1/'
 }
 
@@ -284,41 +369,82 @@ git_upstream_remote_deduce () {
 # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
 
 gh_pr_create_and_auto_merge_when_checks_finish () {
-  gh_label_create
+  gh_label_create_poetry_lock_label
 
-  local new_pr_url
-  new_pr_url="$(gh_pr_create)"
+  local pr_ci_labels=""
+  pr_ci_labels="$(print_pr_ci_labels)"
 
-  gh_pr_set_auto_merge_delete_rebase "${new_pr_url}"
+  NEW_PR_URL="$(gh_pr_create "${pr_ci_labels}")"
 
-  gh_pr_approve "${new_pr_url}"
+  gh_pr_set_auto_merge_delete_rebase "${NEW_PR_URL}"
 
-  print_prog "New PR\n  ${new_pr_url}\n"
+  gh_pr_approve "${NEW_PR_URL}"
+
+  print_prog "New PR\n  ${NEW_PR_URL}\n"
 }
 
-gh_label_create () {
-  print_prog "gh label create ${UPDEPS_LABEL_NAME}...\n"
+gh_label_create_poetry_lock_label () {
+  gh_label_create \
+    "${UPDEPS_LABEL_NAME_POETRY_LOCK}" \
+    "${UPDEPS_LABEL_DESC_POETRY_LOCK}"
+}
 
-  # Here's the label that dependabot uses, for reference:
-  #
-  #   gh label create \
-  #     "dependencies" \
-  #     --description "Pull requests that update a dependency file" \
-  #     --color 0366d6
+# Here's the label that dependabot uses, for reference:
+#
+#   gh label create \
+#     "dependencies" \
+#     --description "Pull requests that update a dependency file" \
+#     --color 0366d6
+
+gh_label_create () {
+  local label_name="$1"
+  local label_desc="$2"
+
+  print_prog "gh label create \"${label_name}\"...\n"
 
   GH_TOKEN=${USER_TOKEN} \
   gh label create -f \
-    "${UPDEPS_LABEL_NAME}" \
-    --description "Pull requests that update poetry.lock" \
-    --color 74e34f
+    "${label_name}" \
+    --description "${label_desc}" \
+    --color "${UPDEPS_LABELS_COLOR}"
+}
+
+# Meh: This feels like TMBL — Too Much Business Logic — than maybe belongs here.
+print_pr_ci_labels () {
+  if ${UPDEPS_LABEL_INHIBIT_VERSION:-false}; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_INHIBIT_VERSION}" \
+      "${UPDEPS_LABEL_DESC_INHIBIT_VERSION}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_INHIBIT_VERSION} "
+  fi
+
+  if ${UPDEPS_LABEL_INHIBIT_CASCADE:-false}; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_INHIBIT_CASCADE}" \
+      "${UPDEPS_LABEL_DESC_INHIBIT_CASCADE}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_INHIBIT_CASCADE} "
+  fi
+
+  if ${UPDEPS_LABEL_PRERELEASE:-false}; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_PRERELEASE}" \
+      "${UPDEPS_LABEL_DESC_PRERELEASE}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_PRERELEASE} "
+  fi
 }
 
 gh_pr_create () {
-  local pr_title="Build: Bump poetry.lock (bump all)"
-  local pr_body="Cascading release"
+  local pr_ci_labels="$1"
+
+  local pr_title="${UPDEPS_PR_TITLE}"
+  local pr_body="${UPDEPS_PR_BODY}"
   local new_pr_url
 
-  print_prog "gh pr create --title \"${pr_title}\" --body \"${pr_body}\"\n"
+  print_prog "gh pr create --title \"${pr_title}\" --body \"${pr_body}\"" \
+    "--label "${UPDEPS_LABEL_NAME_POETRY_LOCK}" ${pr_ci_labels}\n"
 
   # Create PR from user PAT so on auto-merge, it triggers workflow events.
 
@@ -327,7 +453,8 @@ gh_pr_create () {
     gh pr create \
       --title "${pr_title}" \
       --body "${pr_body}" \
-      --label "${UPDEPS_LABEL_NAME}" \
+      --label "${UPDEPS_LABEL_NAME_POETRY_LOCK}" \
+      ${pr_ci_labels} \
     | tail -1
   )"
 
@@ -335,16 +462,16 @@ gh_pr_create () {
 }
 
 gh_pr_set_auto_merge_delete_rebase () {
-  local new_pr_url="$1"
+  local pr_ref="$1"
 
   # Note that --delete-branch has no effect, or at least it was ineffective
   # until I enabled "Automatically delete head branches" (Settings > General),
   # which makes it sound like it's still probably effectiveless.
 
-  print_prog "gh pr merge \"${new_pr_url}\" --auto --delete-branch --rebase\n"
+  print_prog "gh pr merge \"${pr_ref}\" --auto --delete-branch --rebase\n"
 
   GH_TOKEN=${USER_TOKEN} \
-  gh pr merge "${new_pr_url}" --auto --delete-branch --rebase
+  gh pr merge "${pr_ref}" --auto --delete-branch --rebase
 }
 
 # CXREF: https://github.com/doblabs/easy-as-pypi/settings/actions
@@ -360,19 +487,45 @@ gh_pr_set_auto_merge_delete_rebase () {
 #     users cannot approve their own PRs, and when run locally,
 #     pr-create and pr-review run as same user most likely).
 gh_pr_approve () {
-  local new_pr_url="$1"
+  local pr_ref="$1"
 
-  print_prog "gh pr review --approve \"${new_pr_url}\" --comment \"LGTM!\"\n"
+  print_prog "gh pr review --approve \"${pr_ref}\" --comment \"LGTM!\"\n"
 
   # Approve PR using github-actions bot, to bypass anti-self-approve
   # branch protection rule.
 
   GH_TOKEN=${GBOT_TOKEN} \
-  gh pr review "${new_pr_url}" --approve --body "LGTM!" \
+  gh pr review "${pr_ref}" --approve --body "LGTM!" \
     || true
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
+assert_git_email_known () {
+  if ${CI:-false}; then
+    assert_git_email_known_ci
+  else
+    assert_git_email_known_interactive
+  fi
+}
+
+assert_git_email_known_ci () {
+  test -n "${UPDEPS_USER_EMAIL}" \
+    && return 0 || true
+
+  >&2 echo "ERROR: Please set UPDEPS_USER_EMAIL organization or project variable"
+
+  exit 1
+}
+
+assert_git_email_known_interactive () {
+  test -n "$(git config user.email)" \
+    && return 0 || true
+
+  >&2 echo "ERROR: Who are you? \`git config user.email\` says you're nobody"
+
+  exit 1
+}
 
 assert_git_status_tidy () {
   test -z "$(git status --porcelain=v1)" \
@@ -416,12 +569,11 @@ main () {
   update_poetry_update "$@"
 }
 
-# Run the command iff being executed.
-if ! $(printf %s "$0" | grep -q -E '(^-?|\/)(ba|da|fi|z)?sh$' -); then
+if [ "$0" = "${BASH_SOURCE[0]}" ]; then
+  # Being executed, so execute.
   main "$@"
 fi
 
 unset -f main
 unset -f source_deps
-unset -f insist_cmd
 

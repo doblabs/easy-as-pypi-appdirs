@@ -1,6 +1,6 @@
 # vim:tw=0:ts=2:sw=2:et:ft=sh
 # Author: Landon Bouma <https://tallybark.com/>
-# Project: https://github.com/doblabs/ <varies>
+# Project: https://github.com/<varies>
 # Pattern: https://github.com/doblabs/easy-as-pypi#🥧
 # License: MIT
 
@@ -18,7 +18,7 @@ make_develop () {
   _venv_manage_and_activate "${VENV_NAME}" "${VENV_ARGS}" "${VENV_NAME}"
 
   if ${VENV_CREATED} || ${VENV_FORCE:-false} ; then
-    command rm ${EDITABLE_DIR}/poetry.lock
+    command rm -f ${EDITABLE_DIR}/poetry.lock
 
     # MAYBE: Also move pip installs herein and skip if VENV_CREATED already?
     #
@@ -27,7 +27,15 @@ make_develop () {
 
   _venv_install_pip_setuptools_poetry_and_poetry_dynamic_versioning_plugin
 
-  poetry -C ${EDITABLE_DIR} install --with dist,i18n,lint,test,docstyle,docs,extras
+  # Don't assume user's pyproject.toml's poetry.group's match ours.
+  local install_with="${PO_INSTALL_WITH}"
+  if test -z "${install_with}"; then
+    # Specific to EAPP's pyproject.toml, and *many* of its followers
+    # (but not all).
+    install_with="--with dist,i18n,lint,test,docstyle,docs,extras"
+  fi
+
+  poetry -C ${EDITABLE_DIR} install ${install_with}
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #

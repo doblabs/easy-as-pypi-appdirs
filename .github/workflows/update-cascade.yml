@@ -7,16 +7,37 @@
 
 name: Release Cascade — Dispatch
 
+run-name: 👣 — Cascade — 1.) Dispatch ${{
+  github.event_name == 'workflow_dispatch' && '(via User)' || '' }}
+
 on:
   # Via release-smoke-test.yml
   workflow_call:
+    inputs:
+      prerelease:
+        description: 'Pre-release cascade'
+        type: boolean
+        default: false
+        required: false
 
   # Via GitHub Actions website button
   workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Pre-release cascade'
+        type: boolean
+        default: false
+        required: false
 
-run-name: 👣 — Cascade — 1.) Dispatch
+# ***
 
 jobs:
+  wrangle-ci-tags:
+    name: Wrangle CI tags
+    uses: ./.github/workflows/ci-tags-wrangle.yml
+
+  # ***
+
   identify-downstream-repos:
     name: "Find Cascade repos"
 
@@ -25,7 +46,7 @@ jobs:
     steps:
       # CXREF: https://github.com/actions/checkout
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # CXREF: https://github.com/marketplace/actions/yq-portable-yaml-processor
       - name: Probe Yaml config
@@ -55,7 +76,10 @@ jobs:
   dispatch-downstream-repos:
     name: Dispatch downstream repos
 
-    needs: identify-downstream-repos
+    needs: [wrangle-ci-tags, identify-downstream-repos]
+
+    if: needs.wrangle-ci-tags.outputs.old_inhibit_cascade == 'false'
+      && needs.wrangle-ci-tags.outputs.old_inhibit_cascade_always == 'false'
 
     runs-on: ubuntu-latest
 
@@ -73,6 +97,7 @@ jobs:
           # Personal access token created for *my user* with public_repo permissions.
           token: ${{ secrets.PAT__PUBLIC_REPO }}
           repository: ${{ matrix.repo }}
-          # REFER: Uncomment and adjust to send data:
-          #  client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
           event-type: update-deps
+          # REFER: Use JSON blob to pass args using repo-dispatch, e.g.,:
+          #  client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+          client-payload: '{"prerelease": "${{ inputs.prerelease }}"}'

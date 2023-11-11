@@ -7,6 +7,9 @@
 
 name: Release Cascade — Update
 
+run-name: 👣 — Cascade — 2.) Update deps ${{
+  github.event_name == 'workflow_dispatch' && '(via User)' || '' }}
+
 on:
   # Via update-cascade.yml
   repository_dispatch:
@@ -14,9 +17,22 @@ on:
 
   # Via GitHub Actions website button
   workflow_dispatch:
+    inputs:
+      increment-version:
+        description: 'Increment version'
+        type: boolean
+        default: true
+      cascade-dispatch:
+        description: 'Start the cascade!'
+        type: boolean
+        default: false
+      prerelease:
+        description: 'Pre-release cascade'
+        type: boolean
+        default: false
+        required: false
 
-run-name: 👣 — Cascade — 2.) Update deps (via ${{
-  github.event_name == 'workflow_dispatch' && 'User' || 'Upstream' }})
+# ***
 
 env:
   # USYNC: https://github.com/actions/python-versions/releases
@@ -36,7 +52,7 @@ jobs:
       #      echo "event.client_payload.ref: ${{ github.event.client_payload.ref }}"
 
       - name: Checkout this repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.repository.default_branch }}
           # Use the user token, not ${{ github.token }}, so that
@@ -58,19 +74,38 @@ jobs:
 
       - name: Run bin/update-poetry
         id: run-update-poetry
+        # Run poetry-update.
+        # DEVXX: Set UPDEPS_FAKE_UPDATE=true to fake poetry.lock update,
+        #          e.g., if you're testing inter-workflow flow.
         run: |
-          is_new_pr="$( \
-            REPO_ORG_PROJ="${{ github.repository }}" \
-            ./.github/bin/update-poetry
-          )"
-          echo "is_new_pr=${is_new_pr}" >> $GITHUB_OUTPUT
+          export UPDEPS_FAKE_UPDATE=false
+          export UPDEPS_REPO_ORG_PROJ="${{ github.repository }}"
+          export UPDEPS_LABEL_INHIBIT_VERSION="${{ ! inputs.increment-version }}"
+          export UPDEPS_LABEL_INHIBIT_CASCADE="${{ ! inputs.cascade-dispatch }}"
+          export UPDEPS_LABEL_PRERELEASE="${PRERELEASE}"
+
+          env | grep -e "^UPDEPS_"
+
+          new_pr_num="$(./.github/bin/update-poetry)"
+
+          echo "new_pr_num=${new_pr_num}" >> $GITHUB_OUTPUT
         env:
-          # Send both tokens so update-poetry can run gh and self-approve PR.
+          # USER_TOKEN used to call gh-label (manage 'poetry.lock' label).
+          # - USER_TOKEN used on gh-pr-create and gh-pr-merge, and
+          #   GBOT_TOKEN used on gh-pr-review.
           USER_TOKEN: ${{ secrets.USER_PAT }}
           GBOT_TOKEN: ${{ github.token }}
+          # Organization variables.
+          UPDEPS_USER_EMAIL: ${{ vars.UPDEPS_USER_EMAIL }}
+          UPDEPS_USER_NAME: ${{ vars.UPDEPS_USER_NAME }}
+          UPDEPS_USER_NAME_UPDEPS: ${{ vars.UPDEPS_USER_NAME_UPDEPS }}
+          # Input value.
+          PRERELEASE: ${{
+            github.event_name == 'workflow_dispatch' && inputs.prerelease
+            || github.event.client_payload.prerelease == 'true' }}
 
     outputs:
-      is_new_pr: ${{ steps.run-update-poetry.outputs.is_new_pr }}
+      new_pr_num: ${{ steps.run-update-poetry.outputs.new_pr_num }}
 
   # ***
 
@@ -85,4 +120,8 @@ jobs:
 
     needs: poetry-update
 
-    if: needs.poetry-update.outputs.is_new_pr == 'false'
+    if: |
+      needs.poetry-update.result == 'success'
+        && needs.poetry-update.outputs.new_pr_num == ''
+        && (github.event_name != 'workflow_dispatch'
+            || inputs.cascade-dispatch == 'true')
