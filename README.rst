@@ -12,7 +12,7 @@ easy-as-pypi-appdirs
 .. CXREF: https://app.codecov.io/gh/doblabs/easy-as-pypi-appdirs/settings/badge
 
 .. image:: https://codecov.io/gh/doblabs/easy-as-pypi-appdirs/graph/badge.svg?token=dvQIZ22dvK
-  :target: https://codecov.io/gh/doblabs/easy-as-pypi-appdirs
+  :target: https://app.codecov.io/gh/doblabs/easy-as-pypi-appdirs
   :alt: Coverage Status
 
 .. image:: https://readthedocs.org/projects/easy-as-pypi-appdirs/badge/?version=latest
@@ -28,7 +28,7 @@ easy-as-pypi-appdirs
   :alt: PyPI Release Status
 
 .. image:: https://img.shields.io/pypi/pyversions/easy-as-pypi-appdirs.svg
-  :target: https://pypi.python.org/pypi/easy-as-pypi-appdirs/
+  :target: https://pypi.org/project/easy-as-pypi-appdirs/
   :alt: PyPI Supported Python Versions
 
 .. image:: https://img.shields.io/github/license/doblabs/easy-as-pypi-appdirs.svg?style=flat
