@@ -16,8 +16,7 @@ class BarSingleton(object, metaclass=Singleton):
     pass
 
 
-class TestSingleton():
-
+class TestSingleton:
     def test_singleton_returns_same_object_same_classes(self):
         foo1 = FooSingleton()
         foo2 = FooSingleton()
@@ -27,4 +26,3 @@ class TestSingleton():
         foo = FooSingleton()
         bar = BarSingleton()
         assert foo is not bar
-

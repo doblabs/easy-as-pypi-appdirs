@@ -13,15 +13,14 @@ import pytest
 from easy_as_pypi_appdirs import AppDirs, must_ensure_appdirs_path, register_application
 
 
-class TestMustGetAppDirsSubDirFilePath():
-
+class TestMustGetAppDirsSubDirFilePath:
     @pytest.fixture(autouse=True)
     def register_application(self, app_name):
         register_application(app_name)
 
     def _test_must_ensure_appdirs_path(self, appd_base):
-        path_base = 'foo'
-        path_file = 'bar.bat'
+        path_base = "foo"
+        path_file = "bar.bat"
         backup_fullpath = must_ensure_appdirs_path(
             file_basename=path_file,
             dir_dirname=path_base,
@@ -39,7 +38,7 @@ class TestMustGetAppDirsSubDirFilePath():
 
     def test_sans_appdirs_dir(self):
         with mock.patch(
-            'os.makedirs',
+            "os.makedirs",
             new_callable=mock.PropertyMock,
         ) as mock_os_makedirs:
             appd_base = AppDirs().user_cache_dir
@@ -51,10 +50,10 @@ class TestMustGetAppDirsSubDirFilePath():
 
     def test_raises_if_user_cache_dir_cannot_be_created(self, tmp_appdirs):
         with mock.patch(
-            'easy_as_pypi_appdirs.AppDirs.user_cache_dir',
+            "easy_as_pypi_appdirs.AppDirs.user_cache_dir",
             new_callable=mock.PropertyMock,
         ) as mock_user_cache_dir:
-            mock_user_cache_dir.side_effect = Exception('forced test failure')
+            mock_user_cache_dir.side_effect = Exception("forced test failure")
             with pytest.raises(Exception):
                 self._test_must_ensure_appdirs_path(appd_base=None)
 
@@ -64,4 +63,3 @@ class TestMustGetAppDirsSubDirFilePath():
         os.makedirs(file_path)
         with pytest.raises(Exception):
             self._test_must_ensure_appdirs_path(appd_base=None)
-

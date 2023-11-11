@@ -20,7 +20,6 @@ class BarAppDirs(AppDirs, metaclass=Singleton):
 
 
 class TestAppDirsWithMkdirSingleton(object):
-
     @pytest.fixture(autouse=True)
     def resets_instances(self):
         yield  # run the test_().
@@ -34,19 +33,18 @@ class TestAppDirsWithMkdirSingleton(object):
             AppDirs()
 
     def test_raises_on_instantiation_twice_with_different_appnames(self):
-        AppDirs('foo')
+        AppDirs("foo")
         with pytest.raises(Exception):
-            AppDirs('bar')
+            AppDirs("bar")
 
     def test_returns_separate_instances_with_different_classes(self):
-        foo = FooAppDirs('baz')
-        bar = BarAppDirs('baz')
+        foo = FooAppDirs("baz")
+        bar = BarAppDirs("baz")
         assert foo is not bar
 
     def test_returns_same_instance_after_being_initialized(self):
-        foo = AppDirs('baz')
+        foo = AppDirs("baz")
         bar = AppDirs()
         baz = AppDirs()
         assert foo is bar
         assert bar is baz
-

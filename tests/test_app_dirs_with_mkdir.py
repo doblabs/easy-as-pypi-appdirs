@@ -24,7 +24,7 @@ class TestAppDirsWithMkdir(object):
         """Make sure method returns directory."""
         path = tmpdir.strpath
         with mock.patch(
-            'appdirs.{}'.format(app_dirname),
+            "appdirs.{}".format(app_dirname),
             new_callable=mock.PropertyMock,
         ) as mock_app_dir:
             mock_app_dir.return_value = path
@@ -33,15 +33,15 @@ class TestAppDirsWithMkdir(object):
 
             assert getattr(appdir, app_dirname) == path
 
-            kwargs['version'] = None
+            kwargs["version"] = None
             mock_app_dir.assert_called_once_with(self.app_name, None, **kwargs)
 
     def _test_app_dir_creates_file(self, app_dirname, create, tmpdir, faker, **kwargs):
         """Make sure that path creation depends on ``create`` attribute."""
-        path = os.path.join(tmpdir.strpath, '{}'.format(faker.word()))
+        path = os.path.join(tmpdir.strpath, "{}".format(faker.word()))
         # We want NarkAppDirs's call to appdirs.{}_dir to return our tmp path.
         with mock.patch(
-            'appdirs.{}'.format(app_dirname),
+            "appdirs.{}".format(app_dirname),
             new_callable=mock.PropertyMock,
             return_value=path,
         ) as mock_app_dir:
@@ -58,7 +58,7 @@ class TestAppDirsWithMkdir(object):
             #   (pdb) appdir.user_data_dir
             #   '/home/user/.local/share/easy-as-pypi-appdirs-tests'
             assert os.path.exists(getattr(appdir, app_dirname)) is create
-            kwargs['version'] = None
+            kwargs["version"] = None
             mock_app_dir.assert_called_once_with(self.app_name, None, **kwargs)
 
     # ***
@@ -66,14 +66,20 @@ class TestAppDirsWithMkdir(object):
     def test_user_data_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
         self._test_app_dir_returns_directoy(
-            'user_data_dir', tmpdir, roaming=False,
+            "user_data_dir",
+            tmpdir,
+            roaming=False,
         )
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_user_data_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
         self._test_app_dir_creates_file(
-            'user_data_dir', create, tmpdir, faker, roaming=False,
+            "user_data_dir",
+            create,
+            tmpdir,
+            faker,
+            roaming=False,
         )
 
     # ---
@@ -81,14 +87,20 @@ class TestAppDirsWithMkdir(object):
     def test_site_data_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
         self._test_app_dir_returns_directoy(
-            'site_data_dir', tmpdir, multipath=False,
+            "site_data_dir",
+            tmpdir,
+            multipath=False,
         )
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_site_data_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
         self._test_app_dir_creates_file(
-            'site_data_dir', create, tmpdir, faker, multipath=False,
+            "site_data_dir",
+            create,
+            tmpdir,
+            faker,
+            multipath=False,
         )
 
     # ---
@@ -96,14 +108,20 @@ class TestAppDirsWithMkdir(object):
     def test_user_config_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
         self._test_app_dir_returns_directoy(
-            'user_config_dir', tmpdir, roaming=False,
+            "user_config_dir",
+            tmpdir,
+            roaming=False,
         )
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_user_config_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
         self._test_app_dir_creates_file(
-            'user_config_dir', create, tmpdir, faker, roaming=False,
+            "user_config_dir",
+            create,
+            tmpdir,
+            faker,
+            roaming=False,
         )
 
     # ---
@@ -111,46 +129,51 @@ class TestAppDirsWithMkdir(object):
     def test_site_config_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
         self._test_app_dir_returns_directoy(
-            'site_config_dir', tmpdir, multipath=False,
+            "site_config_dir",
+            tmpdir,
+            multipath=False,
         )
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_site_config_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
         self._test_app_dir_creates_file(
-            'site_config_dir', create, tmpdir, faker, multipath=False,
+            "site_config_dir",
+            create,
+            tmpdir,
+            faker,
+            multipath=False,
         )
 
     # ---
 
     def test_user_cache_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
-        self._test_app_dir_returns_directoy('user_cache_dir', tmpdir)
+        self._test_app_dir_returns_directoy("user_cache_dir", tmpdir)
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_user_cache_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
-        self._test_app_dir_creates_file('user_cache_dir', create, tmpdir, faker)
+        self._test_app_dir_creates_file("user_cache_dir", create, tmpdir, faker)
 
     # ---
 
     def test_user_state_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
-        self._test_app_dir_returns_directoy('user_state_dir', tmpdir)
+        self._test_app_dir_returns_directoy("user_state_dir", tmpdir)
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_user_state_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
-        self._test_app_dir_creates_file('user_state_dir', create, tmpdir, faker)
+        self._test_app_dir_creates_file("user_state_dir", create, tmpdir, faker)
 
     # ---
 
     def test_user_log_dir_returns_directoy(self, tmpdir):
         """Make sure method returns directory."""
-        self._test_app_dir_returns_directoy('user_log_dir', tmpdir)
+        self._test_app_dir_returns_directoy("user_log_dir", tmpdir)
 
-    @pytest.mark.parametrize('create', [True, False])
+    @pytest.mark.parametrize("create", [True, False])
     def test_user_log_dir_creates_file(self, tmpdir, faker, create):
         """Make sure that path creation depends on ``create`` attribute."""
-        self._test_app_dir_creates_file('user_log_dir', create, tmpdir, faker)
-
+        self._test_app_dir_creates_file("user_log_dir", create, tmpdir, faker)

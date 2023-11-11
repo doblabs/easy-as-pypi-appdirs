@@ -12,8 +12,7 @@ import pytest
 from easy_as_pypi_appdirs import register_application
 
 
-class TestTestsAppdirsMock():
-
+class TestTestsAppdirsMock:
     @pytest.fixture(autouse=True)
     def register_application(self, app_name):
         register_application(app_name)
@@ -47,4 +46,3 @@ class TestTestsAppdirsMock():
     def test_tests_xdg_appdirs_mock_safe_effect(self, xdg_appdirs):
         adir_path = xdg_appdirs.safe.user_cache_dir
         assert not os.path.exists(adir_path)
-
