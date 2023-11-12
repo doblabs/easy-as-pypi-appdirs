@@ -2056,4 +2056,4 @@ readthedocs = ["sphinx", "sphinx", "sphinx-rtd-theme", "tomli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "ccfca67925dfe0545e7ceedc88571ace974013b7d18039e5979bf6f67258a5a4"
+content-hash = "28b47916c2058a97f9ba6458f09439ec26db5d8fad32433c7e05f16ecd80d469"
