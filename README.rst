@@ -38,14 +38,14 @@ easy-as-pypi-appdirs
 .. |easy-as-pypi-appdirs| replace:: ``easy-as-pypi-appdirs``
 .. _easy-as-pypi-appdirs: https://github.com/doblabs/easy-as-pypi-appdirs
 
-.. |pip| replace:: ``pip``
-.. _pip: https://pip.pypa.io/en/stable/
+.. |pipx| replace:: ``pipx``
+.. _pipx: https://pypa.github.io/pipx/
 
 |
 
 ``AppDirs`` overlay with ``mkdir -p`` side effect and Singleton access.
 
-.. Install with ``pipx``::
+.. Install with |pipx|_::
 ..
 ..     pipx install easy-as-pypi-appdirs
 
