@@ -81,7 +81,8 @@ doblabs/easy-as-pypi-appdirs:
   # # - doblabs/dob
   # - befinance/birdseye
   # Cascade proj-by-proj:
-  - doblabs/easy-as-pypi-config
+  # ISOFF/2023-11-27 01:46: For testing
+  #- doblabs/easy-as-pypi-config
 
 doblabs/easy-as-pypi-config:
   # - doblabs/dob-bright
