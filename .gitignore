@@ -37,6 +37,7 @@
 __pycache__/
 
 # Editable pyproject.toml and .venv-<project> — `make develop`.
+# - USYNC: EDITABLE_DIR ?= .pyproject-editable
 /.pyproject-editable/
 .venv*/
 
@@ -44,6 +45,9 @@ __pycache__/
 # - CXREF: ~/.kit/py/easy-as-pypi/bin/update-faithful
 # - This is jinja2 template source data compiled from pyproject.toml.
 /.pyproject-cache.data
+
+# USYNC: PYPROJECT_PRERELEASE_DIR ?= .pyproject-prerelease
+/.pyproject-prerelease/
 
 # DX artifacts.
 # - USYNC: Matches VIM_QUICKFIX_FLAKE8 from `make flake8`.
