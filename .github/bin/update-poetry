@@ -5,49 +5,147 @@
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-UPDEPS_LABEL_NAME_POETRY_LOCK="${UPDEPS_LABEL_NAME_POETRY_LOCK:-\
-poetry.lock}"
-UPDEPS_LABEL_DESC_POETRY_LOCK="${UPDEPS_LABEL_DESC_POETRY_LOCK:-\
-Pull requests that update poetry.lock}"
-UPDEPS_LABEL_NAME_INHIBIT_VERSION="${UPDEPS_LABEL_NAME_INHIBIT_VERSION:-\
-ci-inhibit-version}"
-UPDEPS_LABEL_DESC_INHIBIT_VERSION="${UPDEPS_LABEL_DESC_INHIBIT_VERSION:-\
-Tells CI not to version after auto-merge}"
-UPDEPS_LABEL_NAME_INHIBIT_CASCADE="${UPDEPS_LABEL_NAME_INHIBIT_CASCADE:-\
-ci-inhibit-cascade}"
-UPDEPS_LABEL_DESC_INHIBIT_CASCADE="${UPDEPS_LABEL_DESC_INHIBIT_CASCADE:-\
-Tells CI not to cascade after release}"
-UPDEPS_LABEL_NAME_PRERELEASE="${UPDEPS_LABEL_NAME_PRERELEASE:-\
-ci-prerelease}"
-UPDEPS_LABEL_DESC_PRERELEASE="${UPDEPS_LABEL_DESC_PRERELEASE:-\
-Tells CI to use prerelease versions}"
-UPDEPS_LABELS_COLOR="${UPDEPS_LABELS_COLOR:-74e34f}"
-
 # CXREF: These are GH organization variables that GHA injects into env:
 #   https://github.com/organizations/doblabs/settings/variables/actions
 # - If you're running locally, git-config values will be used instead.
 UPDEPS_USER_EMAIL="${UPDEPS_USER_EMAIL}"
 UPDEPS_USER_NAME="${UPDEPS_USER_NAME_UPDEPS:-${UPDEPS_USER_NAME:-update-poetry}}"
 
-# Optional: Customizable Git and GitHub message.
-UPDEPS_COMMIT_MESSAGE="${UPDEPS_COMMIT_MESSAGE:-\
-Build: Deps: Update poetry.lock [update-deps cascade]}"
-UPDEPS_PR_TITLE="${UPDEPS_PR_TITLE:-Build: Bump poetry.lock (bump all)}"
-UPDEPS_PR_BODY="${UPDEPS_PR_BODY:-Cascading release}"
-
-# The UPDEPS_REPO_ORG_PROJ environ will be inferred at runtime.
-# - You can also set from workflow, e.g.,
-#     UPDEPS_REPO_ORG_PROJ="${{ github.repository }}" ./.github/bin/update-poetry
+# UPDEPS_REPO_ORG_PROJ is inferred at runtime when this script is run locally.
+# - The CI workflow sets this to ${{ github.repository }}, e.g., <org>/<proj>.
 UPDEPS_REPO_ORG_PROJ="${UPDEPS_REPO_ORG_PROJ}"
 
-# DEVXX: How you might test locally (but note PR self-approve fails):
+# ***
+
+# Cascade options.
+# - Whether to repository_dispatch after PR completes.
+UPDEPS_CASCADE_INHIBIT="${UPDEPS_CASCADE_INHIBIT:-false}"
+# - The cascade_versioning value to send on repository_dispatch.
+#   - Also what update-merged.yml uses when versioning current project.
+#   - Also what determines if we poetry-update pre-release assets, see below.
+UPDEPS_CASCADE_VERSIONING="${UPDEPS_CASCADE_VERSIONING:-alpha}"
+# - The cascade_updatedeps value to send on repository_dispatch.
+#   - Also what to po-update: "our" deps, or "all" (incl. 3rd-party), see below.
+#   - There's another option, "skip", but then this script is not called.
+UPDEPS_CASCADE_UPDATEDEPS="${UPDEPS_CASCADE_UPDATEDEPS:-all}"
+
+# Just a convenience value for this module.
+UPDEPS_INCLUDE_PRERELEASE="$(
+  [ "${UPDEPS_CASCADE_VERSIONING}" != "least" ] \
+  && [ "${UPDEPS_CASCADE_VERSIONING}" != "alpha" ] \
+  && echo false \
+  || echo true
+)"
+
+# ***
+
+# Optional: Set faker true to skip poetry-update (useful for developing).
+UPDEPS_FAKE_UPDATE="${UPDEPS_FAKE_UPDATE:-false}"
+
+# ***
+
+# DEVXX: Use this (or similar) to test locally (but note PR self-approve fails
+#        unless you set USER_TOKEN and GBOT_TOKEN to different users' tokens):
 __UPDEPS__CPYST__="
+  # This command does nothing more than make CI busy for a bit
   UPDEPS_FAKE_UPDATE=true \
-  UPDEPS_LABEL_INHIBIT_VERSION=true \
-  UPDEPS_LABEL_INHIBIT_CASCADE=true \
-  UPDEPS_LABEL_PRERELEASE=true \
+  UPDEPS_CASCADE_INHIBIT=true \
+  UPDEPS_CASCADE_VERSIONING=skip \
+  UPDEPS_CASCADE_UPDATEDEPS=skip \
     ./.github/bin/update-poetry
 "
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
+# Optional: Customizable PR label names and descriptions.
+
+# The update-merged.yml workflow use the 'poetry.lock' label to "verify"
+# the PR was created by this script. (Though, as with any PR label or Gi
+# t tag the CI uses, any user could apply the same tag/label to trick us,
+# but we assume no such chicanery.)
+UPDEPS_LABEL_NAME_POETRY_LOCK="${UPDEPS_LABEL_NAME_POETRY_LOCK:-\
+poetry.lock}"
+UPDEPS_LABEL_DESC_POETRY_LOCK="${UPDEPS_LABEL_DESC_POETRY_LOCK:-\
+Pull requests that update poetry.lock}"
+
+# ***
+
+# The 'ci-inhibit-cascade' label tells spread-updates.yml to not repo-dispatch.
+UPDEPS_LABEL_NAME_INHIBIT_CASCADE="${UPDEPS_LABEL_NAME_INHIBIT_CASCADE:-\
+ci-inhibit-cascade}"
+UPDEPS_LABEL_DESC_INHIBIT_CASCADE="${UPDEPS_LABEL_DESC_INHIBIT_CASCADE:-\
+Tells CI not to cascade after versioning and release}"
+
+# ***
+
+# The cascade-updatedeps value-choices.
+
+UPDEPS_LABEL_NAME_UPDATE_OURS="${UPDEPS_LABEL_NAME_UPDATE_OURS:-\
+ci-update-ours}"
+UPDEPS_LABEL_DESC_UPDATE_OURS="${UPDEPS_LABEL_DESC_UPDATE_OURS:-\
+Tells CI to keep cascading update-\"ours\" after PR is approved}"
+
+UPDEPS_LABEL_NAME_UPDATE_ALL="${UPDEPS_LABEL_NAME_UPDATE_ALL:-\
+ci-update-all}"
+UPDEPS_LABEL_DESC_UPDATE_ALL="${UPDEPS_LABEL_DESC_UPDATE_ALL:-\
+Tells CI to keep cascading update-all after PR is approved}"
+
+UPDEPS_LABEL_NAME_UPDATE_SKIP="${UPDEPS_LABEL_NAME_UPDATE_SKIP:-\
+ci-update-skip}"
+UPDEPS_LABEL_DESC_UPDATE_SKIP="${UPDEPS_LABEL_DESC_UPDATE_SKIP:-\
+Tells CI to keep cascading update-skip after PR is approved}"
+
+# ***
+
+# The next 4 labels represent the 'cascade-versioning' Git tag.
+# - An annotated Git tag contains a message we kluge to hold our
+#   variable value.
+#   - So we can use the same Git tag for different values.
+# - But a GitHub PR label is just a label, essentially a boolean.
+#   So we use 4 labels here to represent the 4 'cascade-versioning'
+#   values: 'alpha', 'patch', 'least', and 'skip'.
+#
+UPDEPS_LABEL_NAME_VERSION_ALPHA="${UPDEPS_LABEL_NAME_VERSION_ALPHA:-\
+ci-version-alpha}"
+UPDEPS_LABEL_DESC_VERSION_ALPHA="${UPDEPS_LABEL_DESC_VERSION_ALPHA:-\
+Tells CI to bump alpha version after PR is approved}"
+#
+UPDEPS_LABEL_NAME_VERSION_PATCH="${UPDEPS_LABEL_NAME_VERSION_PATCH:-\
+ci-version-patch}"
+UPDEPS_LABEL_DESC_VERSION_PATCH="${UPDEPS_LABEL_DESC_VERSION_PATCH:-\
+Tells CI to bump patch version after PR is approved}"
+#
+UPDEPS_LABEL_NAME_VERSION_LEAST="${UPDEPS_LABEL_NAME_VERSION_LEAST:-\
+ci-version-least}"
+UPDEPS_LABEL_DESC_VERSION_LEAST="${UPDEPS_LABEL_DESC_VERSION_LEAST:-\
+Tells CI to bump least version after PR is approved}"
+#
+UPDEPS_LABEL_NAME_VERSION_SKIP="${UPDEPS_LABEL_NAME_VERSION_SKIP:-\
+ci-version-skip}"
+UPDEPS_LABEL_DESC_VERSION_SKIP="${UPDEPS_LABEL_DESC_VERSION_SKIP:-\
+Tells CI to skip version bump after PR is approved}"
+
+# ***
+
+# Optional: Customizable PR label color (same color used for all).
+UPDEPS_LABELS_COLOR="${UPDEPS_LABELS_COLOR:-74e34f}"
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+
+# Optional: Customizable Git commit messages.
+UPDEPS_COMMIT_MESSAGE_NORMAL="${UPDEPS_COMMIT_MESSAGE_NORMAL:-\
+Build: Deps: Update poetry.lock [bin/update-poetry]}"
+UPDEPS_COMMIT_MESSAGE_PRERELEASE="${UPDEPS_COMMIT_MESSAGE_PRERELEASE:-\
+Build: Deps: Update pre-release assets [bin/update-poetry]}"
+
+# Optional: Customizable GitHub PR title and body.
+UPDEPS_PR_TITLE="${UPDEPS_PR_TITLE:-Build: Update deps}"
+UPDEPS_PR_BODY="${UPDEPS_PR_BODY:-Called with:
+  UPDEPS_FAKE_UPDATE=${UPDEPS_FAKE_UPDATE} \
+  UPDEPS_CASCADE_INHIBIT=${UPDEPS_CASCADE_INHIBIT} \
+  UPDEPS_CASCADE_VERSIONING=${UPDEPS_CASCADE_VERSIONING} \
+  UPDEPS_CASCADE_UPDATEDEPS=${UPDEPS_CASCADE_UPDATEDEPS} \
+}"
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
@@ -83,8 +181,8 @@ _updeps_insist_cmd () {
   exit 1
 }
 
-# Program prints "true" or "false" to stdout for CI workflow.
-# Program prints to stderr for trace/progress messages.
+# Program prints a single "true" or "false" to stdout for CI workflow.
+# - Program prints other trace/progress messages to stderr for you ᵒᴥᵒ.
 print_prog () {
   >&2 printf "$1"
 }
@@ -97,22 +195,22 @@ update_poetry_update () {
   assert_git_email_known
 
   local branch_name
-  branch_name="$(print_branch_name)"
+  branch_name="$(generate_branch_name)"
 
   local remote_name
   remote_name="$(git_upstream_remote)"
 
-  poetry_update_lock
+  local has_changes=false
 
-  assert_git_status_0_or_1_changes
+  if update_and_commit_lock_normal "${branch_name}"; then
+    has_changes=true
+  fi
 
-  assert_git_status_only_poetry_lock_changed_if_any
+  if update_and_commit_lock_prerelease "${branch_name}"; then
+    has_changes=true
+  fi
 
-  if test -n "$(git status --porcelain=v1)"; then
-    prepare_branch "${branch_name}" "${remote_name}"
-
-    poetry_update_commit_changes "${branch_name}"
-
+  if ${has_changes}; then
     push_branch "${branch_name}" "${remote_name}"
 
     local NEW_PR_URL
@@ -128,20 +226,126 @@ update_poetry_update () {
 
 # ***
 
-poetry_update_lock () {
+update_and_commit_lock_normal () {
+  local branch_name="$1"
+
+  poetry_update_lock_normal
+
+  assert_git_status_0_or_1_changes
+
+  assert_git_status_only_poetry_lock_changed_if_any
+
+  if test -n "$(git status --porcelain=v1)"; then
+    prepare_branch "${branch_name}"
+
+    poetry_update_commit_changes_normal
+
+    return 0
+  fi
+
+  return 1
+}
+
+update_and_commit_lock_prerelease () {
+  local branch_name="$1"
+
+  if ! ${UPDEPS_INCLUDE_PRERELEASE}; then
+    return 1
+  fi
+
+  # ***
+
+  # Fetch Makefile's PYPROJECT_PRERELEASE_DIR value.
+  local pyproject_dir
+  pyproject_dir="$(make_inspect_var "PYPROJECT_PRERELEASE_DIR")"
+
+  poetry_update_lock_prerelease
+
+  assert_git_status_0_1_or_2_changes
+
+  assert_git_status_only_prerelease_pyproject_and_or_lock_changed_if_any \
+    "${pyproject_dir}"
+
+  if test -n "$(git status --porcelain=v1)"; then
+    prepare_branch "${branch_name}"
+
+    poetry_update_commit_changes_prerelease "${pyproject_dir}"
+
+    return 0
+  fi
+
+  return 1
+}
+
+# XPECT: Expects cwd is project root, and using EAPP Makefile.
+make_inspect_var () {
+  local var_name="$1"
+
+  # Prints Makefile variable. Same as, e.g.:
+  #
+  #   var_name=PYPROJECT_PRERELEASE_DIR
+  #   var_value="$(
+  #     make \
+  #       --eval="print-var: ; @echo \$(${var_name})" \
+  #       print-var
+  #   )"
+  #   printf "%s" "${var_value}"
+  #
+  # - But uses EAPP Makefile target that does the same.
+
+  make-inspect-var "${var_name}"
+}
+
+# ***
+
+# Call poetry-update, but let user choose the breadth/scope:
+# - If 'ours', only update "our" dependencies.
+#   - Use case: User wants to test their code changes, and they
+#               don't want to be surprised by a failure caused by
+#               changes to a third-party dependency.
+# - If 'all' (the recommended default), update all pyproject.toml
+#   dependencies.
+#   - Use case: User wants project to use latest deps,
+#               and, bonus, you make dependabot happy.
+poetry_update_lock_normal () {
   print_prog "poetry update... "
 
   if ! ${UPDEPS_FAKE_UPDATE:-false}; then
     # Meh: We could restrict to updating just our org's repos,
-    # e.g., `poetry update doblabs/<pkg> doblabs/<pkg> ...`,
-    # but no reason not to update everything.
-    poetry update -q --lock
+    if [ "${UPDEPS_CASCADE_UPDATEDEPS}" = "ours" ]; then
+      # Restrict to updating just our org's repos (aka "our" deps).
+      poetry update -q --lock $(make_inspect_var "EDITABLE_PJS")
+    elif [ "${UPDEPS_CASCADE_UPDATEDEPS}" = "all" ]; then
+      poetry update -q --lock
+    else
+      # Note that UPDEPS_CASCADE_UPDATEDEPS cannot be 'skip';
+      # caller precludes calling this script otherwise.
+      >&2 echo "GAFFE: Impossible path"
+
+      # D_b_C: This execution is kaput, by the laws of Design by Contract.
+      exit 1
+    fi
   else
-    # DEVs: UPDEPS_FAKE_UPDATE is a faker to make (GHA) CI testing quicker.
+    # UPDEPS_FAKE_UPDATE is a faker to make GH Actions CI testing quicker.
     echo "# This line generated by poetry-update-faker" >> poetry.lock
   fi
 
   print_prog "✓\n"
+}
+
+poetry_update_lock_prerelease () {
+  print_prog "poetry update...  # pre-release"
+
+  # Create <dir>/pyproject.toml and <dir>/poetry.lock, each copied
+  # from project root and then edited or updated.
+  # - The pre-release toml and lock are identical to the normal
+  #   project files, expect "our" deps are updated to whatever's
+  #   on test.PyPI — and it's expected that anyone who installs
+  #   the pre-release package will install using something like:
+  #     pip --index-url https://test.pypi.org/simple \
+  #       --extra-index-url=https://pypi.org/simple/ \
+  #       <pkg>
+  make prepare-poetry-prerelease
 }
 
 # ***
@@ -157,11 +361,17 @@ shorten_string () {
   printf "${string}" | sed -E 's/^(.{'${maxlen}'}).*/\1/g'
 }
 
+# COPYD: From git-nubs.
 git_HEAD_commit_sha () {
   git rev-parse HEAD
 }
 
-print_branch_name () {
+# Paired-down variant of git-nubs fcn.
+git_branch_name () {
+  git rev-parse --abbrev-ref=loose HEAD
+}
+
+generate_branch_name () {
   branch_name="update-deps/$(TTTtt0)/$(shorten_string "$(git_HEAD_commit_sha)")"
 
   printf "%s" "${branch_name}"
@@ -169,7 +379,14 @@ print_branch_name () {
 
 prepare_branch () {
   local branch_name="$1"
-  local remote_name="$2"
+
+  if [ "$(git_branch_name)" = "${branch_name}" ]; then
+    # Assumed previously called and all setup.
+
+    return 0
+  fi
+
+  # ***
 
   local scoped_head="HEAD"
   scoped_head="$(print_scoped_head ".")"
@@ -177,6 +394,12 @@ prepare_branch () {
   print_prog "git checkout -b ${branch_name} ${scoped_head}\n"
 
   git checkout -q -b "${branch_name}" "${scoped_head}"
+
+  # Prepare for commit if running on CI.
+  if ${CI:-false}; then
+    git config user.email "${UPDEPS_USER_EMAIL}"
+    git config user.name "${UPDEPS_USER_NAME}"
+  fi
 }
 
 resume_old_branch_and_cleanup () {
@@ -200,21 +423,41 @@ resume_old_branch_and_cleanup () {
 }
 
 poetry_update_commit_changes () {
-  print_prog "git add poetry.lock\n"
+  local commit_message="$1"
 
-  git add poetry.lock
+  if ${UPDEPS_INCLUDE_PRERELEASE} \
+    && has_changes_pyproject_toml \
+  ; then
+    print_prog "git add pyproject.toml\n"
+
+    git add pyproject.toml
+  fi
+
+  if has_changes_poetry_lock; then
+    print_prog "git add poetry.lock\n"
+
+    git add poetry.lock
+  fi
 
   print_prog "git commit... "
 
-  # See comment above: GHA defines CI=true.
-  if ${CI:-false}; then
-    git config user.email "${UPDEPS_USER_EMAIL}"
-    git config user.name "${UPDEPS_USER_NAME}"
-  fi
-
-  git commit -q -m "${UPDEPS_COMMIT_MESSAGE}"
+  git commit -q -m "${commit_message}"
 
   print_prog "✓\n"
+}
+
+poetry_update_commit_changes_normal () {
+  poetry_update_commit_changes "${UPDEPS_COMMIT_MESSAGE_NORMAL}"
+}
+
+poetry_update_commit_changes_prerelease () {
+  local pyproject_dir="$1"
+
+  (
+    cd "${pyproject_dir}"
+
+    poetry_update_commit_changes "${UPDEPS_COMMIT_MESSAGE_PRERELEASE}"
+  )
 }
 
 # ***
@@ -411,28 +654,68 @@ gh_label_create () {
 
 # Meh: This feels like TMBL — Too Much Business Logic — than maybe belongs here.
 print_pr_ci_labels () {
-  if ${UPDEPS_LABEL_INHIBIT_VERSION:-false}; then
-    gh_label_create \
-      "${UPDEPS_LABEL_NAME_INHIBIT_VERSION}" \
-      "${UPDEPS_LABEL_DESC_INHIBIT_VERSION}"
+  print_pr_ci_labels_inhibit_cascade
+  print_pr_ci_labels_cascade_updatedeps
+  print_pr_ci_labels_cascade_versioning
+}
 
-    printf "%s" "--label ${UPDEPS_LABEL_NAME_INHIBIT_VERSION} "
-  fi
-
-  if ${UPDEPS_LABEL_INHIBIT_CASCADE:-false}; then
+print_pr_ci_labels_inhibit_cascade () {
+  if ${UPDEPS_CASCADE_INHIBIT:-false}; then
     gh_label_create \
       "${UPDEPS_LABEL_NAME_INHIBIT_CASCADE}" \
       "${UPDEPS_LABEL_DESC_INHIBIT_CASCADE}"
 
     printf "%s" "--label ${UPDEPS_LABEL_NAME_INHIBIT_CASCADE} "
   fi
+}
 
-  if ${UPDEPS_LABEL_PRERELEASE:-false}; then
+print_pr_ci_labels_cascade_updatedeps () {
+  if [ "${UPDEPS_CASCADE_UPDATEDEPS}" = "ours" ]; then
     gh_label_create \
-      "${UPDEPS_LABEL_NAME_PRERELEASE}" \
-      "${UPDEPS_LABEL_DESC_PRERELEASE}"
+      "${UPDEPS_LABEL_NAME_UPDATE_OURS}" \
+      "${UPDEPS_LABEL_DESC_UPDATE_OURS}"
 
-    printf "%s" "--label ${UPDEPS_LABEL_NAME_PRERELEASE} "
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_UPDATE_OURS} "
+  elif [ "${UPDEPS_CASCADE_UPDATEDEPS}" = "all" ]; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_UPDATE_ALL}" \
+      "${UPDEPS_LABEL_DESC_UPDATE_ALL}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_UPDATE_ALL} "
+  elif [ "${UPDEPS_CASCADE_UPDATEDEPS}" = "skip" ]; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_UPDATE_SKIP}" \
+      "${UPDEPS_LABEL_DESC_UPDATE_SKIP}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_UPDATE_SKIP} "
+  fi
+}
+
+print_pr_ci_labels_cascade_versioning () {
+  if [ "${UPDEPS_CASCADE_VERSIONING}" = "least" ]; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_VERSION_LEAST}" \
+      "${UPDEPS_LABEL_DESC_VERSION_LEAST}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_VERSION_LEAST} "
+  elif [ "${UPDEPS_CASCADE_VERSIONING}" = "alpha" ]; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_VERSION_ALPHA}" \
+      "${UPDEPS_LABEL_DESC_VERSION_ALPHA}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_VERSION_ALPHA} "
+  elif [ "${UPDEPS_CASCADE_VERSIONING}" = "patch" ]; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_VERSION_PATCH}" \
+      "${UPDEPS_LABEL_DESC_VERSION_PATCH}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_VERSION_PATCH} "
+  elif [ "${UPDEPS_CASCADE_VERSIONING}" = "skip" ]; then
+    gh_label_create \
+      "${UPDEPS_LABEL_NAME_VERSION_SKIP}" \
+      "${UPDEPS_LABEL_DESC_VERSION_SKIP}"
+
+    printf "%s" "--label ${UPDEPS_LABEL_NAME_VERSION_SKIP} "
   fi
 }
 
@@ -527,6 +810,8 @@ assert_git_email_known_interactive () {
   exit 1
 }
 
+# ***
+
 assert_git_status_tidy () {
   test -z "$(git status --porcelain=v1)" \
     && return 0 || true
@@ -536,27 +821,97 @@ assert_git_status_tidy () {
   exit 1
 }
 
+# ***
+
 # Overly cautious git-status check (expect 0 or 1 changes).
 assert_git_status_0_or_1_changes () {
-  test $(git status --porcelain=v1 | wc -l) -le 1 \
+  assert_git_status_changes_le_max 1
+}
+
+assert_git_status_0_1_or_2_changes () {
+  assert_git_status_changes_le_max 2
+}
+
+assert_git_status_changes_le_max () {
+  local max="$1"
+
+  test $(git status --porcelain=v1 | wc -l) -le ${max} \
     && return 0 || true
 
-  >&2 echo "ERROR: Unexpected: More than 1 file changed by poetry-update?!"
+  >&2 echo "ERROR: Unexpected: More than ${max} file(s) changed by poetry-update?!"
 
   exit 1
 }
 
+# ***
+
 # Overly cautious git-status check (expect only poetry.lock).
 assert_git_status_only_poetry_lock_changed_if_any () {
-  test -z "$(git status --porcelain=v1)" \
+  local git_status="$(git status --porcelain=v1)"
+
+  test -z "${git_status}" \
     && return 0 || true
 
-  test "$(git status --porcelain=v1)" = " M poetry.lock" \
+  test "${git_status}" = " M poetry.lock" \
     && return 0 || true
 
+  # Should be unreachable path.
   >&2 echo "ERROR: Unexpected: poetry.lock is not sole change after poetry-update?!"
+  >&2 echo "${git_status}"
 
   exit 1
+}
+
+assert_git_status_only_prerelease_pyproject_and_or_lock_changed_if_any () {
+  local pyproject_dir="$1"
+
+  local git_status
+  git_status="$(cd "${pyproject_dir}" && git status --porcelain=v1)"
+
+  test -z "${git_status}" \
+    && return 0 || true
+
+  local expect_if_both_changed="\
+ M poetry.lock
+ M pyproject.toml"
+
+  if [ "${git_status}" = " M poetry.lock" ] \
+    || [ "${git_status}" = " M pyproject.toml" ] \
+    || [ "${git_status}" = "${expect_if_both_changed}" ] \
+  ; then
+
+    return 0
+  fi
+
+  # Should be unreachable path.
+  >&2 echo "ERROR: Unexpected: Something other than pyproject.toml or poetry.lock"
+  >&2 echo "                   has changes after poetry-update?!"
+  >&2 echo "${git_status}"
+
+  exit 1
+}
+
+# ***
+
+has_changes_poetry_lock () {
+  has_unstaged_changes "poetry.lock"
+}
+
+has_changes_pyproject_toml () {
+  has_unstaged_changes "pyproject.toml"
+}
+
+has_unstaged_changes () {
+  local filename="$1"
+
+  local modified_file
+
+  while IFS= read -r modified_file; do
+    test "${modified_file}" = " M ${filename}" \
+      && return 0 || true
+  done <<< "$(git status --porcelain=v1)"
+
+  return 1
 }
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
