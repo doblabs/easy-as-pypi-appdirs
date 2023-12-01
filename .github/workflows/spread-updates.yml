@@ -8,7 +8,7 @@
 name: Release Cascade — Dispatch
 
 run-name: 👣 — Cascade — 1.) Dispatch ${{
-  github.event_name == 'workflow_dispatch' && '(via User)' || '' }}
+  inputs.cascade-updatedeps == '' && '(Smoke-tested)' || '(via User)' }}
 
 on:
   # Via release-smoke-test.yml after PyPI release, which doesn't
@@ -43,6 +43,11 @@ on:
         default: ''
 
   # Via GitHub Actions website button
+  # - Note user should really just go to the downstream repo and use
+  #   its start-cascade.yml workflow_dispatch to start the cascade.
+  #   - But this is convenient for testing that *this* module works
+  #     without having to start the CI at start-cascade.yml and then
+  #     wait for it to run through to this workflow.
   workflow_dispatch:
     inputs:
       cascade-updatedeps:
@@ -52,7 +57,7 @@ on:
           - 'all'
           - 'ours'
           - 'skip'
-        default: 'all'
+        default: 'skip'
 
       cascade-versioning:
         description: 'Cascade version bump'
@@ -62,7 +67,7 @@ on:
           - 'patch'
           - 'least'
           - 'skip'
-        default: 'alpha'
+        default: 'skip'
 
 # ***
 

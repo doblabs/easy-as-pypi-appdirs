@@ -8,7 +8,10 @@
 name: Release Cascade — Version
 
 run-name: 👣 — Cascade — 3.) Version ${{
-  github.event_name == 'workflow_dispatch' && '(via User)' || '' }}
+  false
+  || (github.event_name == 'pull_request' && '(PR closed)')
+  || (inputs.from-upstream && '(from up)')
+  || '(via User)' }}
 
 on:
   # CXREF:
@@ -32,7 +35,6 @@ on:
       #     the github event is workflow_dispatch, not workflow_call.
       # Nonetheless, we'll define cascade-dispatch here for readability.
       cascade-dispatch:
-        description: 'Start the cascade'
         type: boolean
         default: false
 
@@ -43,6 +45,11 @@ on:
       cascade-versioning:
         type: string
         default: 'skip'
+
+      # Just for the UX of it.
+      from-upstream:
+        type: boolean
+        default: false
 
   # Via GitHub Actions website button
   workflow_dispatch:
