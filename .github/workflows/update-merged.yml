@@ -9,9 +9,10 @@ name: Release Cascade — Version
 
 run-name: 👣 — Cascade — 3.) Version ${{
   false
+  || (inputs.bump-part != '' && '(via User)')
   || (github.event_name == 'pull_request' && '(PR closed)')
   || (inputs.from-upstream && '(from up)')
-  || '(via User)' }}
+  || '(from unknown sources)' }}
 
 on:
   # CXREF:
