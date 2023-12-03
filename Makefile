@@ -323,8 +323,9 @@ clean-test:
 
 build: _depends_active_venv clean-build
 	poetry build
-	ls -l dist
-	@echo 'HINT: Run `make dist-list` to bdist and sdist contents.'
+	@echo "ls dist/"
+	@command ls -lGAF "dist/" | tail +2 | sed 's/^/  /'
+	@echo 'HINT: Run `make dist-list` to show bdist and sdist contents.'
 .PHONY: build
 
 dist: build
@@ -483,22 +484,50 @@ _warn_unless_virtualenvwrapper:
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
-install-prerelease:
+install-prerelease: _depends_active_venv_unless_ci
 	@. "$(MAKETASKS_SH)" && \
 		install_prerelease \
 			"$(VENV_NAME_PRERELEASE)" \
 			"$(VENV_ARGS)" \
 			"$(VENV_NAME)" \
 			"$(PYPROJECT_PRERELEASE_DIR)" \
-			"$(EDITABLE_PJS)"
+			"$(EDITABLE_PJS)" \
+			"$(SOURCE_DIR)"
 .PHONY: install-prerelease
 
-prepare-poetry-prerelease:
+prepare-poetry-prerelease: _depends_active_venv_unless_ci
 	@. "$(MAKETASKS_SH)" && \
 		prepare_poetry_prerelease \
 			"$(PYPROJECT_PRERELEASE_DIR)" \
-			"$(EDITABLE_PJS)"
+			"$(EDITABLE_PJS)" \
+			"$(SOURCE_DIR)"
 .PHONY: prepare-poetry-prerelease
+
+build-prerelease: _depends_active_venv clean-build
+	@if [ ! -f "$(PYPROJECT_PRERELEASE_DIR)/poetry.lock" ] \
+		|| [ ! -f "$(PYPROJECT_PRERELEASE_DIR)/pyproject.toml" ] \
+	; then \
+		>&2 echo "ERROR: Please run \`make prepare-poetry-prerelease\`"; \
+		\
+		exit 1; \
+	fi
+	@command cp -f "$(PYPROJECT_PRERELEASE_DIR)/poetry.lock" "poetry.lock"
+	@command cp -f "$(PYPROJECT_PRERELEASE_DIR)/pyproject.toml" "pyproject.toml"
+	@echo "poetry build"
+	@success=false; \
+	if poetry build; then \
+		success=true; \
+		touch "dist/.pre-release-build"; \
+		echo "ls dist/"; \
+		command ls -lGAF "dist/" | tail +2 | sed 's/^/  /'; \
+		echo 'HINT: Run `make dist-list` to show bdist and sdist contents.'; \
+	fi; \
+	git checkout -- "poetry.lock"; \
+	git checkout -- "pyproject.toml"; \
+	if ! $${success}; then \
+		exit 1; \
+	fi
+PHONY: build-prerelease
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
@@ -529,11 +558,19 @@ pyenv-install-pys:
 
 _depends_active_venv:
 	@if [ -z "${VIRTUAL_ENV}" ]; then \
-		>&2 echo "ERROR: Run from a virtualenv!"; \
+		>&2 echo; \
+		>&2 echo "ERROR: 💣 Run from a virtualenv!"; \
+		>&2 echo; \
 		\
 		exit 1; \
 	fi
 .PHONY: _depends_active_venv
+
+_depends_active_venv_unless_ci:
+	@if ! $${CI:-false}; then \
+		make _depends_active_venv; \
+	fi;
+.PHONY: _depends_active_venv_unless_ci
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
